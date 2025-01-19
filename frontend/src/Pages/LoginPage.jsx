@@ -2,7 +2,7 @@ import React from 'react'
 
 function LoginPage() {
   return (
-    <div>LoginPage</div>
+    <div className='text-4xl'>LoginPage</div>
   )
 }
 
