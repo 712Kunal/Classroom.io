@@ -1,9 +1,15 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { LuSquareChevronRight, LuSquareChevronLeft } from "react-icons/lu";
+import { LuSquareChevronRight, LuSquareChevronLeft, LuCircleUser } from "react-icons/lu";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(true);
   const { pathname } = useLocation();
+
+  const user = {
+    username: 'JohnDoe08',
+    avatar: 'https://avatar.iran.liara.run/public/48',
+    email: 'johndoe08@gmail.com'
+  }
 
   const pathways = [
     {
@@ -28,9 +34,9 @@ const Sidebar = () => {
   ]
 
   return (
-    <aside className='block p-2 flex-shrink h-full border-2 border-neutral-700 rounded-lg min-w-60'>
-      <Sidebar_Header open={isOpen} setOpen={setIsOpen} />
-      <div className="main flex flex-col gap-2">
+    <aside className='flex flex-col justify-between p-2 h-full border-2 border-neutral-700 rounded-lg min-w-60'>
+      <SidebarHeader open={isOpen} setOpen={setIsOpen} />
+      <div className="main flex flex-col gap-2 flex-grow">
         <SidebarSection heading={'Library'}>
           {routes.map((route, index) => (
             <SidebarItem key={index} link={route.path} name={route.name} active={pathname === route.path} />
@@ -42,21 +48,37 @@ const Sidebar = () => {
           ))}
         </SidebarSection>
       </div>
-      <div className="footer"></div>
+      <SidebarFooter user={user} />
     </aside>
   )
 }
 
 export default Sidebar
 
-const Sidebar_Header = () => {
+const SidebarHeader = () => {
   return (
     <div className='header flex justify-between p-2 h-12'>
-      <div className="logo">
-        {open && <img className='object-contain h-full' src="/brand/logo.png" alt="logo" />}
-      </div>
+      {
+        open && <div className="logo">
+          <img className='object-contain h-full' src="/brand/logo.png" alt="logo" />
+        </div>
+      }
       <div className="sidebarToggle grid place-items-center hover:text-violet-500">
         {open ? <LuSquareChevronLeft size={24} /> : <LuSquareChevronRight size={24} />}
+      </div>
+    </div>
+  );
+}
+
+const SidebarFooter = ({user}) => {
+  return (
+    <div className='footer flex justify-between p-2 gap-2 self-end'>
+      <div className="icon h-12 w-12">
+        <img src={user.avatar} alt="avatar" className='object-contain h-full' />
+      </div>
+      <div className="user-details flex flex-col text-sm">
+        <p className='text-lg'>{user.username}</p>
+        <p>{user.email}</p>
       </div>
     </div>
   );
