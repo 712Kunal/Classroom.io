@@ -21,14 +21,12 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-
           <Route path="/app" element={<AppWrapper />}>
-            <Route path="profile" element={<ProfilePage />}/>
+            <Route path="profile" element={<ProfilePage />} />
             <Route path="library" element={<LibraryPage />} />
             <Route path="library/pathways/:pathwayId" element={<PathwayPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
           </Route>
-
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
