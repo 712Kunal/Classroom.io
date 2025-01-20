@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function LandingPage() {
-  return (
-    <div className='text-9xl'>LandingPage</div>
-  )
+  return <div className="text-4xl">LandingPage</div>;
 }
 
-export default LandingPage
+export default LandingPage;

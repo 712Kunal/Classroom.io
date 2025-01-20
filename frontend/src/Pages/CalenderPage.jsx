@@ -20,15 +20,15 @@ function CalenderPage() {
   const [currentView, setCurrentView] = useState("dayGridMonth");
 
   return (
-    <div className="w-full flex items-center justify-center border-2 border-slate-400 h-screen m-auto">
-      <div className="Card w-full max-w-6xl border-2 border-pink-900 h-screen">
+    <div className="w-full flex items-center justify-center m-auto">
+      <div className="Card w-full max-w-6xl border-2 border-pink-900 mt-10">
         <header>
           <div className="flex justify-between items-center mt-2">
             <span className="Heading text-3xl flex items-center gap-2 justify-center font-bold text-white">
               <AlarmIcon className="!text-4xl" />
               Learning Schedule
             </span>
-            <div className="flex gap-2">
+            <div className="Buttons flex gap-2">
               <Button
                 variant="contained"
                 className="!flex !justify-center !items-center !text-xl"
@@ -63,6 +63,21 @@ function CalenderPage() {
 
         <CardContent className="!text-white !flex !flex-col !items-center !justify-center border-2 border-yellow-300">
           <FullCalendar
+            customButtons={{
+              dayGridMonth: {
+                text: "Month",
+                click: () => {
+                  setCurrentView("dayGridMonth");
+                },
+                style: {
+                  backgroundColor: "red !important",
+                  border: "none",
+                  color: "white",
+                  fontSize: "1.5rem",
+                  padding: "0.5rem",
+                },
+              },
+            }}
             plugins={[
               dayGridPlugin,
               timeGridPlugin,
@@ -71,9 +86,9 @@ function CalenderPage() {
             ]}
             initialView={currentView}
             headerToolbar={{
-              left: "prev,next today myCustomButton",
+              left: "prev,next today",
               center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+              right: "dayGridMonth,timeGridWeek,timeGridDay,list",
             }}
             editable={true}
             selectable={true}
