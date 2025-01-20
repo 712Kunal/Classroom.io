@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { SquareChevronLeft, SquareChevronRight } from 'lucide-react'
-
+import { LuSquareChevronRight, LuSquareChevronLeft } from "react-icons/lu";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(true);
   const { pathname } = useLocation();
@@ -57,7 +56,7 @@ const Sidebar_Header = () => {
         {open && <img className='object-contain h-full' src="/brand/logo.png" alt="logo" />}
       </div>
       <div className="sidebarToggle grid place-items-center hover:text-violet-500">
-        {open ? <SquareChevronLeft size={24} /> : <SquareChevronRight size={24} />}
+        {open ? <LuSquareChevronLeft size={24} /> : <LuSquareChevronRight size={24} />}
       </div>
     </div>
   );
