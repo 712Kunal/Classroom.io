@@ -20,7 +20,7 @@ import AppWrapper from "./Components/core/AppWrapper";
 
 function App() {
   return (
-    <div className="h-screen w-screen grid place-items-center dark:bg-neutral-900 dark:text-white">
+    <div className="w-screen grid place-items-center dark:bg-neutral-900 dark:text-white">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
