@@ -11,9 +11,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 function CalenderPage() {
-  return <div className="w-full h-screen flex items-center justify-center m-auto">
-    
-  </div>;
+  return <div className="w-full h-screen flex items-center justify-center m-auto"></div>;
 }
 
 export default CalenderPage;
