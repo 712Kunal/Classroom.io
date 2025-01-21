@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function LoginPage() {
-  return (
-    <div className='text-4xl text-white'>LoginPage✨</div>
-  )
+  return <div className="text-4xl text-white">LoginPage✨</div>;
 }
 
-export default LoginPage
+export default LoginPage;

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const CreatePathway = () => {
-  return (
-    <div>CreatePathway</div>
-  )
-}
+  return <div>CreatePathway</div>;
+};
 
-export default CreatePathway
+export default CreatePathway;
