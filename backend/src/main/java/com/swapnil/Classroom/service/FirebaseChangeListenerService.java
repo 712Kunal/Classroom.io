@@ -8,10 +8,13 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.database.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +49,6 @@ public class FirebaseChangeListenerService {
 
 
 
-
     private void processPathwayChanges(DocumentSnapshot document, int oldIndex){
 
         System.out.println("Changes in pathway...");
@@ -70,8 +72,8 @@ public class FirebaseChangeListenerService {
 
 
                             System.out.println("Sending the email of completion...");
-                                // Send completion email
-                                mailService.sendCompletionEmail(task, userId);
+                            // Send completion email
+                            mailService.sendTaskCompletionEmail(task, userId);
 
                         }
                     }

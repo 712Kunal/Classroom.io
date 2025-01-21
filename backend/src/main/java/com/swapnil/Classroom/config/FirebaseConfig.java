@@ -5,36 +5,39 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.database.FirebaseDatabase;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 @Configuration
+@RequiredArgsConstructor
 public class FirebaseConfig {
 
-    @Bean
-    public FirebaseApp initializeFirebaseApp() throws IOException, URISyntaxException {
-        // Load the service account key from the classpath
-        var resource = getClass().getClassLoader().getResource("serviceAccountKey.json");
-        if (resource == null) {
-            throw new IOException("Service account key not found in classpath");
-        }
+    @Value("${firebase.privateKeyPath}")
+    private String privateKeyPath;
 
-        // Load the service account key file
-        var file = Paths.get(resource.toURI()).toFile();
-        try (FileInputStream serviceAccount = new FileInputStream(file)) {
+    @Bean
+    public FirebaseApp initializeFirebaseApp() throws IOException {
+//        System.out.println("Firebase: " + privateKeyPath);
+
+        // Load the service account key from the classpath
+        try (InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream(privateKeyPath)) {
+            if (serviceAccount == null) {
+//                System.out.println("Service account: " + serviceAccount);
+
+
+                throw new IOException("Service account key not found in classpath");
+            }
+
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
 
-            // Initialize FirebaseApp
-            FirebaseApp firebaseApp = FirebaseApp.initializeApp(options);
-            return firebaseApp;
+            return FirebaseApp.initializeApp(options);
         }
     }
 
