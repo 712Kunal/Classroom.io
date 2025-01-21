@@ -31,7 +31,7 @@ public class MailService {
         javaMailSender.send(message);
     }
 
-    public void sendCompletionEmail(Map<String, Object> task, String userId)  {
+    public void sendTaskCompletionEmail(Map<String, Object> task, String userId)  {
 
         try{
             String userEmail=getUserEmailFromFirebase(userId);
@@ -41,6 +41,7 @@ public class MailService {
                 return;
             }
 
+            System.out.println("Sending task completion email...");
             String taskTitle= (String) task.get("taskTitle");
             String taskDesc=(String) task.get("description");
 
@@ -55,6 +56,7 @@ public class MailService {
 
 
     }
+
 
 
 
@@ -79,6 +81,33 @@ public class MailService {
         }
     }
 
+
+
+    public void sendTaskDeadlineEmail(Map<String, Object> task, String userId){
+
+        try {
+            String userEmail = getUserEmailFromFirebase(userId);
+
+            if (userEmail == null) {
+                System.out.println("Email not found with userId: " + userId);
+                return;
+            }
+
+
+            String subject = "Task Deadline Reminder" ;
+            String body= "Hello, \n\nYou have an upcoming deadline for the task: "
+                    +task.get("taskTitle")+ ". The deadline is on "
+                    +task.get("scheduledDate")
+                    + ". Please complete it on time.\n\nThank You!";
+
+            System.out.println("Email is sent to: "+userEmail);
+            sendEmail(userEmail, subject, body);
+
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }
