@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { NextUIProvider } from '@nextui-org/react';
+
+import LandingPage from './Pages/LandingPage';
+import LoginPage from './Pages/LoginPage';
+import SignupPage from './Pages/SignupPage';
+import ProfilePage from './Pages/ProfilePage';
+import LibraryPage from './Pages/LibraryPage';
+import PathwayPage from './Pages/PathwayPage';
+import NotificationsPage from './Pages/NotificationsPage';
+import NotFoundPage from './Pages/NotFoundPage';
+
+import TimelineView from './Components/pathway/TimelineView';
+import CalenderView from './Components/pathway/CalenderView';
+import CreatePathway from './Components/pathway/CreatePathway';
+import TasksView from './Components/pathway/TasksView';
+
+import AppWrapper from './Components/core/AppWrapper';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <NextUIProvider>
+      <div className="w-screen grid place-items-center dark:bg-neutral-900 dark:text-white">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/app" element={<AppWrapper />}>
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="library" element={<LibraryPage />} />
+              <Route path="library/pathways/:pathwayId" element={<PathwayPage />}>
+                <Route path="timeline" element={<TimelineView />} />
+                <Route path="calender" element={<CalenderView />} />
+                <Route path="create" element={<CreatePathway />} />
+                <Route path="tasks" element={<TasksView />} />
+              </Route>
+              <Route path="notifications" element={<NotificationsPage />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </BrowserRouter>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </NextUIProvider>
+  );
 }
 
-export default App
+export default App;
