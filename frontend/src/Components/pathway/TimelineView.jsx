@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const TimelineView = () => {
-  return (
-    <div>TimelineView</div>
-  )
-}
+  return <div>TimelineView</div>;
+};
 
-export default TimelineView
+export default TimelineView;

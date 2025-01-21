@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const TasksView = () => {
-  return (
-    <div>TasksView</div>
-  )
-}
+  return <div>TasksView</div>;
+};
 
-export default TasksView
+export default TasksView;
