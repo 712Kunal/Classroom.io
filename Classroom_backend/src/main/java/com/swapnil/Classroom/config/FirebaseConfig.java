@@ -1,8 +1,10 @@
-package com.swapnil.FirebaseDemo1.config;
+package com.swapnil.Classroom.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.database.FirebaseDatabase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +30,6 @@ public class FirebaseConfig {
         try (FileInputStream serviceAccount = new FileInputStream(file)) {
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://FirebaseDemo1.firebaseio.com")
                     .build();
 
             // Initialize FirebaseApp
@@ -38,8 +39,8 @@ public class FirebaseConfig {
     }
 
     @Bean
-    public FirebaseDatabase firebaseDatabase(FirebaseApp firebaseApp) {
-        // Get FirebaseDatabase instance using the initialized FirebaseApp
-        return FirebaseDatabase.getInstance(firebaseApp);
+    public Firestore firestore(FirebaseApp firebaseApp) {
+        // Return Firestore instance using the initialized FirebaseApp
+        return FirestoreClient.getFirestore();
     }
 }

@@ -1,4 +1,4 @@
-package com.swapnil.FirebaseDemo1.config;
+package com.swapnil.Classroom.config;
 
 
 import org.springframework.context.annotation.Configuration;
