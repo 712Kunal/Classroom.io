@@ -1,7 +1,11 @@
 import { React, useState } from 'react';
 
 // import { SchedulerProvider, SchedularView } from 'mina-scheduler';
-import { Calendar, Views, ScheduleView } from 'mina-scheduler';
+// import { Calendar, Views, ScheduleView } from 'mina-scheduler';
+
+// @ts-ignore
+import Calendar from 'mina-scheduler';
+import ScheduleView from 'mina-scheduler';
 
 import { Button } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -15,6 +19,8 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 function CalenderPage() {
+  console.log({ Calendar, ScheduleView });
+
   const events = [
     {
       id: 1,

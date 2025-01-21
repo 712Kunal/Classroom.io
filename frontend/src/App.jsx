@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { HeroUIProvider } from '@heroui/react'
+import { NextUIProvider } from '@nextui-org/react';
 
 import LandingPage from './Pages/LandingPage';
 import LoginPage from './Pages/LoginPage';
@@ -21,7 +21,7 @@ import AppWrapper from './Components/core/AppWrapper';
 
 function App() {
   return (
-    <HeroUIProvider>
+    <NextUIProvider>
       <div className="w-screen grid place-items-center dark:bg-neutral-900 dark:text-white">
         <BrowserRouter>
           <Routes>
@@ -43,7 +43,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
-    </HeroUIProvider>
+    </NextUIProvider>
   );
 }
 
