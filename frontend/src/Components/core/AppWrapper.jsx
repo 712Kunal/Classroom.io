@@ -1,16 +1,26 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-
-// navbar will be on landing page only
-// Sidebar will be on all /app pages
+import { SidebarProvider, SidebarTrigger } from '../ui/sidebar';
+import AppSidebar from './AppSidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 function AppWrapper() {
+  const isMobile = useIsMobile();
+
   return (
-    <div className="w-full h-full flex p-2 gap-2">
-      <Sidebar />
-      <Outlet />
-    </div>
+    <SidebarProvider defaultOpen={true}>
+      <div className="w-screen h-screen flex">
+        <aside>
+          {isMobile && <SidebarTrigger />}
+          <AppSidebar />
+        </aside>
+        <main className="grid place-items-center flex-grow py-2 pr-2">
+          <div className="border-2 w-full h-full rounded-lg grid place-items-center">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }
 
