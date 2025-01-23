@@ -8,19 +8,19 @@ function AppWrapper() {
   const isMobile = useIsMobile();
 
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="w-screen h-screen flex">
-        <aside>
+    <div className="w-screen h-screen flex">
+      <aside>
+        <SidebarProvider defaultOpen={true}>
           {isMobile && <SidebarTrigger />}
           <AppSidebar />
-        </aside>
-        <main className="grid place-items-center flex-grow py-2 pr-2">
-          <div className="border-2 w-full h-full rounded-lg grid place-items-center">
-            <Outlet />
-          </div>
-        </main>
-      </div>
-    </SidebarProvider>
+        </SidebarProvider>
+      </aside>
+      <main className="grid place-items-center flex-grow py-2 pr-2">
+        <div className="border-2 w-full h-full rounded-lg grid place-items-center">
+          <Outlet />
+        </div>
+      </main>
+    </div>
   );
 }
 

@@ -20,25 +20,25 @@ import {
 
 function PathwayPage() {
   const { pathwayId } = useParams();
-  const { pathname } = useLocation();  
+  const { pathname } = useLocation();
 
   const lastWord = pathname.split('/').pop();
   const viewOptions = {
     timeline: {
       name: "Timeline View",
-      icon: <Clock size={16}/>
+      icon: <Clock size={16} />
     },
     calender: {
       name: "Calender View",
-      icon: <Calendar size={16}/>
+      icon: <Calendar size={16} />
     },
     create: {
       name: "Create Pathway",
-      icon: <Pencil size={16}/>
+      icon: <Pencil size={16} />
     },
     tasks: {
       name: "Tasks View",
-      icon: <List size={16}/>
+      icon: <List size={16} />
     }
   }
   const currentView = viewOptions[lastWord];
@@ -59,14 +59,14 @@ function PathwayPage() {
   ];
 
   return (
-    <div className="text-4xl w-full p-2 h-full rounded-lg">
+    <div className="text-4xl w-full p-2 h-full rounded-lg flex flex-col">
       <div className="titleBar w-full items-center justify-start flex-row py-2">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link to="/app/library">
-                  <Badge variant="outline" className="text-sm flex items-center gap-1 p-1"><Library  size={16}/> Library</Badge>
+                  <Badge variant="outline" className="text-sm flex items-center gap-1 p-1"><Library size={16} /> Library</Badge>
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -75,7 +75,7 @@ function PathwayPage() {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Badge variant="outline" className="text-sm flex items-center gap-1">
-                    <RouteIcon size={16}/>
+                    <RouteIcon size={16} />
                     {pathways[pathwayId - 1].name}
                     <ChevronDownIcon />
                   </Badge>
@@ -84,7 +84,7 @@ function PathwayPage() {
                   {pathways.map((pathway) => (
                     <DropdownMenuItem key={pathway.id}>
                       <Link to={`/app/library/pathways/${pathway.id}/timeline`} className='flex items-center gap-2 text-sm'>
-                        <RouteIcon size={16}/>
+                        <RouteIcon size={16} />
                         {pathway.name}
                       </Link>
                     </DropdownMenuItem>
@@ -118,9 +118,8 @@ function PathwayPage() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-
       </div>
-      <Separator/>
+      <Separator />
       <Outlet />
     </div>
   );
