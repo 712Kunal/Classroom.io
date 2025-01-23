@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CreatePathway = () => {
-  return <div>CreatePathway</div>;
+  return <div className='p-2'>CreatePathway</div>;
 };
 
 export default CreatePathway;

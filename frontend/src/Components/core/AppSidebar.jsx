@@ -87,7 +87,7 @@ const AppSidebar = () => {
               {pathways.map((pathway, index) => (
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton asChild>
-                    <Link to={`/app/pathway/${pathway.id}/timeline`}>
+                    <Link to={`/app/library/pathways/${pathway.id}/timeline`}>
                       <RouteIcon />
                       <span>{pathway.name}</span>
                     </Link>
