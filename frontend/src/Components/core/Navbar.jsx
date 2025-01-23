@@ -1,6 +1,9 @@
 // Navbar.jsx
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon, CogIcon } from '@heroicons/react/24/outline';
+import { IoMenu } from "react-icons/io5";
+import { FaXmark } from "react-icons/fa6";
+import { FaBell } from "react-icons/fa";
+import { FaCog } from "react-icons/fa";
 import { useState } from 'react';
 import Profile from '@/Components/ui/Profile';
 import Dashboard from '@/Pages/Dashboard';
@@ -61,7 +64,7 @@ export default function Navbar({ user }) {
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Settings</span>
-                  <CogIcon aria-hidden="true" className="h-6 w-6" />
+                  <FaCog aria-hidden="true" className="h-6 w-6" />
                 </button>
                 {/* Notification Icon */}
                 <button
@@ -70,7 +73,7 @@ export default function Navbar({ user }) {
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
-                  <BellIcon aria-hidden="true" className="h-6 w-6" />
+                  <FaBell aria-hidden="true" className="h-6 w-6" />
                 </button>
               </div>
             </div>
@@ -80,8 +83,8 @@ export default function Navbar({ user }) {
               <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-gray-400 hover:bg-gray-200 hover:text-gray-900 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open main menu</span>
-                <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-open:hidden" />
-                <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-open:block" />
+                <IoMenu aria-hidden="true" className="block h-6 w-6 group-data-open:hidden" />
+                <FaXmark aria-hidden="true" className="hidden h-6 w-6 group-data-open:block" />
               </DisclosureButton>
             </div>
           </div>
