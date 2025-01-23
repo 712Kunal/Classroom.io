@@ -20,9 +20,7 @@ import {
 
 function PathwayPage() {
   const { pathwayId } = useParams();
-  const { pathname } = useLocation();
-  console.log(pathwayId);
-  
+  const { pathname } = useLocation();  
 
   const lastWord = pathname.split('/').pop();
   const viewOptions = {
