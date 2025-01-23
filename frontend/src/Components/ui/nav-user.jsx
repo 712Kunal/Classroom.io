@@ -29,7 +29,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { CogIcon } from '@heroicons/react/24/outline';
+import { Settings as CogIcon } from "lucide-react";
 
 import { use } from "react"
 
