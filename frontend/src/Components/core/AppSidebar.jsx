@@ -55,7 +55,7 @@ const AppSidebar = () => {
     <Sidebar side="left" variant="floating" collapsible="icon">
       <SidebarHeader className="flex-row justify-between items-center">
         {open && <div className="logo">
-          <p className='text-violet-400'>Pathify</p>
+          <p className='text-violet-400 text-4xl'>Pathify</p>
         </div>}
         <SidebarTrigger />
       </SidebarHeader>
