@@ -1,0 +1,1 @@
+export const calendarModes = ['day', 'week', 'month'];

@@ -12,7 +12,8 @@ const NotificationsPage = lazy(() => import('./Pages/NotificationsPage.jsx'));
 const NotFoundPage = lazy(() => import('./Pages/NotFoundPage.jsx'));
 
 const TimelineView = lazy(() => import('./components/pathway/TimelineView.jsx'));
-const CalenderView = lazy(() => import('./components/pathway/CalenderView.jsx'));
+// const CalenderView = lazy(() => import('./components/pathway/CalenderView.jsx'));
+const CalendarDemo = lazy(() => import('./components/calender_jsx/calendar-demo.jsx'));
 const CreatePathway = lazy(() => import('./components/pathway/CreatePathway.jsx'));
 const TasksView = lazy(() => import('./components/pathway/TasksView.jsx'));
 
@@ -33,7 +34,7 @@ function App() {
             <Route path="library" element={suspenseComponent(<LibraryPage />)} />
             <Route path="library/pathways/:pathwayId" element={suspenseComponent(<PathwayPage />)}>
               <Route path="timeline" element={suspenseComponent(<TimelineView />)} />
-              <Route path="calender" element={suspenseComponent(<CalenderView />)} />
+              <Route path="calender" element={suspenseComponent(<CalendarDemo />)} />
               <Route path="create" element={suspenseComponent(<CreatePathway />)} />
               <Route path="tasks" element={suspenseComponent(<TasksView />)} />
             </Route>
