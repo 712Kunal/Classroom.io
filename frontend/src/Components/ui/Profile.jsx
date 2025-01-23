@@ -4,7 +4,7 @@ export default function Profile({ user }) {
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-2xl mx-auto">
         <div className="flex items-center space-x-4">
           <img
-            src={user.avatar} // Use avatar from user prop
+            src={user.avatar} 
             alt={user.username}
             className="w-24 h-24 rounded-full"
           />

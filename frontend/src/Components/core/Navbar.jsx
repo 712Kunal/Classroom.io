@@ -6,7 +6,7 @@ import Profile from '@/Components/ui/Profile';
 import Dashboard from '@/Pages/Dashboard';
 
 export default function Navbar({ user }) {
-  const [activeTab, setActiveTab] = useState('Profile'); // Set default tab to 'Profile'
+  const [activeTab, setActiveTab] = useState('Profile'); 
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -119,7 +119,7 @@ export default function Navbar({ user }) {
 
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          {/* Conditional rendering of components */}
+        
           {activeTab === 'Profile' && <Profile user={user} />}
           {activeTab === 'Dashboard' && <Dashboard />}
         </div>
