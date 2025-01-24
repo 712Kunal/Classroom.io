@@ -41,6 +41,9 @@ public class Pathway {
                 private String taskTitle; // Title of the task
                 private String description; // Description of the task
 
+                private Boolean completionEmailSent=false;
+                private Boolean deadlineEmailSent=false;
+
                 private Date scheduledDate; // Date the task is scheduled
                 private Date completedDate; // Date the task was completed
                 private boolean isDone; // Whether the task is completed
