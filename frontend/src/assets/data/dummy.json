@@ -22,8 +22,8 @@
             "taskNumber": 1,
             "taskTitle": "Development Environment Setup",
             "description": "Set up Node.js, npm, and create your first React app using Create React App",
-            "scheduledDate": "2025-01-22T00:00:00.000Z",
-            "completedDate": "2025-01-24T00:00:00.000Z",
+            "scheduledDate": "2025-01-25T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -45,7 +45,7 @@
             "taskTitle": "JSX and Components Basics",
             "description": "Learn JSX syntax and create your first React components",
             "scheduledDate": "2025-01-24T00:00:00.000Z",
-            "completedDate": "2025-01-25T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -70,7 +70,7 @@
             "taskTitle": "Understanding Props",
             "description": "Learn how to pass and use props between components",
             "scheduledDate": "2025-01-29T00:00:00.000Z",
-            "completedDate": "2025-01-31T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -120,7 +120,7 @@
             "taskTitle": "Form Handling in React",
             "description": "Learn controlled components and form submission",
             "scheduledDate": "2025-02-12T00:00:00.000Z",
-            "completedDate": "2025-02-12T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -145,7 +145,7 @@
             "taskTitle": "Fetching Data",
             "description": "Learn to fetch and display data from APIs",
             "scheduledDate": "2025-02-19T00:00:00.000Z",
-            "completedDate": "2025-02-22T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -170,7 +170,7 @@
             "taskTitle": "React Router Setup",
             "description": "Implement client-side routing with React Router",
             "scheduledDate": "2025-02-26T00:00:00.000Z",
-            "completedDate": "2025-02-28T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -220,7 +220,7 @@
             "taskTitle": "React Performance",
             "description": "Learn about memo, useMemo, and useCallback",
             "scheduledDate": "2025-03-12T00:00:00.000Z",
-            "completedDate": "2025-03-14T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -245,7 +245,7 @@
             "taskTitle": "Error Boundaries",
             "description": "Implement error handling in React applications",
             "scheduledDate": "2025-03-19T00:00:00.000Z",
-            "completedDate": "2025-03-19T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -270,7 +270,7 @@
             "taskTitle": "Testing with Jest",
             "description": "Learn to write tests for React components",
             "scheduledDate": "2025-03-26T00:00:00.000Z",
-            "completedDate": "2025-03-28T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -295,7 +295,7 @@
             "taskTitle": "Build and Deploy",
             "description": "Learn to build and deploy React applications",
             "scheduledDate": "2025-04-02T00:00:00.000Z",
-            "completedDate": "2025-04-02T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
@@ -320,7 +320,7 @@
             "taskTitle": "Portfolio Project",
             "description": "Build a complete React application using all learned concepts",
             "scheduledDate": "2025-04-09T00:00:00.000Z",
-            "completedDate": "2025-04-10T00:00:00.000Z",
+            "completedDate": null,
             "isDone": false,
             "lateMark": false,
             "resources": [
