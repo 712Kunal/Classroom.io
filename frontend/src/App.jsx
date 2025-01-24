@@ -28,7 +28,7 @@ function App() {
     <div className="h-screen w-screen grid place-items-center dark:bg-neutral-900 dark:text-white">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={suspenseComponent(<LandingPage />)} />
+          <Route path="/" element={suspenseComponent(<CalenderView />)} />
           <Route path="/login" element={suspenseComponent(<LoginPage />)} />
           <Route path="/signup" element={suspenseComponent(<SignupPage />)} />
           <Route path="/app" element={suspenseComponent(<AppWrapper />)}>
