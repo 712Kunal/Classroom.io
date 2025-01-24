@@ -1,0 +1,9 @@
+/* App.css or Calendar.css */
+.calendar-container {
+  border: 5px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Takes up full width of its parent */
+  height: 100%; /* Takes up full height of its parent */
+  overflow: auto; /* Allows scrolling if content overflows */
+}
