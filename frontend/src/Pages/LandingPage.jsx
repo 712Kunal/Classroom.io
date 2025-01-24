@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../Components/core/Navbar';
+import Navbar from '../components/core/Navbar';
 
 function LandingPage() {
   return (

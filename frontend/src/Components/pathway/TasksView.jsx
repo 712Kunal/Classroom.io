@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TasksView = () => {
-  return <div>TasksView</div>;
+  return <div className='p-2'>TasksView</div>;
 };
 
 export default TasksView;

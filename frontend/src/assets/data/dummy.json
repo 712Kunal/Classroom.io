@@ -1,0 +1,339 @@
+{
+  "_id": "507f1f77bcf86cd799439011",
+  "userId": "507f1f77bcf86cd799439012",
+  "topic": "Basic React",
+  "description": "A comprehensive pathway to learn React fundamentals, hooks, state management, and basic project development over 3 months",
+  "duration": 90,
+  "startDate": "2025-01-21T00:00:00.000Z",
+  "endDate": "2025-04-21T00:00:00.000Z",
+  "responseRaw": {},
+  "response": {
+    "topic": "Basic React",
+    "intervals": 12,
+    "intervalType": "Week",
+    "pathway": [
+      {
+        "intervalNumber": 1,
+        "summary": "React Fundamentals and Setup",
+        "pathwayStartDate": "2025-01-21T00:00:00.000Z",
+        "pathwayEndDate": "2025-01-28T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 1,
+            "taskTitle": "Development Environment Setup",
+            "description": "Set up Node.js, npm, and create your first React app using Create React App",
+            "scheduledDate": "2025-01-22T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Official React Setup Guide",
+                "type": "Documentation",
+                "link": "https://react.dev/learn/installation"
+              },
+              {
+                "title": "Create React App Tutorial",
+                "type": "Video",
+                "link": "https://example.com/cra-tutorial"
+              }
+            ],
+            "expectedOutcome": "Working development environment with a running React application"
+          },
+          {
+            "taskNumber": 2,
+            "taskTitle": "JSX and Components Basics",
+            "description": "Learn JSX syntax and create your first React components",
+            "scheduledDate": "2025-01-24T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "JSX In Depth",
+                "type": "Documentation",
+                "link": "https://react.dev/learn/writing-markup-with-jsx"
+              }
+            ],
+            "expectedOutcome": "Create and render multiple React components using JSX"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 2,
+        "summary": "Props and State Management",
+        "pathwayStartDate": "2025-01-28T00:00:00.000Z",
+        "pathwayEndDate": "2025-02-04T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 3,
+            "taskTitle": "Understanding Props",
+            "description": "Learn how to pass and use props between components",
+            "scheduledDate": "2025-01-29T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Passing Props to Components",
+                "type": "Interactive Exercise",
+                "link": "https://react.dev/learn/passing-props-to-a-component"
+              }
+            ],
+            "expectedOutcome": "Build a component hierarchy with prop passing"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 3,
+        "summary": "React Hooks Fundamentals",
+        "pathwayStartDate": "2025-02-04T00:00:00.000Z",
+        "pathwayEndDate": "2025-02-11T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 4,
+            "taskTitle": "useState and useEffect",
+            "description": "Master the basic React hooks for state and side effects",
+            "scheduledDate": "2025-02-05T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "React Hooks Overview",
+                "type": "Documentation",
+                "link": "https://react.dev/reference/react/hooks"
+              }
+            ],
+            "expectedOutcome": "Create components using useState and useEffect hooks"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 4,
+        "summary": "Forms and User Input",
+        "pathwayStartDate": "2025-02-11T00:00:00.000Z",
+        "pathwayEndDate": "2025-02-18T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 5,
+            "taskTitle": "Form Handling in React",
+            "description": "Learn controlled components and form submission",
+            "scheduledDate": "2025-02-12T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "React Form Fundamentals",
+                "type": "Interactive Exercise",
+                "link": "https://react.dev/learn/managing-state#reacting-to-input-with-state"
+              }
+            ],
+            "expectedOutcome": "Build a form with validation and submission handling"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 5,
+        "summary": "API Integration",
+        "pathwayStartDate": "2025-02-18T00:00:00.000Z",
+        "pathwayEndDate": "2025-02-25T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 6,
+            "taskTitle": "Fetching Data",
+            "description": "Learn to fetch and display data from APIs",
+            "scheduledDate": "2025-02-19T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Data Fetching in React",
+                "type": "Video Tutorial",
+                "link": "https://example.com/react-data-fetching"
+              }
+            ],
+            "expectedOutcome": "Create a component that fetches and displays API data"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 6,
+        "summary": "Routing in React",
+        "pathwayStartDate": "2025-02-25T00:00:00.000Z",
+        "pathwayEndDate": "2025-03-04T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 7,
+            "taskTitle": "React Router Setup",
+            "description": "Implement client-side routing with React Router",
+            "scheduledDate": "2025-02-26T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "React Router Documentation",
+                "type": "Documentation",
+                "link": "https://reactrouter.com/en/main"
+              }
+            ],
+            "expectedOutcome": "Multi-page application with working navigation"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 7,
+        "summary": "Context and Global State",
+        "pathwayStartDate": "2025-03-04T00:00:00.000Z",
+        "pathwayEndDate": "2025-03-11T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 8,
+            "taskTitle": "Context API",
+            "description": "Learn to manage global state with Context",
+            "scheduledDate": "2025-03-05T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Using Context",
+                "type": "Documentation",
+                "link": "https://react.dev/learn/passing-data-deeply-with-context"
+              }
+            ],
+            "expectedOutcome": "Implement global state management using Context"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 8,
+        "summary": "Performance Optimization",
+        "pathwayStartDate": "2025-03-11T00:00:00.000Z",
+        "pathwayEndDate": "2025-03-18T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 9,
+            "taskTitle": "React Performance",
+            "description": "Learn about memo, useMemo, and useCallback",
+            "scheduledDate": "2025-03-12T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Performance Optimization",
+                "type": "Documentation",
+                "link": "https://react.dev/learn/preserving-and-resetting-state"
+              }
+            ],
+            "expectedOutcome": "Optimize a React application for better performance"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 9,
+        "summary": "Error Handling",
+        "pathwayStartDate": "2025-03-18T00:00:00.000Z",
+        "pathwayEndDate": "2025-03-25T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 10,
+            "taskTitle": "Error Boundaries",
+            "description": "Implement error handling in React applications",
+            "scheduledDate": "2025-03-19T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Error Handling in React",
+                "type": "Documentation",
+                "link": "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
+              }
+            ],
+            "expectedOutcome": "Create error boundaries and handle errors gracefully"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 10,
+        "summary": "Testing React Applications",
+        "pathwayStartDate": "2025-03-25T00:00:00.000Z",
+        "pathwayEndDate": "2025-04-01T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 11,
+            "taskTitle": "Testing with Jest",
+            "description": "Learn to write tests for React components",
+            "scheduledDate": "2025-03-26T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Testing React Apps",
+                "type": "Documentation",
+                "link": "https://jestjs.io/docs/tutorial-react"
+              }
+            ],
+            "expectedOutcome": "Write and run tests for React components"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 11,
+        "summary": "Deployment",
+        "pathwayStartDate": "2025-04-01T00:00:00.000Z",
+        "pathwayEndDate": "2025-04-08T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 12,
+            "taskTitle": "Build and Deploy",
+            "description": "Learn to build and deploy React applications",
+            "scheduledDate": "2025-04-02T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "Deployment Guide",
+                "type": "Documentation",
+                "link": "https://create-react-app.dev/docs/deployment"
+              }
+            ],
+            "expectedOutcome": "Successfully deploy a React application"
+          }
+        ]
+      },
+      {
+        "intervalNumber": 12,
+        "summary": "Final Project",
+        "pathwayStartDate": "2025-04-08T00:00:00.000Z",
+        "pathwayEndDate": "2025-04-21T00:00:00.000Z",
+        "tasks": [
+          {
+            "taskNumber": 13,
+            "taskTitle": "Portfolio Project",
+            "description": "Build a complete React application using all learned concepts",
+            "scheduledDate": "2025-04-09T00:00:00.000Z",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
+            "resources": [
+              {
+                "title": "React Best Practices",
+                "type": "Documentation",
+                "link": "https://react.dev/learn/thinking-in-react"
+              }
+            ],
+            "expectedOutcome": "Complete working React application showcasing all learned skills"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -2,7 +2,7 @@ import React from 'react';
 
 function NotificationsPage() {
   return (
-    <div className="text-4xl flex-grow p-2 h-full border-2 border-neutral-700 rounded-lg">
+    <div className="text-4xl w-full h-full p-2 rounded-lg">
       NotificationsPage
     </div>
   );
