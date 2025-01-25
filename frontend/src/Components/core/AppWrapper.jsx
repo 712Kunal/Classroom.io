@@ -10,7 +10,7 @@ function AppWrapper() {
   return (
     <div className="w-screen h-screen flex">
       <aside>
-        <SidebarProvider defaultOpen={true}>
+        <SidebarProvider defaultOpen={false}>
           {isMobile && <SidebarTrigger />}
           <AppSidebar />
         </SidebarProvider>

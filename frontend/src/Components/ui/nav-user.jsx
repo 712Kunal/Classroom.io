@@ -5,7 +5,7 @@ import {
   ChevronsUpDown,
   LogOut,
   ChartSpline
-} from "lucide-react"
+, Settings as CogIcon } from "lucide-react"
 
 import { Link } from "react-router-dom"
 
@@ -30,7 +30,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import ModeToggle from '../originUi/mode-toggle.jsx';
-import { Settings as CogIcon } from "lucide-react";
+
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
