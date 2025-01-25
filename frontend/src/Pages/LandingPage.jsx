@@ -1,10 +1,10 @@
 import React from 'react';
-import Navbar from '@/Components/core/Navbar';
+import LandingNavbar from '@/Components/core/LandingNavbar';
 
 function LandingPage() {
   return (
     <>
-      <Navbar />
+      <LandingNavbar />
       <main className="text-9xl">LandingPage</main>
     </>
   );
