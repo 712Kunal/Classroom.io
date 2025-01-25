@@ -1,6 +1,8 @@
 package com.swapnil.Classroom.controller;
 
+import com.swapnil.Classroom.entity.Notification;
 import com.swapnil.Classroom.entity.Pathway;
+import com.swapnil.Classroom.service.NotificationService;
 import com.swapnil.Classroom.service.PathwayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 public class PathwayController {
 
     private final PathwayService pathwayService;
+    private final NotificationService notificationService;
 
     @PostMapping("/createPathway")
     public ResponseEntity<String> createPathway(@RequestBody Pathway pathway){
@@ -50,7 +53,13 @@ public class PathwayController {
             @PathVariable String pathwayId,
             @PathVariable Long taskId
 
-    ){
+    ) throws Exception {
+
+        String userId=pathwayService.getUserIdFromPathwayId(pathwayId);
+
+        Notification notification= (Notification) notificationService.getNotificationByUserId(userId);
+
+
         try{
             pathwayService.taskCompletionEmail(pathwayId,  taskId);
             return ResponseEntity.ok("Email sent successfully");

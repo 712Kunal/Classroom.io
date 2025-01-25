@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TimelineView = () => {
-  return <div>TimelineView</div>;
+  return <div className='p-2'>TimelineView</div>;
 };
 
 export default TimelineView;
