@@ -19,7 +19,7 @@ public class DeadlineScheduler {
     private final Firestore firestore;
     private final MailService mailService;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     public void checkDeadlineAndSendEmail() {
 
         System.out.println("Scheduler started...");
