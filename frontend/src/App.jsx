@@ -23,7 +23,7 @@ const suspenseComponent = (component) => <Suspense fallback={<div>Loading...</di
 
 function App() {
   return (
-    <div className="h-screen w-screen grid place-items-center dark:bg-neutral-900 dark:text-white">
+    <div className="h-screen w-screen grid place-items-center dark:bg-neutral-1000 dark:text-white">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={suspenseComponent(<LandingPage />)} />
