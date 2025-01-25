@@ -52,21 +52,19 @@ const CalenderView = (props) => {
   const events = tasks.map((task) => {
     const start = new Date(task.scheduledDate);
     const currentDate = new Date();
-  
-    let color = '#1E90FF'; // Default blue for upcoming tasks
-  
+
+    let color = '#2454ff'; // Default blue for upcoming tasks
+
     if (task.isDone) {
       color = task.lateMark
-        ? '#800080' // Purple for late marked tasks
-        : '#4CAF50'; // Green for on-time done tasks
-    } else if (start < currentDate) {
-      console.log("Overdue task:", start);
-      color = '#FF0000'; // Red for overdue tasks
+        ? '#ff5400' // Orange for late marked tasks
+        : '#38b000'; // Green for on-time done tasks
     } else if (start.toDateString() === currentDate.toDateString()) {
-      console.log("Ongoing task:", start.toDateString(), currentDate.toDateString());
-      color = '#FFC107'; // Yellow for ongoing tasks
+      color = '#ffc300'; // Yellow for current tasks
+    } else if (start.toDateString() < currentDate.toDateString()) {
+      color = '#ef233c'; // Red for overdue tasks
     }
-  
+
     return {
       title: task.taskTitle,
       start: start,
