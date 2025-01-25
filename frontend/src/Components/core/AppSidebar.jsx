@@ -67,9 +67,11 @@ const AppSidebar = () => {
               {routes.map((route, index) => (
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton asChild>
-                    <Link to={route.path}>
-                      {route.icon}
-                      <span>{route.name}</span>
+                    <Link to={route.path} className="flex items-center gap-2 text-base">
+                      {/* Adjusted Icon Size */}
+                      <span className="text-lg">{route.icon}</span>
+                      {/* Adjusted Text Size */}
+                      <span className="text-lg">{route.name}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -87,9 +89,11 @@ const AppSidebar = () => {
               {pathways.map((pathway, index) => (
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton asChild>
-                    <Link to={`/app/library/pathways/${pathway.id}/timeline`}>
-                      <RouteIcon />
-                      <span>{pathway.name}</span>
+                    <Link to={`/app/library/pathways/${pathway.id}/timeline`} className="flex items-center gap-2 text-base">
+                      {/* Adjusted Icon Size */}
+                      <RouteIcon className="text-lg" />
+                      {/* Adjusted Text Size */}
+                      <span className="text-lg">{pathway.name}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
