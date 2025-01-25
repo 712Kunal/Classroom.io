@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { ChevronDownIcon, Library, Clock, Calendar, Pencil, List, RouteIcon } from "lucide-react"
@@ -17,6 +18,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { PathwayProvider } from "@/components/context/PathwayContext"
+import DummyPathway from '../assets/data/dummy.json';
 
 function PathwayPage() {
   const { pathwayId } = useParams();
@@ -120,7 +123,11 @@ function PathwayPage() {
         </Breadcrumb>
       </div>
       <Separator />
-      <Outlet />
+      <ScrollArea className="h-full">
+        <PathwayProvider initialPathway={DummyPathway}>
+          <Outlet />
+        </PathwayProvider>
+      </ScrollArea>
     </div>
   );
 }

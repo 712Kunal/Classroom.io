@@ -2,8 +2,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { IoMenu } from "react-icons/io5";
 import { FaXmark } from "react-icons/fa6";
-import { FaBell } from "react-icons/fa";
-import { FaCog } from "react-icons/fa";
+import { FaBell , FaCog } from "react-icons/fa";
+
 import { useState } from 'react';
 import Profile from '@/Components/ui/Profile';
 import Dashboard from '@/Pages/Dashboard';
