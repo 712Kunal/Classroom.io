@@ -37,6 +37,8 @@ function ProfilePage() {
       'https://picsum.photos/200',
       'https://picsum.photos/200',
       'https://picsum.photos/200',
+      'https://picsum.photos/200',
+
     ],
     badgesAwardedDates: ['2023-01-01', '2023-12-01']
   };
