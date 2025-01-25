@@ -22,11 +22,11 @@
             "taskNumber": 1,
             "taskTitle": "Development Environment Setup",
             "description": "Set up Node.js, npm, and create your first React app using Create React App",
-            "scheduledDate": "2025-01-25T00:00:00.000Z",
+            "scheduledDate": "2025-01-25T13:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
-            "resources": [
+            "resources": [  
               {
                 "title": "Official React Setup Guide",
                 "type": "Documentation",
