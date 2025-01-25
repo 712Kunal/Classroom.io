@@ -1,6 +1,6 @@
 
 // Navbar.jsx
-export default function Navbar() {
+export default function LandingNavbar() {
   return (
     <>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
