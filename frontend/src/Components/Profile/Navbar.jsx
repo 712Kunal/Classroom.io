@@ -28,7 +28,7 @@ export default function Navbar({ user }) {
       <Disclosure as="nav" className="bg-transparent">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center w-full justify-center"> 
+            <div className="flex items-center w-full justify-center">
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
                   <div className="flex justify-center items-center space-x-4 rounded-full border-2 border-gray-300 p-2 transition-all duration-300 hover:border-gray-500">
@@ -38,9 +38,9 @@ export default function Navbar({ user }) {
                         href={item.href}
                         onClick={(e) => {
                           e.preventDefault();
-                          handleTabChange(item.name); 
+                          handleTabChange(item.name);
                         }}
-                        aria-current={activeTab === item.name ? 'page' : undefined} 
+                        aria-current={activeTab === item.name ? 'page' : undefined}
                         className={classNames(
                           activeTab === item.name
                             ? 'bg-gray-900 rounded-full text-white transform scale-105 transition-all duration-300'
@@ -65,7 +65,7 @@ export default function Navbar({ user }) {
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Settings</span>
-                  <FaCog aria-hidden="true" className="h-6 w-6" /> 
+                  <FaCog aria-hidden="true" className="h-6 w-6" />
                 </button>
               </div>
             </div>
@@ -75,8 +75,8 @@ export default function Navbar({ user }) {
               <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-gray-400 hover:bg-gray-200 hover:text-gray-900 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open main menu</span>
-                <FaBars aria-hidden="true" className="block h-6 w-6 group-data-open:hidden" /> 
-                <FaTimes aria-hidden="true" className="hidden h-6 w-6 group-data-open:block" /> 
+                <FaBars aria-hidden="true" className="block h-6 w-6 group-data-open:hidden" />
+                <FaTimes aria-hidden="true" className="hidden h-6 w-6 group-data-open:block" />
               </DisclosureButton>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function Navbar({ user }) {
                 href={item.href}
                 onClick={(e) => {
                   e.preventDefault();
-                  handleTabChange(item.name); 
+                  handleTabChange(item.name);
                 }}
                 aria-current={activeTab === item.name ? 'page' : undefined}
                 className={classNames(
@@ -105,9 +105,11 @@ export default function Navbar({ user }) {
           </div>
         </DisclosurePanel>
       </Disclosure>
-      <header className="bg-white shadow-sm">
+      <header className="shadow-sm">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">{activeTab}</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            {activeTab}
+          </h1>
         </div>
       </header>
 
