@@ -4,6 +4,7 @@ import dummy from '../../assets/data/dummy.json';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import TaskMoodle from './TaskMoodle';
 
 // Setup the localizer by providing the moment (or globalize, or Luxon) Object
 // to the correct localizer.
@@ -24,6 +25,7 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 
 const CalenderView = (props) => {
   const [tasks, setTasks] = useState([]);
+  const [isTaskMoodleOpen, setIsTaskMoodleOpen] = useState(false);
 
   useEffect(() => {
     const extract_tasks = (dummyData) => {
@@ -45,7 +47,6 @@ const CalenderView = (props) => {
     };
 
     const AllTasks = extract_tasks(dummy);
-    console.log(AllTasks);
     setTasks(AllTasks);
   }, []);
 
@@ -57,10 +58,10 @@ const CalenderView = (props) => {
 
     if (task.isDone) {
       color = task.lateMark
-        ? '#ff5400' // Orange for late marked tasks
+        ? '#ff6700' // Orange for late marked tasks
         : '#38b000'; // Green for on-time done tasks
     } else if (start.toDateString() === currentDate.toDateString()) {
-      color = '#ffc300'; // Yellow for current tasks
+      color = '#fdc500'; // Yellow for current tasks
     } else if (start.toDateString() < currentDate.toDateString()) {
       color = '#ef233c'; // Red for overdue tasks
     }
@@ -69,7 +70,6 @@ const CalenderView = (props) => {
       title: task.taskTitle,
       start: start,
       end: start,
-      allDay: true,
       color: color
     };
   });
@@ -85,8 +85,13 @@ const CalenderView = (props) => {
     }
   });
 
+  const handleEventClick = (event) => {
+    setIsTaskMoodleOpen(true);
+  };
+
   return (
     <div className="calendar-container">
+      {isTaskMoodleOpen && <TaskMoodle event={event} />}
       <Calendar
         localizer={localizer}
         startAccessor="start"
@@ -95,6 +100,7 @@ const CalenderView = (props) => {
         style={{ height: '50rem', width: '100%' }}
         events={events}
         eventPropGetter={eventStyleGetter}
+        onSelectEvent={(event) => handleEventClick(event)}
       />
     </div>
   );
