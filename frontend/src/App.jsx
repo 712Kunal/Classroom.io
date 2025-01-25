@@ -13,7 +13,6 @@ const NotFoundPage = lazy(() => import('./Pages/NotFoundPage.jsx'));
 
 const TimelineView = lazy(() => import('./components/pathway/TimelineView.jsx'));
 const CalenderView = lazy(() => import('./components/pathway/CalenderView.jsx'));
-// const CalendarDemo = lazy(() => import('./components/calender_jsx/calendar-demo.jsx'));
 const CreatePathway = lazy(() => import('./components/pathway/CreatePathway.jsx'));
 const TasksView = lazy(() => import('./components/pathway/TasksView.jsx'));
 
