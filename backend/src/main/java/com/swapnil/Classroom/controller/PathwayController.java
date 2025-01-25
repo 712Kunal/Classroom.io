@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/pathway")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class PathwayController {
 
     private final PathwayService pathwayService;
 
-    @PostMapping("/create")
+    @PostMapping("/createPathway")
     public ResponseEntity<String> createPathway(@RequestBody Pathway pathway){
 
         try{
@@ -41,6 +41,22 @@ public class PathwayController {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving pathways: " + e.getMessage());
+        }
+    }
+
+
+    @PutMapping("/pathway/{pathwayId}/task/{taskId}")
+    public ResponseEntity<String> emailSentForTaskCompletion(
+            @PathVariable String pathwayId,
+            @PathVariable Long taskId
+
+    ){
+        try{
+            pathwayService.taskCompletionEmail(pathwayId,  taskId);
+            return ResponseEntity.ok("Email sent successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending the email");
         }
     }
 }

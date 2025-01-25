@@ -16,7 +16,6 @@ public class ClassroomApplication {
 
 
 		SpringApplication.run(ClassroomApplication.class, args);
-		System.out.println("FIREBASE_PRIVATE_KEY_PATH: " + System.getenv("FIREBASE_PRIVATE_KEY_PATH"));
 
 	}
 

@@ -50,11 +50,13 @@ export function generateMockEvents() {
     // Random date between start and end
     const daysToAdd = Math.floor(Math.random() * 90); // 90 days = ~3 months
     const eventDate = addDays(startDate, daysToAdd);
-    
-    const startTime = AllTasks[i].scheduledDate ? new Date(AllTasks[i].scheduledDate) : getRandomTime(eventDate);
+
+    const startTime = AllTasks[i].scheduledDate
+      ? new Date(AllTasks[i].scheduledDate)
+      : getRandomTime(eventDate);
     const durationMinutes = generateEventDuration();
-    const endTime = new Date(startTime.getTime() + durationMinutes * 60000);
-    
+    const endTime =  new Date(startTime.getTime() + durationMinutes * 60000);
+
     events.push({
       id: `event-${i + 1}`,
       title: EVENT_TITLES[i],

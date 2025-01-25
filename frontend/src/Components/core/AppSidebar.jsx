@@ -15,6 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { NavUser } from '../ui/nav-user';
+import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 
 const AppSidebar = () => {
@@ -100,6 +101,9 @@ const AppSidebar = () => {
         <SidebarGroup />
       </SidebarContent>
       <SidebarFooter>
+        <div className="flex items-center justify-start">
+          {!open && <MobileModeToggle/>}
+        </div>
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
