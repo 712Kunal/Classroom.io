@@ -6,7 +6,7 @@
   "duration": 90,
   "startDate": "2025-01-21T00:00:00.000Z",
   "endDate": "2025-04-21T00:00:00.000Z",
-  "responseRaw": {},
+  "responseRaw": "",
   "response": {
     "topic": "Basic React",
     "intervals": 12,
@@ -22,11 +22,11 @@
             "taskNumber": 1,
             "taskTitle": "Development Environment Setup",
             "description": "Set up Node.js, npm, and create your first React app using Create React App",
-            "scheduledDate": "2025-01-22T00:00:00.000Z",
+            "scheduledDate": "2025-01-25T13:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
-            "resources": [
+            "resources": [  
               {
                 "title": "Official React Setup Guide",
                 "type": "Documentation",
@@ -45,8 +45,8 @@
             "taskTitle": "JSX and Components Basics",
             "description": "Learn JSX syntax and create your first React components",
             "scheduledDate": "2025-01-24T00:00:00.000Z",
-            "completedDate": null,
-            "isDone": false,
+            "completedDate": "2025-01-24T00:00:00.000Z",
+            "isDone": true,
             "lateMark": false,
             "resources": [
               {
@@ -70,9 +70,9 @@
             "taskTitle": "Understanding Props",
             "description": "Learn how to pass and use props between components",
             "scheduledDate": "2025-01-29T00:00:00.000Z",
-            "completedDate": null,
-            "isDone": false,
-            "lateMark": false,
+            "completedDate": "2025-02-02T00:00:00.000Z",
+            "isDone": true,
+            "lateMark": true,
             "resources": [
               {
                 "title": "Passing Props to Components",
