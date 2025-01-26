@@ -57,24 +57,19 @@ public class PathwayController {
         }
     }
 
+    @PostMapping("/user/{userId}/pathwayStart/{pathwayId}")
+    public ResponseEntity<String> pathwayStartingNotification(
+            @PathVariable  String userId,
+            @PathVariable  String pathwayId
+    ) throws ExecutionException, InterruptedException {
 
-    @PutMapping("/pathway/{pathwayId}/task/{taskId}")
-    public ResponseEntity<String> emailSentForTaskCompletion(
-            @PathVariable String pathwayId,
-            @PathVariable Long taskId
 
-    ) throws Exception {
-
-        String userId = pathwayService.getUserIdFromPathwayId(pathwayId);
-
-        System.out.println("User ID: "+userId);
         DocumentReference userDoc=firestore.collection("UserRegistration").document(userId);
 
         ApiFuture<DocumentSnapshot> future = userDoc.get();
         DocumentSnapshot document = future.get();
 
 
-//        Notification notification = (Notification) notificationService.getNotificationByUserId(userId);
 
         Notification notification=new Notification();
 
@@ -90,13 +85,13 @@ public class PathwayController {
 
                 System.out.println("Sending email and in-app notifications");
                 notification.setNotificationType(Notification.NotificationType.BOTH);
-                sendEmailAndNotification(userId, taskId, notification, pathwayId);
+                sendEmailAndNotificationForStartingPathway(userId, notification, pathwayId);
                 return ResponseEntity.ok("Email and Notification sent successfully");
             } else {
 
                 notification.setNotificationType(Notification.NotificationType.IN_APP);
                 System.out.println("Sending in-app notifications");
-                sendNotificationOnly(userId, taskId, notification);
+                sendNotificationOnlyForStartingPathway(userId, notification, pathwayId);
                 return ResponseEntity.ok("Notification sent successfully");
             }
         } catch (Exception e) {
@@ -108,18 +103,82 @@ public class PathwayController {
     }
 
 
-//Notification and Email reminders
-    public void sendEmailAndNotification(String userId, Long taskId, Notification notification, String pathwayId){
 
-        notificationService.sendTaskCompletionNotification(userId, taskId, notification);
-        pathwayService.taskCompletionEmail(pathwayId, taskId);
+    @PostMapping("/user/{userId}/pathwayComplete/{pathwayId}")
+    public ResponseEntity<String> pathwayCompletionNotification(
+            @PathVariable  String userId,
+            @PathVariable  String pathwayId
+    ) throws ExecutionException, InterruptedException {
+
+
+        DocumentReference userDoc=firestore.collection("UserRegistration").document(userId);
+
+        ApiFuture<DocumentSnapshot> future = userDoc.get();
+        DocumentSnapshot document = future.get();
+
+
+
+        Notification notification=new Notification();
+
+
+        if (document == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Notification not found for the user");
+        }
+
+        Boolean emailNotif= (Boolean) document.get("emailNotification");
+        try {
+            if (Boolean.TRUE.equals(emailNotif)) {
+
+
+                System.out.println("Sending email and in-app notifications");
+                notification.setNotificationType(Notification.NotificationType.BOTH);
+                sendEmailAndNotificationForCompletingPathway(userId, notification, pathwayId);
+                return ResponseEntity.ok("Email and Notification sent successfully");
+            } else {
+
+                notification.setNotificationType(Notification.NotificationType.IN_APP);
+                System.out.println("Sending in-app notifications");
+                sendNotificationOnlyForCompletingPathway(userId, notification, pathwayId);
+                return ResponseEntity.ok("Notification sent successfully");
+            }
+        } catch (Exception e) {
+            logger.error("Error sending email/notification", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending the email and notification");
+
+
+        }
+    }
+
+    public void sendEmailAndNotificationForStartingPathway(String userId, Notification notification, String pathwayId) throws ExecutionException, InterruptedException {
+
+        notificationService.sendPathwayStartedNotification(userId,  notification, pathwayId);
+        pathwayService.sendPathwayStartedEmail(userId, pathwayId);
+
+
 
     }
 
-//Notification reminder only
-    public void sendNotificationOnly(String userId, Long taskId, Notification notification){
-        notificationService.sendTaskCompletionNotification(userId, taskId, notification);
+    //Notification reminder only
+    public void sendNotificationOnlyForStartingPathway(String userId, Notification notification, String pathwayId){
+        notificationService.sendPathwayStartedNotification(userId ,notification, pathwayId);
+
     }
+
+    public void sendEmailAndNotificationForCompletingPathway(String userId, Notification notification, String pathwayId) throws ExecutionException, InterruptedException {
+
+        notificationService.sendPathwayCompletionNotification(userId,  notification, pathwayId);
+        pathwayService.sendPathwayCompletionEmail(userId, pathwayId);
+
+
+
+    }
+
+    //Notification reminder only
+    public void sendNotificationOnlyForCompletingPathway(String userId, Notification notification, String pathwayId){
+        notificationService.sendPathwayCompletionNotification(userId ,notification, pathwayId);
+
+    }
+
 
 
 }
