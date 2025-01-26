@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, CheckCircleIcon, XCircleIcon, BookOpenIcon, MonitorPlay, SquareMousePointer, CopyPlus, CopyMinus, Clock, BadgeCheck, CircleCheck, BadgeAlert, CircleAlert } from "lucide-react"
+import { CalendarIcon, BookOpenIcon, MonitorPlay, SquareMousePointer, CopyPlus, CopyMinus, CalendarCheck, Clock, BadgeCheck, CircleCheck, BadgeAlert, CircleAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const ResourceTypeToIconMap = {
@@ -14,42 +14,49 @@ const ResourceTypeToIconMap = {
 }
 
 const ResourceTypeToColorMap = {
-  'Documentation': 'blue',
-  'Video': 'red',
-  'Interactive Exercise': 'green',
-  'Video Tutorial': 'yellow',
+  'Documentation': 'border-blue-500',
+  'Video': 'border-red-500',
+  'Interactive Exercise': 'border-green-500',
+  'Video Tutorial': 'border-yellow-500',
+}
+
+const ResourceTypeToBgColorMap = {
+  'Documentation': 'hover:bg-blue-900',
+  'Video': 'hover:bg-red-900',
+  'Interactive Exercise': 'hover:bg-green-900',
+  'Video Tutorial': 'hover:bg-yellow-900',
 }
 
 const taskStateToBgColorMap = {
   'completedOnTime': 'bg-neutral-900',
   'completedLate': 'bg-neutral-900',
-  'lateMark': 'bg-neutral-800',
-  'pending': 'bg-neutral-800',
-  'scheduled': 'bg-neutral-900',
+  'lateMark': 'bg-neutral-700',
+  'pending': 'bg-neutral-700',
+  'scheduled': 'bg-neutral-800',
 }
 
 const taskStateToTextColorMap = {
-  'pending': 'text-blue-500',
+  'pending': 'text-yellow-500',
   'lateMark': 'text-red-500',
   'completedOnTime': 'text-green-500',
-  'completedLate': 'text-yellow-500',
-  'scheduled': 'text-neutral-300',
+  'completedLate': 'text-orange-500',
+  'scheduled': 'text-blue-300',
 }
 
 const taskStateToBorderColorMap = {
   'completedOnTime': 'border-green-800',
-  'completedLate': 'border-yellow-800',
+  'completedLate': 'border-orange-800',
   'lateMark': 'border-red-800',
-  'pending': 'border-blue-800',
-  'scheduled': 'border-neutral-600',
+  'pending': 'border-yellow-800',
+  'scheduled': 'border-blue-600',
 }
 
 const taskStateToIconMap = {
   'completedOnTime': <BadgeCheck size={24} className="text-green-500" />,
-  'completedLate': <CircleCheck size={24} className="text-yellow-500" />,
+  'completedLate': <CircleCheck size={24} className="text-orange-500" />,
   'lateMark': <CircleAlert size={24} className="text-red-500" />,
-  'pending': <BadgeAlert size={24} className="text-blue-500" />,
-  'scheduled': <Clock size={24} className="text-gray-500" />,
+  'pending': <BadgeAlert size={24} className="text-yellow-500" />,
+  'scheduled': <Clock size={24} className="text-blue-500" />,
 }
 
 const taskStateToDisplayTextMap = {
@@ -140,17 +147,21 @@ const TasksView = () => {
                   {interval.tasks.map((task) => {
                     const taskState = getTaskState(task.scheduledDate, task.completedDate, task.isDone, task.lateMark);
                     return (
-                      <Card key={task.taskNumber} className={`mb-4 p-4 ${taskStateToBgColorMap[taskState]} border-2 ${taskStateToBorderColorMap[taskState]} ${['completedOnTime', 'completedLate'].includes(taskState) ? 'opacity-50' : ''}`}>
+                      <Card key={task.taskNumber} className={`mb-4 p-4 ${taskStateToBgColorMap[taskState]} border-2 ${taskStateToBorderColorMap[taskState]} ${['completedOnTime', 'completedLate'].includes(taskState) ? 'opacity-75' : ''}`}>
                         <div className="top flex items-center justify-between">
                           <div className="left">
                             <h3 className={`text-lg font-semibold mb-2 ${taskStateToTextColorMap[taskState]}`}>{task.taskTitle}</h3>
-                            <p className="text-gray-600 mb-2">{task.description}</p>
+                            <p className="text-gray-300 mb-2">{task.description}</p>
                           </div>
-                          <div className="flex flex-col items-end justify-center">
-                            <div className="flex items-center text-sm text-gray-500 mb-2">
+                          <div className="flex flex-col items-end gap-2 justify-center">
+                            <div className="flex items-center justify-between text-gray-300 gap-2">
                               <CalendarIcon className="w-4 h-4 mr-1" />
                               <span>{new Date(task.scheduledDate).toLocaleDateString()}</span>
                             </div>
+                            {task.completedDate && <div className={`flex items-center justify-between ${taskStateToTextColorMap[taskState]} gap-2`}>
+                              <CalendarCheck className="w-4 h-4 mr-1" />
+                              <span>{new Date(task.completedDate).toLocaleDateString()}</span>
+                            </div>}
                             <div className="flex items-center gap-1">
                               {taskStateToIconMap[taskState]}
                               <span>{taskStateToDisplayTextMap[taskState]}</span>
@@ -166,9 +177,8 @@ const TasksView = () => {
                                   href={resource.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-blue-500"
                                 >
-                                  <Badge variant="outline" className={`flex gap-2 items-center border-2 border-${ResourceTypeToColorMap[resource.type]}-500`}>
+                                  <Badge variant="outline" className={`flex gap-2 items-center ${ResourceTypeToBgColorMap[resource.type]} border-2 ${ResourceTypeToColorMap[resource.type]}`}>
                                     {ResourceTypeToIconMap[resource.type]}
                                     {resource.title}
                                   </Badge>
