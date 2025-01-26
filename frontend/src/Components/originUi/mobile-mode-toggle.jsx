@@ -16,7 +16,7 @@ export default function MobileModeToggle() {
     (<div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="icon" variant="outline" aria-label="Select theme" className="bg-neutral-900">
+          <Button size="icon" variant="outline" aria-label="Select theme" className="bg-neutral-100 dark:bg-neutral-900">
             {displayTheme === "light" && <Sun size={16} strokeWidth={2} aria-hidden="true" />}
             {displayTheme === "dark" && <Moon size={16} strokeWidth={2} aria-hidden="true" />}
             {displayTheme === "system" && <Monitor size={16} strokeWidth={2} aria-hidden="true" />}
