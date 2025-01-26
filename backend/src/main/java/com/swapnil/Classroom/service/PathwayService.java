@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.swapnil.Classroom.entity.Pathway;
 import com.swapnil.Classroom.exception.PathwayNotFoundException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -115,6 +116,8 @@ public class PathwayService {
     }
 
     private String getUserEmailByUserId(String userId) throws Exception {
+
+
         DocumentReference userRef = firestore.collection("UserRegistration").document(userId);
 
         DocumentSnapshot userDoc = userRef.get().get();
@@ -180,4 +183,122 @@ public class PathwayService {
 
     }
 
+
+
+    public Map<String, Object> getPathwayById(String pathwayId) {
+        System.out.println("Finding pathway by Id..."+pathwayId);
+
+
+        System.out.println("Finding pathway by Id..."+pathwayId);
+
+        try {
+            ApiFuture<DocumentSnapshot> future = firestore.collection("Pathway").document(pathwayId).get();
+            DocumentSnapshot document = future.get();
+
+            if (document.exists()) {
+                System.out.println("Document data: "+document.getData());
+                // Return the document as a Map instead of a custom Pathway class
+                return document.getData(); // Get all fields in the document as a Map
+            } else {
+                System.out.println("No document found with pathwayId: " + pathwayId);
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public void sendPathwayStartedEmail(String userId, String pathwayId) throws ExecutionException, InterruptedException {
+
+        System.out.println("userId: "+userId);
+
+        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentSnapshot userDoc= documentReference.get().get();
+
+        String userEmail= (String) userDoc.get("email");
+        String userName=(String) userDoc.get("username");
+        System.out.println("userEmail: "+userEmail);
+        System.out.println("username: "+userName);
+
+
+        String pathwayDescription="";
+        Map<String, Object> pathwayData = getPathwayById(pathwayId);
+        if(pathwayData!=null){
+            pathwayDescription = (String) pathwayData.get("description");
+
+        }
+        try {
+
+            if (userEmail == null) {
+                System.out.println("Email not found with userEmail: " + userEmail);
+                return;
+            }
+
+
+            String subject = "Welcome to Your New Pathway!";
+            String body = String.format(
+                    "Hello %s,\n\n" +
+                            "Congratulations on starting the '%s' pathway!\n\n" +
+                            "Best regards,\n" +
+                            "Team Pathify",
+                    userName, pathwayDescription
+            );
+
+            System.out.println("Email is sent to: "+userEmail);
+            mailService.sendEmail(userEmail, subject, body);
+
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendPathwayCompletionEmail(String userId, String pathwayId) throws ExecutionException, InterruptedException {
+
+        System.out.println("userId: "+userId);
+
+        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentSnapshot userDoc= documentReference.get().get();
+
+        String userEmail= (String) userDoc.get("email");
+        String userName=(String) userDoc.get("username");
+        System.out.println("userEmail: "+userEmail);
+        System.out.println("username: "+userName);
+
+
+        String pathwayDescription="";
+        Map<String, Object> pathwayData = getPathwayById(pathwayId);
+        if(pathwayData!=null){
+            pathwayDescription = (String) pathwayData.get("description");
+
+        }
+        try {
+
+            if (userEmail == null) {
+                System.out.println("Email not found with userEmail: " + userEmail);
+                return;
+            }
+
+
+            String subject = "Pathway Completion!";
+            String body = String.format(
+                    "Hello %s,\n\n" +
+                            "Congratulations on successfully completing the '%s' pathway!\n\n" +
+                            "We hope you enjoyed the journey and learned a lot.\n\n" +
+                            "Best regards,\n" +
+                            "Team Pathify",
+                    userName, pathwayDescription
+            );
+
+
+            System.out.println("Email is sent to: "+userEmail);
+            mailService.sendEmail(userEmail, subject, body);
+
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
