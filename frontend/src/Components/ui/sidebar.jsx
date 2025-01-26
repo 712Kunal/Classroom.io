@@ -115,7 +115,7 @@ const SidebarProvider = React.forwardRef((
             }
           }
           className={cn(
-            "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
+            "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar ",
             className
           )}
           ref={ref}
@@ -225,13 +225,13 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7", className)}
+      className={cn("h-8 w-8", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}>
-      <PanelLeft />
+      <PanelLeft size={24} /> 
       <span className="sr-only">Toggle Sidebar</span>
     </Button>)
   );

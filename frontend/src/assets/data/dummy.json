@@ -15,16 +15,16 @@
       {
         "intervalNumber": 1,
         "summary": "React Fundamentals and Setup",
-        "pathwayStartDate": "2025-01-21T00:00:00.000Z",
-        "pathwayEndDate": "2025-01-28T00:00:00.000Z",
+        "pathwayStartDate": "2025-01-21T00:00:00",
+        "pathwayEndDate": "2025-01-28T00:00:00",
         "tasks": [
           {
             "taskNumber": 1,
             "taskTitle": "Development Environment Setup",
             "description": "Set up Node.js, npm, and create your first React app using Create React App",
-            "scheduledDate": "2025-01-22T00:00:00.000Z",
-            "completedDate": "2025-01-22T00:00:00.000Z", 
-            "isDone": true,
+            "scheduledDate": "2025-01-25T13:00:00",
+            "completedDate": null,
+            "isDone": false,
             "lateMark": false,
             "resources": [
               {
@@ -44,8 +44,8 @@
             "taskNumber": 2,
             "taskTitle": "JSX and Components Basics",
             "description": "Learn JSX syntax and create your first React components",
-            "scheduledDate": "2025-01-24T00:00:00.000Z",
-            "completedDate": "2025-01-24T00:00:00.000Z",
+            "scheduledDate": "2025-01-24T00:00:00",
+            "completedDate": null,
             "isDone": true,
             "lateMark": false,
             "resources": [
@@ -62,17 +62,17 @@
       {
         "intervalNumber": 2,
         "summary": "Props and State Management",
-        "pathwayStartDate": "2025-01-28T00:00:00.000Z",
-        "pathwayEndDate": "2025-02-04T00:00:00.000Z",
+        "pathwayStartDate": "2025-01-28T00:00:00",
+        "pathwayEndDate": "2025-02-04T00:00:00",
         "tasks": [
           {
             "taskNumber": 3,
             "taskTitle": "Understanding Props",
             "description": "Learn how to pass and use props between components",
-            "scheduledDate": "2025-01-29T00:00:00.000Z",
-            "completedDate": "2025-02-02T00:00:00.000Z",
-            "isDone": true,
-            "lateMark": true,
+            "scheduledDate": "2025-01-29T14:00:00",
+            "completedDate": null,
+            "isDone": false,
+            "lateMark": false,
             "resources": [
               {
                 "title": "Passing Props to Components",
@@ -112,14 +112,14 @@
       {
         "intervalNumber": 4,
         "summary": "Forms and User Input",
-        "pathwayStartDate": "2025-02-11T00:00:00.000Z",
-        "pathwayEndDate": "2025-02-18T00:00:00.000Z",
+        "pathwayStartDate": "2025-02-11T00:00:00",
+        "pathwayEndDate": "2025-02-18T00:00:00",
         "tasks": [
           {
             "taskNumber": 5,
             "taskTitle": "Form Handling in React",
             "description": "Learn controlled components and form submission",
-            "scheduledDate": "2025-02-12T00:00:00.000Z",
+            "scheduledDate": "2025-02-12T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -137,14 +137,14 @@
       {
         "intervalNumber": 5,
         "summary": "API Integration",
-        "pathwayStartDate": "2025-02-18T00:00:00.000Z",
-        "pathwayEndDate": "2025-02-25T00:00:00.000Z",
+        "pathwayStartDate": "2025-02-18T00:00:00",
+        "pathwayEndDate": "2025-02-25T00:00:00",
         "tasks": [
           {
             "taskNumber": 6,
             "taskTitle": "Fetching Data",
             "description": "Learn to fetch and display data from APIs",
-            "scheduledDate": "2025-02-19T00:00:00.000Z",
+            "scheduledDate": "2025-02-19T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -162,14 +162,14 @@
       {
         "intervalNumber": 6,
         "summary": "Routing in React",
-        "pathwayStartDate": "2025-02-25T00:00:00.000Z",
-        "pathwayEndDate": "2025-03-04T00:00:00.000Z",
+        "pathwayStartDate": "2025-02-25T00:00:00",
+        "pathwayEndDate": "2025-03-04T00:00:00",
         "tasks": [
           {
             "taskNumber": 7,
             "taskTitle": "React Router Setup",
             "description": "Implement client-side routing with React Router",
-            "scheduledDate": "2025-02-26T00:00:00.000Z",
+            "scheduledDate": "2025-02-26T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -187,14 +187,14 @@
       {
         "intervalNumber": 7,
         "summary": "Context and Global State",
-        "pathwayStartDate": "2025-03-04T00:00:00.000Z",
-        "pathwayEndDate": "2025-03-11T00:00:00.000Z",
+        "pathwayStartDate": "2025-03-04T00:00:00",
+        "pathwayEndDate": "2025-03-11T00:00:00",
         "tasks": [
           {
             "taskNumber": 8,
             "taskTitle": "Context API",
             "description": "Learn to manage global state with Context",
-            "scheduledDate": "2025-03-05T00:00:00.000Z",
+            "scheduledDate": "2025-03-05T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -212,14 +212,14 @@
       {
         "intervalNumber": 8,
         "summary": "Performance Optimization",
-        "pathwayStartDate": "2025-03-11T00:00:00.000Z",
-        "pathwayEndDate": "2025-03-18T00:00:00.000Z",
+        "pathwayStartDate": "2025-03-11T00:00:00",
+        "pathwayEndDate": "2025-03-18T00:00:00",
         "tasks": [
           {
             "taskNumber": 9,
             "taskTitle": "React Performance",
             "description": "Learn about memo, useMemo, and useCallback",
-            "scheduledDate": "2025-03-12T00:00:00.000Z",
+            "scheduledDate": "2025-03-12T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -237,14 +237,14 @@
       {
         "intervalNumber": 9,
         "summary": "Error Handling",
-        "pathwayStartDate": "2025-03-18T00:00:00.000Z",
-        "pathwayEndDate": "2025-03-25T00:00:00.000Z",
+        "pathwayStartDate": "2025-03-18T00:00:00",
+        "pathwayEndDate": "2025-03-25T00:00:00",
         "tasks": [
           {
             "taskNumber": 10,
             "taskTitle": "Error Boundaries",
             "description": "Implement error handling in React applications",
-            "scheduledDate": "2025-03-19T00:00:00.000Z",
+            "scheduledDate": "2025-03-19T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -262,14 +262,14 @@
       {
         "intervalNumber": 10,
         "summary": "Testing React Applications",
-        "pathwayStartDate": "2025-03-25T00:00:00.000Z",
-        "pathwayEndDate": "2025-04-01T00:00:00.000Z",
+        "pathwayStartDate": "2025-03-25T00:00:00",
+        "pathwayEndDate": "2025-04-01T00:00:00",
         "tasks": [
           {
             "taskNumber": 11,
             "taskTitle": "Testing with Jest",
             "description": "Learn to write tests for React components",
-            "scheduledDate": "2025-03-26T00:00:00.000Z",
+            "scheduledDate": "2025-03-26T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -287,14 +287,14 @@
       {
         "intervalNumber": 11,
         "summary": "Deployment",
-        "pathwayStartDate": "2025-04-01T00:00:00.000Z",
-        "pathwayEndDate": "2025-04-08T00:00:00.000Z",
+        "pathwayStartDate": "2025-04-01T00:00:00",
+        "pathwayEndDate": "2025-04-08T00:00:00",
         "tasks": [
           {
             "taskNumber": 12,
             "taskTitle": "Build and Deploy",
             "description": "Learn to build and deploy React applications",
-            "scheduledDate": "2025-04-02T00:00:00.000Z",
+            "scheduledDate": "2025-04-02T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
@@ -312,14 +312,14 @@
       {
         "intervalNumber": 12,
         "summary": "Final Project",
-        "pathwayStartDate": "2025-04-08T00:00:00.000Z",
-        "pathwayEndDate": "2025-04-21T00:00:00.000Z",
+        "pathwayStartDate": "2025-04-08T00:00:00",
+        "pathwayEndDate": "2025-04-21T00:00:00",
         "tasks": [
           {
             "taskNumber": 13,
             "taskTitle": "Portfolio Project",
             "description": "Build a complete React application using all learned concepts",
-            "scheduledDate": "2025-04-09T00:00:00.000Z",
+            "scheduledDate": "2025-04-09T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,

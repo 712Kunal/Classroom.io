@@ -2,11 +2,9 @@ import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Register the required chart components
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
 
 export default function Dashboard() {
-  // Task list state
   const [tasks, setTasks] = useState([
     { id: 1, name: 'Task 1', completed: false },
     { id: 2, name: 'Task 2', completed: false },
@@ -15,7 +13,6 @@ export default function Dashboard() {
     { id: 5, name: 'Task 5', completed: false },
   ]);
 
-  // Handle task completion
   const handleTaskToggle = (taskId) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -24,16 +21,14 @@ export default function Dashboard() {
     );
   };
 
-  // Calculate progress (percentage of tasks completed)
   const progress = (tasks.filter((task) => task.completed).length / tasks.length) * 100;
 
-  // Data for progress chart
   const chartData = {
-    labels: ['Progress'], // Label for progress chart
+    labels: ['Progress'], 
     datasets: [
       {
         label: 'Task Completion Progress',
-        data: [progress], // Data point for current progress
+        data: [progress], 
         borderColor: 'rgba(75,192,192,1)',
         backgroundColor: 'rgba(75,192,192,0.2)',
         fill: true,
@@ -73,7 +68,6 @@ export default function Dashboard() {
         </ul>
       </div>
 
-      {/* Progress Chart */}
       <div className="bg-white shadow-lg rounded-md p-4 sm:p-6 md:p-8 xl:p-10 flex flex-col">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4">Task Completion Progress</h2>
         <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96">
@@ -81,7 +75,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Other Dashboard Content */}
       <div className="bg-white shadow-lg rounded-md p-4 sm:p-6 md:p-8 xl:p-10 flex flex-col">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4">Other Dashboard Content</h2>
         <p className="text-gray-600">Here you can add additional widgets or content related to your dashboard.</p>
