@@ -16,7 +16,7 @@ function AppWrapper() {
         </SidebarProvider>
       </aside>
       <main className="grid place-items-center flex-grow py-2 pr-2">
-        <div className="border-2 w-full h-full rounded-lg grid place-items-center">
+        <div className="border-2 w-full h-full rounded-lg grid place-items-center dark:bg-neutral-900">
           <Outlet />
         </div>
       </main>

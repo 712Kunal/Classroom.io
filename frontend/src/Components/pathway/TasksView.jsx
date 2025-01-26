@@ -21,18 +21,18 @@ const ResourceTypeToColorMap = {
 }
 
 const ResourceTypeToBgColorMap = {
-  'Documentation': 'hover:bg-blue-900',
-  'Video': 'hover:bg-red-900',
-  'Interactive Exercise': 'hover:bg-green-900',
-  'Video Tutorial': 'hover:bg-yellow-900',
+  'Documentation': 'hover:bg-blue-100 dark:hover:bg-blue-900',
+  'Video': 'hover:bg-red-100 dark:hover:bg-red-900',
+  'Interactive Exercise': 'hover:bg-green-100 dark:hover:bg-green-900',
+  'Video Tutorial': 'hover:bg-yellow-100 dark:hover:bg-yellow-900',
 }
 
 const taskStateToBgColorMap = {
-  'completedOnTime': 'bg-neutral-900',
-  'completedLate': 'bg-neutral-900',
-  'lateMark': 'bg-neutral-700',
-  'pending': 'bg-neutral-700',
-  'scheduled': 'bg-neutral-800',
+  'completedOnTime': 'bg-neutral-50 dark:bg-neutral-900',
+  'completedLate': 'bg-neutral-50 dark:bg-neutral-900',
+  'lateMark': 'bg-neutral-100 dark:bg-neutral-700',
+  'pending': 'bg-neutral-100 dark:bg-neutral-700',
+  'scheduled': 'bg-neutral-200 dark:bg-neutral-800',
 }
 
 const taskStateToTextColorMap = {
@@ -40,7 +40,7 @@ const taskStateToTextColorMap = {
   'lateMark': 'text-red-500',
   'completedOnTime': 'text-green-500',
   'completedLate': 'text-orange-500',
-  'scheduled': 'text-blue-300',
+  'scheduled': 'text-blue-500',
 }
 
 const taskStateToBorderColorMap = {
@@ -114,7 +114,7 @@ const TasksView = () => {
       <div className="max-w-7xl">
         <h1 className="text-3xl font-bold mb-4">{topic}</h1>
         <p className="text-gray-600 text-2xl mb-4">{description}</p>
-        <div className="flex justify-between items-center gap-4 text-sm text-gray-500">
+        <div className="flex justify-between items-center gap-4 text-sm text-gray-800 dark:text-gray-500">
           <div className="flex gap-2">
             <Badge variant="outline" className="p-2">
               Duration: {duration} days
@@ -126,7 +126,7 @@ const TasksView = () => {
           <div className="options flex gap-2">
             <span>
               <Button variant="outline" size="icon" onClick={toggleCollapseExpandAll}>
-                {expandedIntervals.length > 0 ? <CopyMinus size={24} className="text-gray-500" /> : <CopyPlus size={24} className="text-gray-500" />}
+                {expandedIntervals.length > 0 ? <CopyMinus size={24} className="text-gray-800 dark:text-gray-500" /> : <CopyPlus size={24} className="text-gray-500" />}
               </Button>
             </span>
           </div>
@@ -151,10 +151,10 @@ const TasksView = () => {
                         <div className="top flex items-center justify-between">
                           <div className="left">
                             <h3 className={`text-lg font-semibold mb-2 ${taskStateToTextColorMap[taskState]}`}>{task.taskTitle}</h3>
-                            <p className="text-gray-300 mb-2">{task.description}</p>
+                            <p className="text-gray-800 dark:text-gray-300 mb-2">{task.description}</p>
                           </div>
                           <div className="flex flex-col items-end gap-2 justify-center">
-                            <div className="flex items-center justify-between text-gray-300 gap-2">
+                            <div className="flex items-center justify-between text-gray-800 dark:text-gray-300 gap-2">
                               <CalendarIcon className="w-4 h-4 mr-1" />
                               <span>{new Date(task.scheduledDate).toLocaleDateString()}</span>
                             </div>
@@ -169,7 +169,7 @@ const TasksView = () => {
                           </div>
                         </div>
                         <div className="resources flex gap-2 items-center justify-start">
-                          <h4 className="font-semibold text-gray-200">Resources:</h4>
+                          <h4 className="font-semibold text-gray-700 dark:text-gray-200">Resources:</h4>
                           <ul className="list-none flex gap-2">
                             {task.resources.map((resource, index) => (
                               <li key={index}>
@@ -188,7 +188,7 @@ const TasksView = () => {
                           </ul>
                         </div>
                         <p className="mt-2">
-                          <strong className="text-gray-200">Outcome:</strong> <span className="text-gray-300">{task.expectedOutcome}</span>
+                          <strong className="text-gray-700 dark:text-gray-200">Outcome:</strong> <span className="text-gray-800 dark:text-gray-300">{task.expectedOutcome}</span>
                         </p>
                       </Card>
                     )

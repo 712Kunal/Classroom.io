@@ -24,8 +24,7 @@ const suspenseComponent = (component) => (
 
 function App() {
   return (
-    <div className="h-screen w-screen grid place-items-center dark:bg-neutral-1000 dark:text-white">
-    {/* <div className="h-screen w-screen overflow-x-hidden overflow-y-scroll grid place-items-center dark:bg-neutral-900 dark:text-white"> */}
+    <div className="h-screen w-screen grid place-items-center overflow-y-scroll no-scrollbar dark:text-white">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={suspenseComponent(<LandingPage />)} />
