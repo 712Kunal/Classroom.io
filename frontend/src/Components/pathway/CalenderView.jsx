@@ -5,6 +5,8 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import TaskMoodle from './TaskMoodle';
+import { useTheme } from '../core/ThemeProvider';
+import { late } from 'zod';
 
 // Setup the localizer by providing the moment (or globalize, or Luxon) Object
 // to the correct localizer.
@@ -26,6 +28,7 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 const CalenderView = (props) => {
   const [tasks, setTasks] = useState([]);
   const [isTaskMoodleOpen, setIsTaskMoodleOpen] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const extract_tasks = (dummyData) => {
@@ -54,16 +57,34 @@ const CalenderView = (props) => {
     const start = new Date(task.scheduledDate);
     const currentDate = new Date();
 
-    let color = '#2454ff'; // Default blue for upcoming tasks
+    // Adjusted the colors for better visibility in the dark mode
+    const colors =
+      theme === 'dark'
+        ? {
+            upcoming: '#3b82f6', // Brighter blue
+            late: '#f97316', // Brighter orange
+            done: '#22c55e', // Brighter green
+            current: '#facc15', // Brighter yellow
+            overdue: '#ef4444' // Brighter red
+          }
+        : {
+            upcoming: '#2454ff',
+            late: '#ff6700',
+            done: '#38b000',
+            current: '#fdc500',
+            overdue: '#ef233c'
+          };
+
+    let color = colors.upcoming; // Default blue for upcoming tasks
 
     if (task.isDone) {
       color = task.lateMark
-        ? '#ff6700' // Orange for late marked tasks
-        : '#38b000'; // Green for on-time done tasks
+        ? colors.late // Orange for late marked tasks
+        : colors.done; // Green for on-time done tasks
     } else if (start.toDateString() === currentDate.toDateString()) {
-      color = '#fdc500'; // Yellow for current tasks
+      color = colors.current; // Yellow for current tasks
     } else if (start.toDateString() < currentDate.toDateString()) {
-      color = '#ef233c'; // Red for overdue tasks
+      color = colors.overdue; // Red for overdue tasks
     }
 
     return {
@@ -81,7 +102,7 @@ const CalenderView = (props) => {
       borderRadius: '5px',
       border: 'none',
       display: 'block',
-      opacity: 0.8
+      opacity: theme === 'dark' ? 0.9 : 0.8
     }
   });
 
