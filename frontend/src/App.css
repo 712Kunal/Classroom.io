@@ -11,9 +11,20 @@
   font-family: monospace;
 }
 
+/* Improve header contrast in dark mode */
+.dark .rbc-toolbar-label {
+  color: white;
+}
+
 .rbc-month-view .rbc-month-header {
   background-color: #f5f5f5;
   border-bottom: 2px solid #e5e5e5 !important;
+}
+
+/* Dark mode header styling */
+.dark .rbc-month-view .rbc-month-header {
+  background-color: #1a1a1a;
+  border-bottom: 2px solid #333 !important;
 }
 
 .rbc-month-view .rbc-month-header .rbc-header span {
@@ -21,19 +32,41 @@
   font-weight: 600;
 }
 
+/* Improve header text contrast in dark mode */
+.dark .rbc-month-view .rbc-month-header .rbc-header span {
+  color: white;
+}
+
 .rbc-month-row .rbc-button-link {
   font-size: 1rem;
-  color: white;
+  color: black;
+}
+
+/* Improve date number contrast in dark mode */
+.dark .rbc-month-row .rbc-button-link {
+  color: #fff;
 }
 
 .rbc-month-view .rbc-day-bg {
   border-radius: 10px;
-  background-color: rgb(36, 34, 34);
-  color: white;
+  background-color: whitesmoke;
+}
+
+.dark .rbc-today {
+  background-color: rgba(71, 160, 233, 0.15);
+}
+
+/* Improve day background in dark mode */
+.dark .rbc-month-view .rbc-day-bg {
+  background-color: rgb(0, 0, 0);
 }
 
 .rbc-month-view .rbc-off-range-bg {
   background-color: #969393;
+}
+
+.dark .rbc-month-view .rbc-off-range-bg {
+  background-color: #1a1a1a;
 }
 
 .rbc-event {
@@ -46,17 +79,22 @@
   font-weight: 600;
 }
 
+/* Improve event contrast in dark mode */
+.dark .rbc-event {
+  opacity: 0.9;
+}
+
 .rbc-event:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
 }
 
 .rbc-timeslot-group {
-  min-height: 40px !important; /* This controls the height of each time block */
+  min-height: 40px !important;
 }
 
 .rbc-time-gutter {
-  width: 80px; /* Reduce the width of the time column */
+  width: 80px;
 }
 
 .rbc-time-gutter .rbc-timeslot-group {
@@ -64,8 +102,33 @@
   color: black;
 }
 
+/* Improve time column contrast in dark mode */
+.dark .rbc-time-gutter .rbc-timeslot-group {
+  color: white;
+}
+
+.dark .rbc-time-view {
+  border-color: #333;
+}
+
+.dark .rbc-time-view .rbc-time-content {
+  border-top: 1px solid #333;
+}
+
+/* Changed vertical separators */
+.dark .rbc-time-view .rbc-time-content > * + * > * {
+  border-left: 1px solid #333;
+}
+
 .rbc-time-view .rbc-time-header {
   height: 4rem;
+}
+
+/* Changed header borders */
+.dark .rbc-time-header {
+  border-right: 1px solid #333;
+  border-left: 1px solid #333;
+  border-bottom: 1px solid #333;
 }
 
 .rbc-time-view .rbc-time-header-content {
@@ -78,10 +141,23 @@
   align-items: center;
 }
 
+/* Changed horizontal time slot separators */
+.dark .rbc-timeslot-group {
+  border-bottom: 1px solid #333;
+}
+
 .rbc-time-gutter .rbc-timeslot-group .rbc-time-slot {
   height: 12px !important;
   display: flex !important;
   align-items: center !important;
+}
+
+.dark .rbc-time-content .rbc-time-slot {
+  border-top: none; /* This removes the middle lines between hours */
+}
+
+.dark .rbc-timeslot-group {
+  border-bottom: 1px solid #333; /* This maintains only the hour dividers */
 }
 
 .rbc-time-column .rbc-timeslot-group .rbc-time-slot span {
@@ -96,6 +172,19 @@
   font-size: 1.8rem !important;
   font-family: Georgia, 'Times New Roman', Times, serif;
   background-color: #f5f5f5;
+}
+
+/* Improve agenda view contrast in dark mode */
+.dark .rbc-agenda-table thead {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+/* Improve toolbar button contrast in dark mode */
+.dark .rbc-btn-group button {
+  color: white;
+  background-color: #2a2a2a;
+  border-color: #404040;
 }
 
 .rbc-agenda-table tbody {
