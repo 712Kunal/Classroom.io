@@ -1,6 +1,13 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "./badge.jsx";
+import { Progress } from "./progress.jsx"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip.jsx"
 
 export const Timeline = ({
   data,
@@ -26,21 +33,36 @@ export const Timeline = ({
 
   return (
     (<div className="w-full relative bg-white rounded-lg dark:bg-neutral-950 font-sans md:px-10" ref={containerRef}>
-      <div className="p-6 flex flex-col gap-4">
-        <h2 className="text-lg md:text-4xl text-black dark:text-white max-w-4xl">
-          {title}
-        </h2>
-        <p
-          className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-lg">
-          {desciption}
-        </p>
-        <div className="flex gap-2 items-center justify-start">
-          <Badge variant="outline" className="p-2">
-            Duration: {duration} days
-          </Badge>
-          <Badge variant="outline" className="p-2">
-            {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
-          </Badge>
+      <div className="flex p-6">
+        <div className="left w-1/2 flex flex-col gap-4">
+          <h2 className="text-lg md:text-4xl text-black dark:text-white max-w-4xl">
+            {title}
+          </h2>
+          <p
+            className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-lg">
+            {desciption}
+          </p>
+          <div className="flex gap-2 items-center justify-start">
+            <Badge variant="outline" className="p-2">
+              Duration: {duration} days
+            </Badge>
+            <Badge variant="outline" className="p-2">
+              {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
+            </Badge>
+          </div>
+        </div>
+        <div className="progress flex flex-col gap-8 w-1/2">
+          <p className="text-xl">Your Progress Till Now:</p>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Progress value={parseInt(percentageComplete)} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-base">{parseInt(percentageComplete) + "%"}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">

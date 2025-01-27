@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, BadgeCheck, CircleCheck, CircleAlert, BadgeAlert, Clock, CalendarCheck, BookOpenIcon, MonitorPlay, SquareMousePointer, CheckCircle2 } from "lucide-react";
+import { Calendar, BadgeCheck, CircleCheck, CircleAlert, BadgeAlert, Clock, CalendarCheck, BookOpenIcon, MonitorPlay, SquareMousePointer, CheckCircle2, Database, ClipboardList, Goal } from "lucide-react";
 import { BackgroundGradient } from "../ui/background-gradient";
 import {
   Dialog,
@@ -144,11 +144,11 @@ const Interval = ({ data }) => {
                   <DialogDescription>{""}</DialogDescription>
                   <div className="flex gap-2 justify-stretch w-fit">
                     <div className="left flex flex-col gap-2">
-                      <strong>Todo:</strong>
+                      <div className="flex gap-2 text-bold"><ClipboardList/> Todo:</div>
                       <div className="border-2 border-blue-400 rounded-md p-2">
                         {task.description}
                       </div>
-                      <strong>Refer these resources:</strong>
+                      <div className="flex gap-2 text-bold mt-5"><Database/> Refer these resources:</div>
                       <div className="rounded-md flex gap-2">
                         {task.resources.map((resource, index) => (
                           <div key={index} className="flex gap-2 items-center border-2 border-neutral-500 dark:border-neutral-300 rounded-md p-2 hover:scale-105 cursor-pointer">
@@ -159,7 +159,7 @@ const Interval = ({ data }) => {
                           </div>
                         ))}
                       </div>
-                      <strong>Outcome:</strong>
+                      <div className="flex gap-2 text-bold mt-5"><Goal /> Outcome:</div>
                       <div className="border-2 border-green-400 rounded-md p-2">
                         {task.expectedOutcome}
                       </div>
