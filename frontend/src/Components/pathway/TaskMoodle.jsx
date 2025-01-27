@@ -47,7 +47,7 @@ function TaskMoodle({ event }) {
   console.log(event);
 
   return (
-    <Card className="shadow-md rounded-lg shadow-blue-500 w-1/2">
+    <Card className="shadow-md rounded-lg shadow-blue-500 w-3/4 md:w-1/2">
       <CardHeader>
         <CardTitle className="font-sans">{event.title}</CardTitle>
         <CardDescription>{event.description}</CardDescription>
