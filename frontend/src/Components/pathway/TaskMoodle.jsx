@@ -2,15 +2,16 @@ import React from 'react';
 import { SlCalender } from 'react-icons/sl';
 import { FaCircle } from 'react-icons/fa6';
 import { GrResources } from 'react-icons/gr';
+
 import {
   BookOpenIcon,
   MonitorPlay,
   SquareMousePointer,
   Target,
-  ChartNoAxesCombined
+  ChartNoAxesCombined,
+  CircleX
 } from 'lucide-react';
 
-import { Button } from '@/Components/ui/button';
 import {
   Card,
   CardContent,
@@ -43,12 +44,16 @@ const ResourceTypeToBgColorMap = {
   'Video Tutorial': 'hover:bg-yellow-100 dark:hover:bg-yellow-900'
 };
 
-function TaskMoodle({ event }) {
+function TaskMoodle({ event, setIsTaskMoodleOpen }) {
   console.log(event);
 
   return (
-    <Card className="shadow-md rounded-lg shadow-blue-500 w-3/4 md:w-1/2">
+    <Card className="shadow-md rounded-lg shadow-blue-500 w-3/4 relative md:w-1/2">
       <CardHeader>
+        <CircleX
+          className="absolute top-2 right-2 text-red-500 hover:text-red-700 cursor-pointer"
+          onClick={() => setIsTaskMoodleOpen(false)}
+        />
         <CardTitle className="font-sans">{event.title}</CardTitle>
         <CardDescription>{event.description}</CardDescription>
       </CardHeader>
@@ -76,7 +81,7 @@ function TaskMoodle({ event }) {
                 {event.resources.map((resource, index) => (
                   <div
                     key={index}
-                    className="flex gap-5 items-center px-2 rounded-md border-[1px] bg-black border-[#333]">
+                    className="flex gap-5 items-center px-2 rounded-md border-[1px] bg-black border-[#333] hover:shadow-sm hover:shadow-blue-500">
                     <a
                       href={resource.link}
                       target="_blank"
