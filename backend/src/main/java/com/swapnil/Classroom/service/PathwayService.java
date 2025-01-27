@@ -210,7 +210,7 @@ public class PathwayService {
     }
 
 
-    public void sendPathwayStartedEmail(String userId, String pathwayId) throws ExecutionException, InterruptedException {
+    public void sendPathwayActivationEmail(String userId, String pathwayId) throws ExecutionException, InterruptedException {
 
         System.out.println("userId: "+userId);
 
@@ -240,7 +240,7 @@ public class PathwayService {
             String subject = "Welcome to Your New Pathway!";
             String body = String.format(
                     "Hello %s,\n\n" +
-                            "Congratulations on starting the '%s' pathway!\n\n" +
+                            "Congratulations on activating the '%s' pathway!\n\n" +
                             "Best regards,\n" +
                             "Team Pathify",
                     userName, pathwayDescription
@@ -291,6 +291,104 @@ public class PathwayService {
                             "Team Pathify",
                     userName, pathwayDescription
             );
+
+
+            System.out.println("Email is sent to: "+userEmail);
+            mailService.sendEmail(userEmail, subject, body);
+
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendFirstPathwayGenerationEmail(String userId, String pathwayId) throws ExecutionException, InterruptedException {
+
+        System.out.println("userId: "+userId);
+
+        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentSnapshot userDoc= documentReference.get().get();
+
+        String userEmail= (String) userDoc.get("email");
+        String userName=(String) userDoc.get("username");
+        System.out.println("userEmail: "+userEmail);
+        System.out.println("username: "+userName);
+
+
+        String pathwayDescription="";
+        Map<String, Object> pathwayData = getPathwayById(pathwayId);
+        if(pathwayData!=null){
+            pathwayDescription = (String) pathwayData.get("description");
+
+        }
+        try {
+
+            if (userEmail == null) {
+                System.out.println("Email not found with userEmail: " + userEmail);
+                return;
+            }
+
+
+            String subject = "Welcome to Your First Personalized Pathway!";
+            String body = String.format(
+                    "Hello %s,\n\n" +
+                            "Congratulations on activating your first personalized pathway: '%s'!\n\n" +
+                            "This marks the beginning of an exciting journey toward achieving your goals. Dive into the modules, explore the resources, and take it step by step. Remember, every small effort you put in will bring you closer to success.\n\n" +
+                            "If you need any assistance or have questions along the way, our team is here to help.\n\n" +
+                            "Best of luck on this journey!\n\n" +
+                            "Warm regards,\n" +
+                            "Team Pathify",
+                    userName, pathwayDescription
+            );
+
+
+            System.out.println("Email is sent to: "+userEmail);
+            mailService.sendEmail(userEmail, subject, body);
+
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendPathwayProgressEmail(String userId, String pathwayId, int progressPercentage) throws ExecutionException, InterruptedException {
+
+
+        System.out.println("userId: "+userId);
+
+        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentSnapshot userDoc= documentReference.get().get();
+
+        String userEmail= (String) userDoc.get("email");
+        String userName=(String) userDoc.get("username");
+        System.out.println("userEmail: "+userEmail);
+        System.out.println("username: "+userName);
+
+
+        String pathwayDescription="";
+        Map<String, Object> pathwayData = getPathwayById(pathwayId);
+        if(pathwayData!=null){
+            pathwayDescription = (String) pathwayData.get("description");
+
+        }
+        try {
+
+            if (userEmail == null) {
+                System.out.println("Email not found with userEmail: " + userEmail);
+                return;
+            }
+
+
+            String subject = "Your Pathway Progress Update!";
+            String body = String.format(
+                    "Hello %s,\n\n" +
+                            "You’re making great progress on your pathway: '%s'!\n\n" +
+                            "Current progress: %d%%. Keep it up—you're closer to your goal!\n\n" +
+                            "Cheers,\n" +
+                            "Team Pathify",
+                    userName, pathwayDescription, progressPercentage
+            );
+
 
 
             System.out.println("Email is sent to: "+userEmail);
