@@ -135,7 +135,7 @@ public class NotificationService {
         return null;
     }
 
-    public void sendPathwayStartedNotification(String userId, Notification notification, String pathwayId) {
+    public void sendPathwayActivationNotification(String userId, Notification notification, String pathwayId) {
 
         System.out.println("Sending notification");
         String pathwayDescription="";
@@ -148,7 +148,7 @@ public class NotificationService {
 
         System.out.println("Pathway Description: "+pathwayDescription);
         String description = String.format(
-                "Welcome!\n You've started the pathway: '%s'. Good luck on your journey!",
+                "Welcome!\n You've activated the pathway: '%s'. Good luck on your journey!",
                 pathwayDescription
         );
 
@@ -169,10 +169,10 @@ public class NotificationService {
 
             save(notification);
 
-            logger.info("Notification send for taskId: "+pathwayId+" to userId: "+userId);
+            logger.info("Notification send for pathwayId: "+pathwayId+" to userId: "+userId);
         }
         catch (Exception e) {
-            logger.error("Error sending pathway starting notification", e);
+            logger.error("Error sending pathway activation notification", e);
         }
 
 
@@ -192,7 +192,8 @@ public class NotificationService {
 
         System.out.println("Pathway Description: "+pathwayDescription);
         String description = String.format(
-                "Congratulations!\n You've successfully completed the pathway: '%s'. Well done on finishing the journey!",
+                "Congratulations!\n You've successfully completed the pathway: " +
+                        "'%s'. Well done on finishing the journey!",
                 pathwayDescription
         );
 
@@ -214,10 +215,103 @@ public class NotificationService {
 
             save(notification);
 
-            logger.info("Notification send for taskId: "+pathwayId+" to userId: "+userId);
+            logger.info("Notification send for pathwayID: "+pathwayId+" to userId: "+userId);
         }
         catch (Exception e) {
             logger.error("Error sending pathway completion notification", e);
+        }
+    }
+
+    public void sendFirstPathwayGenerationNotification(String userId, Notification notification, String pathwayId) {
+
+        System.out.println("Sending notification");
+        String pathwayDescription="";
+        Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
+        if(pathwayData!=null){
+            pathwayDescription = (String) pathwayData.get("description");
+
+        }
+
+
+        System.out.println("Pathway Description: " + pathwayDescription);
+        String description = String.format(
+                "Congratulations!\n\n" +
+                        "Your first personalized pathway '%s' has been successfully created.\n\n" +
+                        "We’re excited to have you start this journey toward achieving your goals. Dive in and make the most of it!\n\n" +
+                        "Best of luck,\n" +
+                        "Team Pathify",
+                pathwayDescription
+        );
+
+
+
+        try{
+
+            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+
+            Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+
+            notification.setNotificationId(notificationId);
+            notification.setUserId(userId);
+            notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
+            notification.setNotificationSendDate(notificationSendDate);
+            notification.setNotificationReadDate(null);
+            notification.setRelatedEntity(String.valueOf(pathwayId));
+            notification.setDescription(description);
+
+            save(notification);
+
+            logger.info("Notification send for pathwayId: "+pathwayId+" to userId: "+userId);
+        }
+        catch (Exception e) {
+            logger.error("Error sending pathway progress notification", e);
+        }
+    }
+
+    public void sendPathwayProgressNotification(String userId, Notification notification, String pathwayId, int progressPercentage) {
+
+        System.out.println("Sending notification");
+        String pathwayDescription="";
+        Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
+        if(pathwayData!=null){
+            pathwayDescription = (String) pathwayData.get("description");
+
+        }
+
+
+        System.out.println("Pathway Description: " + pathwayDescription);
+        String description = String.format(
+                "Great progress!\n\n" +
+                        "You’re currently at %d%% completion for your pathway: '%s'.\n\n" +
+                        "Keep it up! Every step brings you closer to your goals.\n\n" +
+                        "Cheers,\n" +
+                        "Team Pathify",
+                progressPercentage, pathwayDescription
+        );
+
+
+
+
+        try{
+
+            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+
+            Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+
+            notification.setNotificationId(notificationId);
+            notification.setUserId(userId);
+            notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
+            notification.setNotificationSendDate(notificationSendDate);
+            notification.setNotificationReadDate(null);
+            notification.setRelatedEntity(String.valueOf(pathwayId));
+            notification.setDescription(description);
+
+            save(notification);
+
+            logger.info("Notification send for pathwayId: "+pathwayId+" to userId: "+userId);
+        }
+        catch (Exception e) {
+            logger.error("Error sending pathway progress notification", e);
         }
     }
 }
