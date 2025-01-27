@@ -70,7 +70,7 @@ const taskStateToDisplayTextMap = {
 const TasksView = () => {
   const { pathway } = usePathway();
   const { topic, description, duration, startDate, endDate } = pathway.data;
-  const { pathway: intervals } = pathway.data.response;
+  const { pathway: intervals, intervalType } = pathway.data.response;
   const [expandedIntervals, setExpandedIntervals] = useState([]);
 
   const toggleInterval = (interval) => {
@@ -110,7 +110,7 @@ const TasksView = () => {
   };
 
   return (
-    <div className="w-full h-full py-6 grid place-items-center">
+    <div className="w-full h-full p-6 grid place-items-center">
       <div className="max-w-7xl">
         <h1 className="text-3xl font-bold mb-4">{topic}</h1>
         <p className="text-gray-600 text-2xl mb-4">{description}</p>
@@ -137,7 +137,7 @@ const TasksView = () => {
               <AccordionTrigger onClick={() => toggleInterval(`interval-${interval.intervalNumber}`)}>
                 <div className="flex items-center gap-2">
                   <Badge variant={(expandedIntervals.includes(interval.intervalNumber)) ? "default" : "outline"}>
-                    Week {interval.intervalNumber}
+                    {intervalType} {interval.intervalNumber}
                   </Badge>
                   <span>{interval.summary}</span>
                 </div>

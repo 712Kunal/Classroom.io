@@ -123,7 +123,7 @@ function PathwayPage() {
         </Breadcrumb>
       </div>
       <Separator />
-      <ScrollArea className="h-full">
+      <ScrollArea className="h-full relative">
         <PathwayProvider initialPathway={DummyPathway}>
           <Outlet />
         </PathwayProvider>

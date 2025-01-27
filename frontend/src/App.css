@@ -3,6 +3,7 @@
   height: 100%;
   overflow: auto;
   margin-top: 2rem;
+  position: relative;
 }
 
 .rbc-toolbar-label {
@@ -66,7 +67,7 @@
 
 /* Improve day background in dark mode */
 .dark .rbc-month-view .rbc-day-bg {
-  background-color: #1a1a1a;
+  background-color: #313030;
   margin: 2px;
 }
 
