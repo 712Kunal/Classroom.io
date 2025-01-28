@@ -10,12 +10,10 @@ import {
   ChartNoAxesCombined
 } from 'lucide-react';
 
-import { Button } from '@/Components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle
 } from '@/Components/ui/card';

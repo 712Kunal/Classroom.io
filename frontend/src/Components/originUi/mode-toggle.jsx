@@ -1,9 +1,9 @@
 "use client";
 
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "@/components/ui/switch.jsx";
 import { Moon, Sun } from "lucide-react";
 import { useId } from "react";
-import { useTheme } from "@/components/core/ThemeProvider"
+import { useTheme } from "@/components/core/ThemeProvider.jsx"
 
 export default function ModeToggle() {
   const id = useId();

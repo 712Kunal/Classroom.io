@@ -1,5 +1,4 @@
-import React from 'react';
-import LandingNavbar from '@/Components/core/LandingNavbar';
+import LandingNavbar from '@/components/core/LandingNavbar.jsx';
 
 function LandingPage() {
   return (

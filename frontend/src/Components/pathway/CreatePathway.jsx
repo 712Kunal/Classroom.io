@@ -1,5 +1,3 @@
-import React from 'react';
-
 const CreatePathway = () => {
   return <div className='p-2'>CreatePathway</div>;
 };

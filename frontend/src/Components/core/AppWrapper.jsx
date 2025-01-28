@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { SidebarProvider, SidebarTrigger } from '../ui/sidebar';
-import AppSidebar from './AppSidebar';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { SidebarProvider, SidebarTrigger } from '../ui/sidebar.jsx';
+import AppSidebar from './AppSidebar.jsx';
+import { useIsMobile } from '@/hooks/use-mobile.jsx';
 
 function AppWrapper() {
   const isMobile = useIsMobile();

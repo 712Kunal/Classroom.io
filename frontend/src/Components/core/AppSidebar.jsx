@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -13,11 +13,11 @@ import {
   SidebarGroupLabel,
   SidebarGroupContent,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { NavUser } from '../ui/nav-user';
+} from "@/components/ui/sidebar.jsx";
+import { NavUser } from '../ui/nav-user.jsx';
 import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile.jsx';
 
 const AppSidebar = () => {
   const { open } = useSidebar();

@@ -1,16 +1,16 @@
-import { usePathway } from "../context/PathwayContext";
-import { Timeline } from "@/components/ui/timeline";
+import { usePathway } from "../context/PathwayContext.jsx";
+import { Timeline } from "@/components/ui/timeline.jsx";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+} from "@/components/ui/card.jsx";
+import { Badge } from "@/components/ui/badge.jsx";
+import { Separator } from "@/components/ui/separator.jsx";
 import { Calendar, BadgeCheck, CircleCheck, CircleAlert, BadgeAlert, Clock, CalendarCheck, BookOpenIcon, MonitorPlay, SquareMousePointer, CheckCircle2, Database, ClipboardList, Goal } from "lucide-react";
-import { BackgroundGradient } from "../ui/background-gradient";
+import { BackgroundGradient } from "../ui/background-gradient.jsx";
 import {
   Dialog,
   DialogContent,
@@ -19,9 +19,9 @@ import {
   DialogTrigger,
   DialogDescription,
   DialogFooter
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog.jsx"
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.jsx";
 
 const taskStateToObject = {
   'completedOnTime': { icon: <BadgeCheck size={16} />, color: 'text-green-500', displayText: "Completed On Time" },
@@ -115,8 +115,8 @@ const Interval = ({ data }) => {
         {tasks.map((task, index) => {
           const taskState = getTaskState(task.scheduledDate, task.completedDate, task.isDone, task.lateMark);
           return (
-            <Dialog key={index}>
-              <DialogTrigger>
+            <Dialog key={index} className="h-full grid place-items-center">
+              <DialogTrigger className="h-full grid place-items-center">
                 <BackgroundGradient className="rounded-[22px] p-1 bg-neutral-200 dark:bg-neutral-700 w-full h-full">
                   <Card className="bg-neutral-200 dark:bg-neutral-700 border-none shadow-none h-full w-full">
                     <CardHeader className="flex flex-col gap-2 items-start text-left">

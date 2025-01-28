@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const CalenderView = lazy(() => import('./components/pathway/CalenderView.jsx'))
 const CreatePathway = lazy(() => import('./components/pathway/CreatePathway.jsx'));
 const TasksView = lazy(() => import('./components/pathway/TasksView.jsx'));
 
-import AppWrapper from './components/core/AppWrapper';
+import AppWrapper from './components/core/AppWrapper.jsx';
 
 const suspenseComponent = (component) => (
   <Suspense fallback={<div>Loading...</div>}>{component}</Suspense>

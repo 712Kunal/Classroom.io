@@ -1,10 +1,10 @@
-import { usePathway } from "../context/PathwayContext";
+import { usePathway } from "../context/PathwayContext.jsx";
 import { useState } from "react"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion.jsx"
+import { Card } from "@/components/ui/card.jsx"
+import { Badge } from "@/components/ui/badge.jsx"
 import { CalendarIcon, BookOpenIcon, MonitorPlay, SquareMousePointer, CopyPlus, CopyMinus, CalendarCheck, Clock, BadgeCheck, CircleCheck, BadgeAlert, CircleAlert } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button.jsx"
 
 const ResourceTypeToIconMap = {
   'Documentation': <BookOpenIcon size={24} className="text-blue-500" />,

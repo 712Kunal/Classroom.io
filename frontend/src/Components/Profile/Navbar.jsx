@@ -2,8 +2,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { FaBars, FaBell, FaCog, FaTimes } from 'react-icons/fa'; // Imported from react-icons
 import { useState } from 'react';
-import Profile from '@/Components/Profile/Profile';
-import Dashboard from '@/Components/Profile/Dashboard';
+import Profile from '@/Components/Profile/Profile.jsx';
+import Dashboard from '@/Components/Profile/Dashboard.jsx';
 
 export default function Navbar({ user }) {
   const [activeTab, setActiveTab] = useState('Profile');

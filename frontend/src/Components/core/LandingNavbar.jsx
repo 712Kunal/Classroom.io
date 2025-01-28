@@ -1,4 +1,3 @@
-
 // Navbar.jsx
 export default function LandingNavbar() {
   return (
