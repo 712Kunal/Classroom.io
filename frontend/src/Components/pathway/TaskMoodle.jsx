@@ -2,12 +2,14 @@ import React from 'react';
 import { SlCalender } from 'react-icons/sl';
 import { FaCircle } from 'react-icons/fa6';
 import { GrResources } from 'react-icons/gr';
+
 import {
   BookOpenIcon,
   MonitorPlay,
   SquareMousePointer,
   Target,
-  ChartNoAxesCombined
+  ChartNoAxesCombined,
+  CircleX
 } from 'lucide-react';
 
 import {
@@ -41,12 +43,16 @@ const ResourceTypeToBgColorMap = {
   'Video Tutorial': 'hover:bg-yellow-100 dark:hover:bg-yellow-900'
 };
 
-function TaskMoodle({ event }) {
+function TaskMoodle({ event, setIsTaskMoodleOpen }) {
   console.log(event);
 
   return (
-    <Card className="shadow-md rounded-lg shadow-blue-500 w-1/2">
+    <Card className="shadow-md rounded-lg shadow-black bg-white/85 dark:shadow-blue-500 dark:bg-black w-3/4 relative md:w-1/2">
       <CardHeader>
+        <CircleX
+          className="absolute top-2 right-2 text-red-500 hover:text-red-700 cursor-pointer"
+          onClick={() => setIsTaskMoodleOpen(false)}
+        />
         <CardTitle className="font-sans">{event.title}</CardTitle>
         <CardDescription>{event.description}</CardDescription>
       </CardHeader>
@@ -54,13 +60,13 @@ function TaskMoodle({ event }) {
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-1.5">
             <Label className="text-sm">Scheduled Date</Label>
-            <span className="flex justify-between items-center text-xl border-[1px] border-[#333] px-2 rounded-md text-white/50">
+            <span className="flex justify-between items-center text-xl border-[1px] border-[#333] px-2 rounded-md dark:text-white/50">
               {event.start.toDateString()} <SlCalender />
             </span>
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label className="text-sm">Completion Date</Label>
-            <span className="flex justify-between items-center text-xl border-[1px] border-[#333] px-2 rounded-md text-white/50">
+            <span className="flex justify-between items-center text-xl border-[1px] border-[#333] px-2 rounded-md dark:text-white/50">
               {event.start.toDateString()} <SlCalender />
             </span>
           </div>
@@ -69,12 +75,12 @@ function TaskMoodle({ event }) {
             <span className="flex gap-1 items-center text-xl">
               <GrResources /> Resources
             </span>
-            <div className="Resource-info w-full border-[1px] border-[#333] rounded-md text-white/50 p-2">
+            <div className="Resource-info w-full border-[1px] border-[#333] rounded-md dark:text-white/50 p-2">
               <div className="flex flex-wrap gap-2">
                 {event.resources.map((resource, index) => (
                   <div
                     key={index}
-                    className="flex gap-5 items-center px-2 rounded-md border-[1px] bg-black border-[#333]">
+                    className="flex gap-5 items-center px-2 rounded-md border-[1px] dark:bg-black border-[#333] hover:shadow-sm dark:hover:shadow-blue-500">
                     <a
                       href={resource.link}
                       target="_blank"
@@ -105,7 +111,7 @@ function TaskMoodle({ event }) {
               <span className="flex gap-1 items-center text-xl">
                 <Target size={24} /> Outcomes
               </span>
-              <span className="text-lg text-white/50 px-3">{event.outcome}</span>
+              <span className="text-lg dark:text-white/50 px-3">{event.outcome}</span>
             </div>
 
             <div className="outcome flex flex-col">

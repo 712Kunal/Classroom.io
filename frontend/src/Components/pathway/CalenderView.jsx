@@ -137,7 +137,7 @@ const CalenderView = (props) => {
 
       {isTaskMoodleOpen && (
         <div className="absolute z-10 inset-0 flex justify-center items-center bg-black bg-opacity-60">
-          <TaskMoodle event={selectedEvent} />
+          <TaskMoodle event={selectedEvent} setIsTaskMoodleOpen={setIsTaskMoodleOpen} />
         </div>
       )}
     </div>
