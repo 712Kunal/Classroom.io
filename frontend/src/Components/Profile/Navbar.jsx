@@ -116,7 +116,7 @@ export default function Navbar({ user }) {
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {activeTab === 'Profile' && <Profile user={user} />}
-          {activeTab === 'Dashboard' && <Dashboard />}
+          {activeTab === 'Dashboard' && <Dashboard user={user} />}
         </div>
       </main>
     </div>
