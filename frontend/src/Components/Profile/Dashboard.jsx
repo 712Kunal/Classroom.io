@@ -1,83 +1,197 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+import UserActivityChart from "./UserActivityChart";
 
-export default function Dashboard() {
-  const [tasks, setTasks] = useState([
-    { id: 1, name: 'Task 1', completed: false },
-    { id: 2, name: 'Task 2', completed: false },
-    { id: 3, name: 'Task 3', completed: false },
-    { id: 4, name: 'Task 4', completed: false },
-    { id: 5, name: 'Task 5', completed: false },
-  ]);
-
-  const handleTaskToggle = (taskId) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      )
-    );
-  };
-
-  const progress = (tasks.filter((task) => task.completed).length / tasks.length) * 100;
-
-  const chartData = {
-    labels: ['Progress'], 
-    datasets: [
-      {
-        label: 'Task Completion Progress',
-        data: [progress], 
-        borderColor: 'rgba(75,192,192,1)',
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        fill: true,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Task Completion Progress',
-      },
-    },
-  };
-
+// UserCard Component
+export function UserCard({ user }) {
   return (
-    <div className="space-y-6 sm:space-y-8 md:space-y-10">
-      {/* Task List */}
-      <div className="bg-white shadow-lg rounded-md p-4 sm:p-6 md:p-8 xl:p-10 flex flex-col space-y-4">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Task List</h2>
-        <ul className="space-y-2">
-          {tasks.map((task) => (
-            <li key={task.id} className="flex items-center space-x-4">
-              <input
-                type="checkbox"
-                checked={task.completed}
-                onChange={() => handleTaskToggle(task.id)}
-                className="h-5 w-5 text-green-600 border-gray-300 rounded"
-              />
-              <span className={task.completed ? 'line-through text-gray-500' : ''}>
-                {task.name}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="grid gap-4 lg:gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-8 pt-20">
 
-      <div className="bg-white shadow-lg rounded-md p-4 sm:p-6 md:p-8 xl:p-10 flex flex-col">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Task Completion Progress</h2>
-        <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96">
-          <Line data={chartData} options={chartOptions} />
+      {/* Revenue Card with Glowing Shadow */}
+      <div className="relative p-6 rounded-2xl bg-blue-50 text-gray-800 shadow-lg hover:shadow-xl hover:shadow-blue-400 hover:scale-105 transition-all duration-300">
+        <div className="flex flex-row items-center justify-start space-x-4">
+          {/* Avatar Section */}
+          <div className="w-auto sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full sm:border-2 sm:border-gray-200 overflow-hidden flex justify-center items-center">
+            <img
+              src={user.avatar || 'https://via.placeholder.com/150'}  // Fallback image URL
+              alt={user.username}
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Text Section */}
+          <div className="text-left">
+            <h2 className="text-sm font-semibold text-gray-900 dark:text-black">{user.FullName}</h2>
+            <p className="text-xs font-medium text-gray-700 mt-1">{user.username}</p>
+          </div>
         </div>
       </div>
 
-      <div className="bg-white shadow-lg rounded-md p-4 sm:p-6 md:p-8 xl:p-10 flex flex-col">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Other Dashboard Content</h2>
-        <p className="text-gray-600">Here you can add additional widgets or content related to your dashboard.</p>
+
+      {/* New Customers Card with Glowing Shadow */}
+      <div className="relative p-6 rounded-2xl bg-yellow-50 text-gray-800 shadow-lg hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 transition-all duration-300">
+        <div className="flex flex-row items-center justify-start space-x-4">
+          <div className="w-auto sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full sm:border-2 sm:border-gray-200 overflow-hidden flex justify-center items-center">
+            <h1 className="text-xl sm:text-5xl">{'🏆'}</h1>
+            {/* <h1 className="text-xl sm:text-2xl">
+              <img
+                src="/brand/image.png"
+                alt="Brand Logo"
+                className="w-8 sm:w-10 md:w-12 lg:w-14 h-auto"
+              />
+            </h1> */}
+          </div>
+          {/* Text Section */}
+          <div className="text-center pl-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+              <span className="font-bold">{user.badgesAwarded?.length || 0}</span>
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      {/* New Orders Card with Glowing Shadow */}
+      <div className="relative p-6 rounded-2xl bg-green-50 text-gray-800 shadow-lg hover:shadow-xl hover:shadow-green-400 hover:scale-105 transition-all duration-300">
+        <div className="flex flex-row items-center justify-start space-x-4">
+          <div className="w-auto sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full sm:border-2 sm:border-gray-200 overflow-hidden flex justify-center items-center">
+            {/* <h1 className="text-xl sm:text-2xl">{'🎢'}</h1> */}
+            <h1 className="text-xl sm:text-2xl">
+              <img
+                src="/brand/progress.png"
+                alt="Brand Logo"
+                className="w-8 sm:w-10 md:w-12 lg:w-14 h-auto"
+              />
+            </h1>
+          </div>
+          {/* Text Section */}
+          <div className="text-center pl-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+              <span className="font-bold">{20} %</span>
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      {/* Additional Card with Glowing Shadow */}
+      <div className="relative p-6 rounded-2xl bg-purple-50 text-gray-800 shadow-lg hover:shadow-xl hover:shadow-purple-400 hover:scale-105 transition-all duration-300">
+        <div className="flex flex-row items-center justify-start space-x-4">
+          <div className="w-auto sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full sm:border-2 sm:border-gray-200 overflow-hidden flex justify-center items-center">
+            <h1 className="text-xl sm:text-2xl">
+              <img
+                src="/brand/path.png"
+                alt="Brand Logo"
+                className="w-8 sm:w-10 md:w-12 lg:w-14 h-auto"
+              />
+            </h1>
+          </div>
+          {/* Text Section */}
+          <div className="text-center pl-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+              <span className="font-bold">{5}</span>
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// weekly tasks
+export function WeekTask() {
+  const [daysData, setDaysData] = useState([
+    { day: "M", height: 4 },
+    { day: "T", height: 60 },
+    { day: "W", height: 24 },
+    { day: "T", height: 45 },
+    { day: "F", height: 20 },
+    { day: "S", height: 60 },
+    { day: "S", height: 55 },
+  ]);
+
+  const updateDayColors = () => {
+    setDaysData(prevData =>
+      prevData.map(day => ({
+        ...day,
+        color: getRandomColor(),
+      }))
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateDayColors();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="">
+      <div className="grid grid-cols-7 gap-2 flex-grow self-stretch">
+        {daysData.map((day, index) => (
+          <div key={index} className="flex flex-col justify-end items-center group relative">
+            <div
+              className="mx-auto rounded-full transition-all duration-300 ease-in-out"
+              style={{
+                width: "16px",
+                height: `${day.height}px`,
+                backgroundColor: day.color,
+              }}
+            ></div>
+            <div className="text-center text-xs text-gray-400 font-semibold mt-2">
+              {day.day}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+// Recnet Tasks
+export function RecentTask() {
+  return (
+    <div className="w-full px-4 py-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="p-6 rounded-lg shadow-md shadow-gray-700 dark:shadow-gray-700 transition-all shadow-md  hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
+          <h2 className="text-center text-xl font-semibold text-gray-800 dark:text-gray-100">Task</h2>
+          <div className="flex-grow"></div>
+        </div>
+
+        {/* Column 2 */}
+        <div className="p-6 rounded-lg shadow-md shadow-gray-700  dark:shadow-gray-700 transition-all shadow-md hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
+          <h2 className="text-xl text-center font-semibold text-gray-800 dark:text-gray-100">Weekly Report</h2>
+          <div className="flex-grow"></div>
+          <WeekTask />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Dashboard Component
+export default function Dashboard({ user }) {
+  return (
+    <div className="space-y-6 sm:space-y-8 md:space-y-10">
+      {/* First Row: User Card */}
+      <div className="flex justify-center">
+        <UserCard user={user} />
+      </div>
+
+      {/* Second Row: User Activity Chart */}
+      <div className="flex justify-center">
+        <UserActivityChart />
+      </div>
+      <div className="flex justify-center">
+        <RecentTask />
       </div>
     </div>
   );
