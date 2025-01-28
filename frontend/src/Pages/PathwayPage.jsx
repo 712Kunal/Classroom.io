@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet, useParams, Link, useLocation } from 'react-router-dom';
 import {
   Breadcrumb,
@@ -7,18 +6,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/breadcrumb.jsx"
+import { ScrollArea } from '@/components/ui/scroll-area.jsx';
+import { Separator } from "@/components/ui/separator.jsx"
+import { Badge } from "@/components/ui/badge.jsx"
 import { ChevronDownIcon, Library, Clock, Calendar, Pencil, List, RouteIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { PathwayProvider } from "@/components/context/PathwayContext"
+} from "@/components/ui/dropdown-menu.jsx"
+import { PathwayProvider } from "@/components/context/PathwayContext.jsx"
 import DummyPathway from '../assets/data/dummy.json';
 
 function PathwayPage() {
@@ -123,7 +122,7 @@ function PathwayPage() {
         </Breadcrumb>
       </div>
       <Separator />
-      <ScrollArea className="h-full">
+      <ScrollArea className="h-full relative">
         <PathwayProvider initialPathway={DummyPathway}>
           <Outlet />
         </PathwayProvider>

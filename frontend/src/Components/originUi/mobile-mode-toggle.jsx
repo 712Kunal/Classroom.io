@@ -1,13 +1,13 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.jsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu.jsx";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { useTheme } from "@/components/core/ThemeProvider";
+import { useTheme } from "@/components/core/ThemeProvider.jsx";
 
 export default function MobileModeToggle() {
   const { theme: displayTheme, setTheme } = useTheme();

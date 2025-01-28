@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -13,14 +13,15 @@ import {
   SidebarGroupLabel,
   SidebarGroupContent,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { NavUser } from '../ui/nav-user';
+} from "@/components/ui/sidebar.jsx";
+import { NavUser } from '../ui/nav-user.jsx';
 import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
+import { useIsMobile } from '@/hooks/use-mobile.jsx';
 
 const AppSidebar = () => {
-  const { pathname } = useLocation();
   const { open } = useSidebar();
+  const isMobile = useIsMobile();
 
   const user = {
     username: 'JohnDoe08',
@@ -43,12 +44,12 @@ const AppSidebar = () => {
     {
       name: 'Library',
       path: '/app/library',
-      icon: <Library />,
+      icon: <Library size={18} />,
     },
     {
       name: 'Notifications',
       path: '/app/notifications',
-      icon: <Bell />,
+      icon: <Bell size={18} />,
     }
   ];
 
@@ -68,9 +69,9 @@ const AppSidebar = () => {
               {routes.map((route, index) => (
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton asChild>
-                    <Link to={route.path} className="flex items-center gap-2 text-base">
-                      <span className="text-base">{route.icon}</span>
-                      <span className="text-base">{route.name}</span>
+                    <Link to={route.path} className={`flex items-center gap-2 text-base ${isMobile ? 'justify-center' : 'justify-start'}`}>
+                      <span>{route.icon}</span>
+                      <span>{route.name}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

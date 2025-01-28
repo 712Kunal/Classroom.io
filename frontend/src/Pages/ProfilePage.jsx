@@ -1,6 +1,5 @@
 // ProfilePage.jsx
-import Navbar from '@/Components/Profile/Navbar';
-import React from 'react';
+import Navbar from '@/Components/Profile/Navbar.jsx';
 
 function ProfilePage() {
   const user = {
