@@ -1,40 +1,44 @@
 {
-    "notifications": [
-      {
-        "userID": "auth0|5f9d3b2e1c9d440067a1b2c3",
-        "notificationType": "InApp",
-        "notificationReason": "Pathway",
-        "relatedEntity": "pathway_5f9d3b2e1c9d440067a1b2c4",
-        "notifSendDate": "2025-01-28T10:30:00Z",
-        "notifReadDate": "2025-01-28T11:15:00Z",
-        "description": "New milestone achieved in 'Frontend Development' pathway! Check your progress."
-      },
-      {
-        "userID": "auth0|5f9d3b2e1c9d440067a1b2c3",
-        "notificationType": "InApp",
-        "notificationReason": "Task",
-        "relatedEntity": "task_5f9d3b2e1c9d440067a1b2c6",
-        "notifSendDate": "2025-01-25T14:10:00Z",
-        "notifReadDate": null,
-        "description": "New task assigned: Complete the React Component Testing module by next week."
-      },
-      {
-        "userID": "auth0|5f9d3b2e1c9d440067a1b2d4",
-        "notificationType": "InApp",
-        "notificationReason": "Points",
-        "relatedEntity": null,
-        "notifSendDate": "2025-01-26T23:59:59Z",
-        "notifReadDate": null,
-        "description": "Daily streak bonus! You've earned 100 extra points for consistent learning."
-      },
-      {
-        "userID": "auth0|5f9d3b2e1c9d440067a1b2d4",
-        "notificationType": "InApp",
-        "notificationReason": "Badge",
-        "relatedEntity": "badge_5f9d3b2e1c9d440067a1b2c8",
-        "notifSendDate": "2025-01-27T16:30:00Z",
-        "notifReadDate": null,
-        "description": "Congratulations! You've earned the 'Full Stack Developer' badge!"
-      }
-    ]
-  }
+  "notifications": [
+    {
+      "_id": "507f1f77bcf86cd799439011",
+      "userID": "auth0|5f9d3b2e1c9d440067a1b2c3",
+      "notificationType": "InApp",
+      "notificationReason": "Pathway",
+      "relatedEntity": "pathway_5f9d3b2e1c9d440067a1b2c4",
+      "notifSendDate": "2025-01-28T10:30:00Z",
+      "notifReadDate": "2025-01-28T11:15:00Z",
+      "description": "New milestone achieved in 'Frontend Development' pathway! Check your progress."
+    },
+    {
+      "_id": "507f1f77bcf86cd799439012",
+      "userID": "auth0|5f9d3b2e1c9d440067a1b2c3",
+      "notificationType": "InApp",
+      "notificationReason": "Task",
+      "relatedEntity": "task_5f9d3b2e1c9d440067a1b2c6",
+      "notifSendDate": "2025-01-25T14:10:00Z",
+      "notifReadDate": null,
+      "description": "New task assigned: Complete the React Component Testing module by next week."
+    },
+    {
+      "_id": "507f1f77bcf86cd799439013",
+      "userID": "auth0|5f9d3b2e1c9d440067a1b2d4",
+      "notificationType": "InApp",
+      "notificationReason": "Points",
+      "relatedEntity": null,
+      "notifSendDate": "2025-01-26T23:59:59Z",
+      "notifReadDate": null,
+      "description": "Daily streak bonus! You've earned 100 extra points for consistent learning."
+    },
+    {
+      "_id": "507f1f77bcf86cd799439014",
+      "userID": "auth0|5f9d3b2e1c9d440067a1b2d4",
+      "notificationType": "InApp",
+      "notificationReason": "Badge",
+      "relatedEntity": "badge_5f9d3b2e1c9d440067a1b2c8",
+      "notifSendDate": "2025-01-27T16:30:00Z",
+      "notifReadDate": null,
+      "description": "Congratulations! You've earned the 'Full Stack Developer' badge!"
+    }
+  ]
+}
