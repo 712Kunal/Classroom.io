@@ -36,12 +36,26 @@ function NotificationsPage() {
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-3xl font-bold flex items-center gap-2">
-            <Bell size={34} className="text-black dark:text-blue-500" />
-            Notifications
+            <motion.div
+              initial={{ rotate: 0, scale: 1 }}
+              animate={{ rotate: [0, 10, -10, 10, -10, 0], scale: [1, 0.8, 1, 0.8, 1, 1] }}
+              transition={{ duration: 1, ease: 'easeInOut' }}>
+              <Bell size={34} className="text-black dark:text-blue-500" />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, ease: 'easeInOut' }}>
+              Notifications
+            </motion.div>
           </CardTitle>
-          <CardDescription className="text-xl ml-5 text-gray-600 dark:text-gray-400">
+          <motion.CardDescription
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, ease: 'easeInOut' }}
+            className="text-xl ml-5 text-gray-600 dark:text-gray-400">
             Stay updated with your latest notifications and reminders.
-          </CardDescription>
+          </motion.CardDescription>
         </CardHeader>
 
         <CardContent className="p-4">
