@@ -178,7 +178,7 @@ const Interval = ({ data }) => {
                         {taskStateToObject[taskState].icon}
                         {taskStateToObject[taskState].displayText}
                       </div>
-                      {!task.isDone && <Button type="button" className="bg-green-600 dark:bg-green-500"><CheckCircle2 /> Mark As Done</Button>}
+                      {(!task.isDone && task.scheduledDate === Date.now()) && <Button type="button" className="bg-green-600 dark:bg-green-500"><CheckCircle2 /> Mark As Done</Button>}
                     </div>
                   </div>
                 </DialogHeader>

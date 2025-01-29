@@ -69,7 +69,7 @@
             "taskNumber": 3,
             "taskTitle": "Understanding Props",
             "description": "Learn how to pass and use props between components",
-            "scheduledDate": "2025-01-29T14:00:00",
+            "scheduledDate": "2025-01-28T00:00:00",
             "completedDate": null,
             "isDone": false,
             "lateMark": false,
