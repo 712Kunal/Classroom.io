@@ -30,7 +30,7 @@
       "relatedEntity": null,
       "notifSendDate": "2025-01-26T23:59:59",
       "notifReadDate": null,
-      "isDone": false,
+      "isDone": true,
       "description": "Daily streak bonus! You've earned 100 extra points for consistent learning."
     },
     {
@@ -41,7 +41,7 @@
       "relatedEntity": "badge_5f9d3b2e1c9d440067a1b2c8",
       "notifSendDate": "2025-01-27T16:30:00",
       "notifReadDate": null,
-      "isDone": false,
+      "isDone": true,
       "description": "Congratulations! You've earned the 'Full Stack Developer' badge!"
     }
   ]

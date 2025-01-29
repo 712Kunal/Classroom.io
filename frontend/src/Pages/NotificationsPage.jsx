@@ -102,7 +102,10 @@ function NotificationsPage() {
                   className="animated-div">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Card className="mb-4 relative overflow-hidden rounded-lg shadow-sm border-slate-600 border-[1px] hover:cursor-pointer hover:border-blue-500 dark:hover:border-blue-300 hover:shadow-blue-200 transition-all duration-500">
+                      <Card
+                        className={`mb-4 relative overflow-hidden ${
+                          notification.isDone ? null : 'bg-slate-200 dark:bg-slate-900'
+                        } rounded-lg shadow-sm border-slate-600 border-[1px] hover:cursor-pointer hover:border-blue-500 dark:hover:border-blue-300 hover:shadow-blue-200 transition-all duration-500`}>
                         <CardContent className="p-4 pr-12">
                           <div className="flex flex-start gap-4">
                             {getIcon(notification.notificationReason)}
