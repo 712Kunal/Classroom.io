@@ -16,6 +16,37 @@ import {
 
 function NotificationsPage() {
   const [notifications, setNotifications] = useState(dummyNotif.notifications);
+
+  const relativeTimeFormat = (date) => {
+    const sendDate = new Date(date);
+    const now = new Date();
+    // The `Math.floor()` function in JavaScript is used to round down a number to the nearest integer
+    const differenceInSeconds = Math.floor((now.getTime() - sendDate.getTime()) / 1000);
+
+    // if difference is less than 60 seconds, return 'Just now'
+    if (differenceInSeconds < 60) {
+      return 'Just now';
+    } else if (differenceInSeconds < 3600) {
+      // if difference is less than 1 hour, return minutes
+      return `${Math.floor(differenceInSeconds / 60)} minutes ago`;
+    } else if (differenceInSeconds < 86400) {
+      // if difference is less than 1 day, return hours
+      return `${Math.floor(differenceInSeconds / 3600)} hours ago`;
+    } else if (differenceInSeconds < 604800) {
+      // if difference is less than 1 week, return days
+      return `${Math.floor(differenceInSeconds / 86400)} days ago`;
+    } else if (differenceInSeconds < 2592000) {
+      // if difference is less than 3 months, return weeks
+      return `${Math.floor(differenceInSeconds / 604800)} weeks ago`;
+    } else if (differenceInSeconds < 31536000) {
+      // if difference is less than 6 months, return months
+      return `${Math.floor(differenceInSeconds / 2592000)} months ago`;
+    } else {
+      // if difference is more than 6 months, return years
+      return `${Math.floor(differenceInSeconds / 31536000)} years ago`;
+    }
+  };
+
   console.log(notifications);
 
   const getIcon = (notificationType) => {
@@ -87,7 +118,7 @@ function NotificationsPage() {
                                   Message
                                 </Badge>
                                 <span className="time text-xs text-slate-500">
-                                  {notification.notifSendDate}
+                                  {relativeTimeFormat(notification.notifSendDate)}
                                 </span>
                               </div>
                             </div>
