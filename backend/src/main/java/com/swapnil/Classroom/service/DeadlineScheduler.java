@@ -100,6 +100,7 @@ public class DeadlineScheduler {
             System.out.println("Checking date difference...");
             Date now = new Date();
             long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
+
             long timeDifference = scheduledDate.getTime() - now.getTime();
 
             if (timeDifference <= oneDayInMillis && timeDifference > 0) {
