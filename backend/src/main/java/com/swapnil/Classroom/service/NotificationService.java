@@ -4,6 +4,7 @@ package com.swapnil.Classroom.service;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.swapnil.Classroom.entity.Notification;
@@ -287,6 +288,60 @@ public class NotificationService {
                         "Cheers,\n" +
                         "Team Pathify",
                 progressPercentage, pathwayDescription
+        );
+
+
+
+
+        try{
+
+            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+
+            Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+
+            notification.setNotificationId(notificationId);
+            notification.setUserId(userId);
+            notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
+            notification.setNotificationSendDate(notificationSendDate);
+            notification.setNotificationReadDate(null);
+            notification.setRelatedEntity(String.valueOf(pathwayId));
+            notification.setDescription(description);
+
+            save(notification);
+
+            logger.info("Notification send for pathwayId: "+pathwayId+" to userId: "+userId);
+        }
+        catch (Exception e) {
+            logger.error("Error sending pathway progress notification", e);
+        }
+    }
+
+    public void sendTaskDeadlineNotification(String taskTitle, Notification notification, String userEmail, QueryDocumentSnapshot pathwayDoc) {
+
+
+        System.out.println("Sending notification");
+
+        String pathwayTopic= (String) pathwayDoc.get("topic");
+        String pathwayId= (String) pathwayDoc.get("pathwayId");
+        String userId= (String) pathwayDoc.get("userId");
+
+
+//        String pathwayDescription="";
+//        Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
+//        if(pathwayData!=null){
+//            pathwayDescription = (String) pathwayData.get("description");
+//
+//        }
+
+
+//        System.out.println("Pathway Description: " + pathwayDescription);
+        String description = String.format(
+                "⏳ Task Reminder! ⏳\n\n" +
+                        "Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
+                        "❗ If not completed by the deadline, it will be marked **Late** in your tracker.\n\n" +
+                        "Stay on track and keep up the good work!\n\n" +
+                        "Team Pathify",
+                taskTitle, pathwayTopic
         );
 
 
