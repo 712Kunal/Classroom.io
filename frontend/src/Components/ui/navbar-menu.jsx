@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-// import Image from 'next/image';
 
 const transition = {
   type: 'spring',
@@ -53,7 +52,7 @@ export const Menu = ({ setActive, children }) => {
     <nav
       // resets the state
       onMouseLeave={() => setActive(null)}
-      className="relative rounded-full border border-transparent dark:bg-[#09000f] dark:border-white/[0.2] bg-white shadow-input flex justify-center space-x-16 px-4 py-2">
+      className="relative rounded-full border border-transparent dark:bg-[#0b0b0b] dark:border-white/[0.2] bg-white shadow-input flex justify-center space-x-16 px-4 py-2">
       {children}
     </nav>
   );
