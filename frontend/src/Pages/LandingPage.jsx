@@ -4,7 +4,9 @@ function LandingPage() {
   return (
     <div className="border w-full h-full border-yellow-300">
       <LandingNavbar />
-      <main className="text-9xl">LandingPage</main>
+      <main className="w-full h-auto">
+        <h1>Landing page</h1>
+      </main>
     </div>
   );
 }
