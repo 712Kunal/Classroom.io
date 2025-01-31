@@ -9,7 +9,7 @@ export default function LandingNavbar() {
 
   return (
     <>
-      <nav className="navbar w-full backdrop-blur-2xl fixed top-0 left-0 p-4 border z-50">
+      <nav className="navbar w-full backdrop-blur-2xl sticky top-0 left-0 p-4 border z-50">
         <div className="outer-container flex justify-between lg:justify-evenly items-center gap-60">
           <div className="first-section flex-shrink-0">
             <a href="/" className="logo block w-24">
