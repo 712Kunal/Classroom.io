@@ -13,7 +13,7 @@ const NotFoundPage = lazy(() => import('./Pages/NotFoundPage.jsx'));
 
 const TimelineView = lazy(() => import('./components/pathway/TimelineView.jsx'));
 const CalenderView = lazy(() => import('./components/pathway/CalenderView.jsx'));
-const CreatePathway = lazy(() => import('./components/pathway/CreatePathway.jsx'));
+const CreatePathway = lazy(() => import('./components/library/CreatePathway.jsx'));
 const TasksView = lazy(() => import('./components/pathway/TasksView.jsx'));
 
 import AppWrapper from './components/core/AppWrapper.jsx';
@@ -32,11 +32,11 @@ function App() {
           <Route path="/signup" element={suspenseComponent(<SignupPage />)} />
           <Route path="/app" element={suspenseComponent(<AppWrapper />)}>
             <Route path="profile" element={suspenseComponent(<ProfilePage />)} />
+            <Route path="library/pathways/new" element={suspenseComponent(<CreatePathway />)} />
             <Route path="library" element={suspenseComponent(<LibraryPage />)} />
             <Route path="library/pathways/:pathwayId" element={suspenseComponent(<PathwayPage />)}>
               <Route path="timeline" element={suspenseComponent(<TimelineView />)} />
               <Route path="calender" element={suspenseComponent(<CalenderView />)} />
-              <Route path="create" element={suspenseComponent(<CreatePathway />)} />
               <Route path="tasks" element={suspenseComponent(<TasksView />)} />
             </Route>
             <Route path="notifications" element={suspenseComponent(<NotificationsPage />)} />
