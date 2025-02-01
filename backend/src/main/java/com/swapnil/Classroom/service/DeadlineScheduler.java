@@ -2,14 +2,17 @@ package com.swapnil.Classroom.service;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.swapnil.Classroom.entity.Notification;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -18,8 +21,12 @@ public class DeadlineScheduler {
 
     private final Firestore firestore;
     private final MailService mailService;
+    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
+    private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 0 * * * *")
+
+
+    @Scheduled(cron = "0 0 18 * * *")
     public void checkDeadlineAndSendEmail() {
 
         System.out.println("Scheduler started...");
@@ -62,11 +69,27 @@ public class DeadlineScheduler {
                                 @SuppressWarnings("unchecked")
                                 Map<String, Object> task = (Map<String, Object>) taskObj;
 
-                                Boolean deadlineEmailSent = (Boolean) task.get("deadlineEmailSent");
+                                Object scheduledDateObj = task.get("scheduledDate");
+                                Date scheduledDate = parseScheduledDate(scheduledDateObj);
+                                if (scheduledDate == null) continue;
+
+                                if (scheduledDate == null) {
+                                    System.out.println("Skipping task due to missing scheduledDate: " + task.get("taskTitle"));
+                                    continue;
+                                }
+
+                                if (!isToday(scheduledDate)) {
+                                    System.out.println("Skipping task, not due today: " + task.get("taskTitle") + " | Scheduled Date: " + scheduledDate);
+                                    continue;
+                                }
+
+
+//                                Boolean scheduledEmailSent = (Boolean) task.get("scheduledEmailSent");
                                 Boolean taskStatus = (Boolean) task.get("done");
 
-                                if (Boolean.TRUE.equals(deadlineEmailSent) || Boolean.TRUE.equals(taskStatus)) {
-                                    continue; // Skip already processed tasks
+                                // Skip tasks already processed
+                                if ( Boolean.TRUE.equals(taskStatus)) {
+                                    continue;
                                 }
 
                                 processTask(pathwayDoc, userEmail, task);
@@ -81,40 +104,85 @@ public class DeadlineScheduler {
         }
     }
 
-    public void processTask(QueryDocumentSnapshot pathwayDoc, String userEmail, Map<String, Object> task) {
+    private boolean isToday(Date date) {
+        Calendar today = Calendar.getInstance();
+        Calendar taskDate = Calendar.getInstance();
+        taskDate.setTime(date);
+
+        return today.get(Calendar.YEAR) == taskDate.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == taskDate.get(Calendar.DAY_OF_YEAR);
+    }
+
+
+
+    private Date parseScheduledDate(Object scheduledDateObj) {
         try {
-            System.out.println("Checking deadlines...");
-
-            Object scheduledDateObj = task.get("scheduledDate");
-            Date scheduledDate;
-
             if (scheduledDateObj instanceof com.google.cloud.Timestamp) {
-                scheduledDate = ((com.google.cloud.Timestamp) scheduledDateObj).toDate();
+                return ((com.google.cloud.Timestamp) scheduledDateObj).toDate();
             } else if (scheduledDateObj instanceof String) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                scheduledDate = sdf.parse((String) scheduledDateObj);
+                return sdf.parse((String) scheduledDateObj);
             } else {
-                throw new IllegalArgumentException("Unsupported scheduledDate type: " + scheduledDateObj);
+                System.err.println("Unsupported scheduledDate type: " + scheduledDateObj);
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println("Error parsing scheduledDate: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void processTask(QueryDocumentSnapshot pathwayDoc, String userEmail, Map<String, Object> task) {
+        try {
+            System.out.println("Processing task...");
+
+            String taskTitle = (String) task.get("taskTitle");
+
+            System.out.println("Sending deadline for the task: "+taskTitle);
+            String userId = mailService.getUserIdFromFirebase(userEmail);
+
+            DocumentReference userDoc = firestore.collection("UserRegistration").document(userId);
+            ApiFuture<DocumentSnapshot> future = userDoc.get();
+            DocumentSnapshot document = future.get();
+
+            if (document == null || !document.exists()) {
+                logger.error("User document not found");
+                return;
             }
 
-            System.out.println("Checking date difference...");
-            Date now = new Date();
-            long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
-            long timeDifference = scheduledDate.getTime() - now.getTime();
+            Boolean emailNotif = (Boolean) document.get("emailNotification");
+            Notification notification = new Notification();
 
-            if (timeDifference <= oneDayInMillis && timeDifference > 0) {
-                mailService.sendTaskDeadlineEmail(userEmail, task); // Send email
-                System.out.println("Deadline email sent to: "+userEmail);
-
-                task.put("deadlineEmailSent", true);
-                updateEmailSentInFirestore(pathwayDoc, task);
+            if (Boolean.TRUE.equals(emailNotif)) {
+                System.out.println("Sending email and in-app notifications...");
+                notification.setNotificationType(Notification.NotificationType.BOTH);
+                sendEmailAndNotificationForTaskDeadline(taskTitle, notification, userEmail, pathwayDoc);
+                logger.info("Email and Notification sent successfully");
+            } else {
+                System.out.println("Sending in-app notifications...");
+                notification.setNotificationType(Notification.NotificationType.IN_APP);
+                sendNotificationOnlyForTaskDeadline(taskTitle, notification, userEmail, pathwayDoc);
+                logger.info("Notification sent successfully");
             }
 
         } catch (Exception e) {
-            System.err.println("Error in processing task: " + e.getMessage());
+            System.err.println("Error processing task: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    private void sendNotificationOnlyForTaskDeadline(String taskTitle, Notification notification, String userEmail, QueryDocumentSnapshot pathwayDoc) {
+
+        notificationService.sendTaskDeadlineNotification(taskTitle, notification, userEmail, pathwayDoc);
+
+    }
+
+    private void sendEmailAndNotificationForTaskDeadline(String taskTitle, Notification notification, String userEmail, QueryDocumentSnapshot pathwayDoc) {
+        notificationService.sendTaskDeadlineNotification(taskTitle, notification, userEmail, pathwayDoc);
+        mailService.sendTaskDeadlineEmail(taskTitle, userEmail, pathwayDoc);
+
+    }
+
 
     public void updateEmailSentInFirestore(QueryDocumentSnapshot pathwayDoc, Map<String, Object> task) {
         try {

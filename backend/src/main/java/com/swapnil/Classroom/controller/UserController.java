@@ -105,4 +105,70 @@ public class UserController {
     }
 
 
+
+    @PostMapping("/user/forgot-password")
+    public ResponseEntity<String> forgotPasswordNotification(
+            @RequestParam String userId,
+            @RequestParam String userEmail
+    ){
+
+        if(userId==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Id not found with: "+userId);
+
+        }
+
+        if(userEmail==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User email not found with: "+userEmail);
+        }
+
+        try{
+
+            System.out.println("Sending email for forget password");
+            userService.sendForgotPasswordEmailAndUpdateCode(userId, userEmail);
+            return ResponseEntity.ok("Email sent successfully");
+
+
+
+        } catch (Exception e) {
+            logger.error("Error sending email", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending the email");
+
+
+        }
+
+
+    }
+
+
+    @PostMapping("/user/{userId}/reset-password/{code}")
+    public ResponseEntity<String> resetUserPassword(
+            @PathVariable String userId,
+            @PathVariable Long code
+    ){
+
+        if(userId==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Id not found with: "+userId);
+
+        }
+        try{
+
+            System.out.println("Checking user code");
+            userService.resetUserPassword(userId, code);
+            return ResponseEntity.ok("Password reset successfully");
+
+
+
+        } catch (Exception e) {
+            logger.error("Error resetting password", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error resetting password");
+
+
+        }
+
+
+    }
+
+
+
+
 }
