@@ -58,7 +58,7 @@ function NotificationsPage() {
 
   return (
     <div className="Container w-full h-screen mx-auto">
-      <Card className="w-full">
+      <Card className="w-full h-full">
         <CardHeader>
           <CardTitle className="text-3xl font-bold flex items-center gap-2">
             <motion.div

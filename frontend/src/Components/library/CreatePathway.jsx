@@ -49,7 +49,9 @@ const CreatePathway = () => {
           />
         </div>
         <div className="resourceTypePreferenceFieldBox">
-          <SelectResourceType />
+          <SelectResourceType
+           
+          />
         </div>
         <div className="submitBtn">
           <button

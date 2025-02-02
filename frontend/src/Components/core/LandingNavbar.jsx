@@ -13,7 +13,7 @@ export default function LandingNavbar() {
         <div className="outer-container flex justify-between items-center gap-60">
           <div className="first-section flex-shrink-0">
             <a href="/" className="logo block w-24">
-              <img src="/public/brand/logo.png" alt="logo" className="w-full" />
+              <img src="/brand/logo.png" alt="logo" className="w-full" />
             </a>
           </div>
           <div className="middle-section hidden lg:block">
