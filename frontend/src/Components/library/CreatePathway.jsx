@@ -81,9 +81,9 @@ const CreatePathway = () => {
     </div>
     <Separator orientation="vertical" className="hidden lg:block w-[1px] h-full bg-neutral-700"/>
     <div className="hidden lg:grid right w-1/2 h-full rounded-lg overflow-hidden">
-      {/* <Spline
+      <Spline
         scene="https://prod.spline.design/iP9fwSaPUgyeNnzA/scene.splinecode" 
-      /> */}
+      />
     </div>
   </div>;
 };
