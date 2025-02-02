@@ -4,6 +4,7 @@ import { FaBars, FaBell, FaCog, FaTimes } from 'react-icons/fa'; // Imported fro
 import { useState } from 'react';
 import Profile from '@/Components/Profile/Profile.jsx';
 import Dashboard from '@/Components/Profile/Dashboard.jsx';
+import Mycourses from './Mycourses';
 
 export default function Navbar({ user }) {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -15,7 +16,7 @@ export default function Navbar({ user }) {
   const navigation = [
     { name: 'Profile', href: '#', current: true },
     { name: 'Dashboard', href: '#', current: false },
-    { name: 'My Courses', href: '#', current: false },
+    { name: 'History', href: '#', current: false },
     { name: 'Reports', href: '#', current: false },
   ];
 
@@ -117,6 +118,8 @@ export default function Navbar({ user }) {
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {activeTab === 'Profile' && <Profile user={user} />}
           {activeTab === 'Dashboard' && <Dashboard user={user} />}
+          {activeTab === 'History' && <Mycourses/>}
+
         </div>
       </main>
     </div>

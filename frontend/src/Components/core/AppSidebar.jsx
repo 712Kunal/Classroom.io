@@ -18,16 +18,42 @@ import { NavUser } from '../ui/nav-user.jsx';
 import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
+import { useEffect, useState } from "react";
+import { auth, db } from "@/Firebase/firebase"; 
+import { doc, getDoc } from "firebase/firestore";
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
+  
+  const [userDetails, setUserDetails] = useState(null);
 
-  const user = {
-    username: 'JohnDoe08',
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = auth.currentUser; 
+      if (user) {
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+  
+        if (docSnap.exists()) {
+          setUserDetails(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+      } else {
+        console.log("No user is logged in");
+      }
+    };
+  
+    fetchUserData();
+  }, []); 
+  
+  const user = userDetails ? {
+    username: userDetails.username,
     avatar: 'https://avatar.iran.liara.run/public/48',
-    email: 'johndoe08@gmail.com'
-  };
+    email: userDetails.email,
+  } : null;  
+  
 
   const pathways = [
     {
@@ -52,6 +78,7 @@ const AppSidebar = () => {
       icon: <Bell size={18} />,
     }
   ];
+
 
   return (
     <Sidebar side="left" variant="floating" collapsible="icon">
