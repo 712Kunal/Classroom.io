@@ -20,40 +20,44 @@ export default function LandingNavbar() {
             <Menu setActive={setActive}>
               <MenuItem setActive={setActive} active={active} item="Services">
                 <div className="flex flex-col gap-4 text-sm">
-                  <HoveredLink href="/">Web Development</HoveredLink>
-                  <HoveredLink href="/">Interface Design</HoveredLink>
-                  <HoveredLink href="/">Search Engine Optimization</HoveredLink>
-                  <HoveredLink href="/">Branding</HoveredLink>
+                  <HoveredLink href="/">AI-Generated Pathways</HoveredLink>
+                  <HoveredLink href="/">Gamified Services</HoveredLink>
+                  <HoveredLink href="/">Task Scheduling</HoveredLink>
+                  <HoveredLink href="/">Analytics & Insights</HoveredLink>
                 </div>
               </MenuItem>
               <MenuItem setActive={setActive} active={active} item="Products">
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <ProductItem
-                    title="Tailwind Master Kit"
+                    title="Pathway Builder Pro"
                     href="https://tailwindmasterkit.com"
                     src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
-                    description="Production ready Tailwind css components for your next project"
+                    description="AI-powered tool to create customized learning paths tailored to your goals"
                   />
                   <ProductItem
-                    title="Moonbeam"
+                    title="Gamify Toolkit"
                     href="https://gomoonbeam.com"
                     src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.51.31%E2%80%AFPM.png"
-                    description="Never write from scratch again. Go from idea to blog in minutes."
+                    description="Engage with gamified challenges, rewards, and progress tracking."
                   />
                   <ProductItem
-                    title="Rogue"
+                    title="Task Scheduler AI"
                     href="https://userogue.com"
                     src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
-                    description="Respond to government RFPs, RFIs and RFQs 10x faster using AI"
+                    description="Smart task management with AI-suggested prioritization and reminders."
+                  />
+                  <ProductItem
+                    title="Smart Notifications"
+                    href="https://smartnotifications.com"
+                    src="https://example.com/smart-notifications.webp"
+                    description="Stay on track with timely reminders and motivational nudges"
                   />
                 </div>
               </MenuItem>
               <MenuItem setActive={setActive} active={active} item="Pricing">
                 <div className="flex flex-col space-y-4 text-sm">
-                  <HoveredLink href="/hobby">Hobby</HoveredLink>
-                  <HoveredLink href="/individual">Individual</HoveredLink>
-                  <HoveredLink href="/team">Team</HoveredLink>
-                  <HoveredLink href="/enterprise">Enterprise</HoveredLink>
+                  <HoveredLink href="/hobby">Free Plan (Starter)</HoveredLink>
+                  <HoveredLink href="/individual">Premium Plan (Enterprise)</HoveredLink>
                 </div>
               </MenuItem>
             </Menu>
