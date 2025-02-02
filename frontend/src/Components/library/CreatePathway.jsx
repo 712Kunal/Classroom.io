@@ -7,6 +7,7 @@ import InputIntervalCount from "../originUi/input-interval-count";
 import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
 import { ShipWheel } from "lucide-react";
+import Spline from '@splinetool/react-spline';
 
 const intervalCountLimit = {
   day: 10,
@@ -79,8 +80,10 @@ const CreatePathway = () => {
       </div>
     </div>
     <Separator orientation="vertical" className="hidden lg:block w-[1px] h-full bg-neutral-700"/>
-    <div className="hidden lg:grid right">
-      
+    <div className="hidden lg:grid right w-1/2 h-full rounded-lg overflow-hidden">
+      {/* <Spline
+        scene="https://prod.spline.design/iP9fwSaPUgyeNnzA/scene.splinecode" 
+      /> */}
     </div>
   </div>;
 };
