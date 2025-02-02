@@ -37,7 +37,7 @@ function FormDetails() {
         <form className="flex gap-2" onSubmit={handleSubmit}>
           <div className="outer-container w-full flex flex-wrap">
             {/* left Section */}
-            <div className="Personal-details border w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
+            <div className="Personal-details w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
               <h2 className="text-xl dark:text-green-500 flex items-center">
                 <FileUser />
                 Personal Details :
@@ -77,10 +77,7 @@ function FormDetails() {
                   <option value="other">Other</option>
                 </select>
               </div>
-            </div>
-            {/*  Right Section */}
-            <div className="border w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
-              <div className="social-links border-2 rounded-md p-4 flex flex-col gap-4">
+              <div className="social-links rounded-md p-4 flex flex-col gap-4">
                 <h2 className="text-xl dark:text-pink-500 flex items-center">
                   <MessageCircleHeart />
                   Social Links :
@@ -108,7 +105,10 @@ function FormDetails() {
                   </div>
                 </div>
               </div>
-              <div className="background border-2 rounded-md p-4 flex flex-col gap-4">
+            </div>
+            {/*  Right Section */}
+            <div className="background w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
+              <div className="background rounded-md p-4 flex flex-col gap-4">
                 <h2 className="text-xl dark:text-yellow-400 flex items-center">
                   <GraduationCap /> Background :
                 </h2>
