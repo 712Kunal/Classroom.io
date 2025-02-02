@@ -34,8 +34,8 @@ function App() {
           <Route path="/detailsForm" element={suspenseComponent(<FormDetailsPage />)} />
           <Route path="/app" element={suspenseComponent(<AppWrapper />)}>
             <Route path="profile" element={suspenseComponent(<ProfilePage />)} />
-            <Route path="library/pathways/new" element={suspenseComponent(<CreatePathway />)} />
             <Route path="library" element={suspenseComponent(<LibraryPage />)} />
+            <Route path="library/new" element={suspenseComponent(<CreatePathway />)} />
             <Route path="library/pathways/:pathwayId" element={suspenseComponent(<PathwayPage />)}>
               <Route path="timeline" element={suspenseComponent(<TimelineView />)} />
               <Route path="calender" element={suspenseComponent(<CalenderView />)} />
