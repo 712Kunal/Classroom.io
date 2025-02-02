@@ -19,20 +19,18 @@ import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
 import { useEffect, useState } from "react";
-import { auth, db } from "@/Firebase/firebase"; // Assuming you have your firebase config
+import { auth, db } from "@/Firebase/firebase"; 
 import { doc, getDoc } from "firebase/firestore";
-// import { useNavigate } from "react-router-dom";
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
   
   const [userDetails, setUserDetails] = useState(null);
-  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const user = auth.currentUser; // We can directly use currentUser here if it's available
+      const user = auth.currentUser; 
       if (user) {
         const docRef = doc(db, "Users", user.uid);
         const docSnap = await getDoc(docRef);
@@ -48,13 +46,13 @@ const AppSidebar = () => {
     };
   
     fetchUserData();
-  }, []); // This only runs once when the component mounts
+  }, []); 
   
   const user = userDetails ? {
     username: userDetails.username,
-    avatar: 'https://avatar.iran.liara.run/public/48', // or use `userDetails.avatar` if you fetch it
+    avatar: 'https://avatar.iran.liara.run/public/48',
     email: userDetails.email,
-  } : null;  // Make sure userDetails is available before accessing it
+  } : null;  
   
 
   const pathways = [
