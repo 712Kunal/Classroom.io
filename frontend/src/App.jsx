@@ -10,6 +10,7 @@ const LibraryPage = lazy(() => import('./Pages/LibraryPage.jsx'));
 const PathwayPage = lazy(() => import('./Pages/PathwayPage.jsx'));
 const NotificationsPage = lazy(() => import('./Pages/NotificationsPage.jsx'));
 const NotFoundPage = lazy(() => import('./Pages/NotFoundPage.jsx'));
+const FormDetailsPage = lazy(() => import('./Pages/FormDetails.jsx'));
 
 const TimelineView = lazy(() => import('./components/pathway/TimelineView.jsx'));
 const CalenderView = lazy(() => import('./components/pathway/CalenderView.jsx'));
@@ -46,10 +47,11 @@ function App() {
           <Route path="/" element={user ? <Navigate to="/app/profile" /> :suspenseComponent(<LandingPage />)}/>
           <Route path="/login" element={user ? <Navigate to="/app/profile" /> :suspenseComponent(<LoginPage />)} />
           <Route path="/signup" element={suspenseComponent(<SignupPage />)} />
+          <Route path="/detailsForm" element={suspenseComponent(<FormDetailsPage />)} />
           <Route path="/app" element={suspenseComponent(<AppWrapper />)}>
             <Route path="profile" element={suspenseComponent(<ProfilePage />)} />
-            <Route path="library/pathways/new" element={suspenseComponent(<CreatePathway />)} />
             <Route path="library" element={suspenseComponent(<LibraryPage />)} />
+            <Route path="library/new" element={suspenseComponent(<CreatePathway />)} />
             <Route path="library/pathways/:pathwayId" element={suspenseComponent(<PathwayPage />)}>
               <Route path="timeline" element={suspenseComponent(<TimelineView />)} />
               <Route path="calender" element={suspenseComponent(<CalenderView />)} />
