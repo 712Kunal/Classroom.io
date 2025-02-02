@@ -4,7 +4,9 @@ import { useState } from "react";
 import SelectIntervalType from "../originUi/select-interval-type";
 import SelectResourceType from "../originUi/select-resource";
 import InputIntervalCount from "../originUi/input-interval-count";
+import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
+import { ShipWheel } from "lucide-react";
 
 const intervalCountLimit = {
   day: 10,
@@ -20,49 +22,65 @@ const CreatePathway = () => {
     preferedResourceType: ""
   })
 
-  return <div className='p-2'>
-    <h1>Create Pathway</h1>
-    <div className="form-container">
-      <form>
-        <div className="topicFieldBox">
-          <LabelInputContainer>
-            <Label htmlFor="topicField">Topic: </Label>
-            <Input id="topicField" placeholder="Eg: Data Structures and Algorithms" type="text" value={formData.topic} onChange={(ele) => {
-              setFormData({ ...formData, topic: ele.target.value })
+  return <div className='w-full h-full py-4 px-4 flex gap-2'>
+    <div className="w-full lg:w-1/2 p-4">
+      <h1 className="text-2xl">Generate Pathway on <span className="rounded-md border-2 px-2 transition-all">{formData.topic || "your topic"}</span> by filling below form</h1>
+      <div className="form-container grid py-4">
+        <form className="flex flex-col gap-4">
+          <div className="topicFieldBox border-2 rounded-md p-4">
+            <LabelInputContainer>
+              <Label htmlFor="topicField">Whats your topic: </Label>
+              <Input
+                id="topicField"
+                placeholder="Eg: Data Structures and Algorithms"
+                type="text"
+                value={formData.topic}
+                onChange={(ele) => {
+                  setFormData({ ...formData, topic: ele.target.value })
+                }}
+              />
+            </LabelInputContainer>
+          </div>
+          <div className="intervalTypeFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
+            <Label htmlFor="intervalTypeField">Whats your preferred interval type: </Label>
+            <SelectIntervalType value={formData.intervalType} setValue={(value) => {
+              setFormData({ ...formData, intervalType: value });
             }} />
-          </LabelInputContainer>
-        </div>
-        <div className="intervalTypeFieldBox">
-          <Label htmlFor="intervalTypeField">Interval Type: </Label>
-          <SelectIntervalType value={formData.intervalType} setValue={(value) => {
-            setFormData({ ...formData, intervalType: value });
-          }} />
-        </div>
-        <div className="intervalCountFieldBox">
-          <Label htmlFor="intervalCountField">Number of Intervals: </Label>
-          <InputIntervalCount
-            value={formData.intervalCount}
-            setValue={(value) => {
-              setFormData({ ...formData, intervalCount: value });
-            }}
-            max={intervalCountLimit[formData.intervalType]}
-          />
-        </div>
-        <div className="resourceTypePreferenceFieldBox">
-          <SelectResourceType
-           
-          />
-        </div>
-        <div className="submitBtn">
-          <button
-            className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-            type="submit"
-          >
-            Sign up &rarr;
-            <BottomGradient />
-          </button>
-        </div>
-      </form>
+          </div>
+          <div className="intervalCountFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
+            <Label htmlFor="intervalCountField">How many intervals of above duration do you want to learn this in: </Label>
+            <InputIntervalCount
+              value={formData.intervalCount}
+              setValue={(value) => {
+                setFormData({ ...formData, intervalCount: value });
+              }}
+              max={intervalCountLimit[formData.intervalType]}
+            />
+          </div>
+          <div className="resourceTypePreferenceFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
+            <Label htmlFor="resourceTypePreferenceField">Whats your favorite learning material type: </Label>
+            <SelectResourceType
+              value={formData.preferedResourceType}
+              setValue={(value) => {
+                setFormData({ ...formData, preferedResourceType: value });
+              }}
+            />
+          </div>
+          <div className="submitBtn">
+            <button
+              className="relative group/btn bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+              type="submit"
+            >
+              Generate a pathway for me <ShipWheel />
+              <BottomGradient />
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <Separator orientation="vertical" className="hidden lg:block w-[1px] h-full bg-neutral-700"/>
+    <div className="hidden lg:grid right">
+      
     </div>
   </div>;
 };

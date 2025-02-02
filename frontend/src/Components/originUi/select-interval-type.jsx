@@ -14,7 +14,6 @@ export default function SelectIntervalType({ value, setValue }) {
 
   return (
     (<fieldset className="space-y-4">
-      <legend className="text-sm font-medium leading-none text-foreground">Choose Interval Type</legend>
       <RadioGroup
         className="gap-0 -space-y-px rounded-lg shadow-sm shadow-black/5"
         defaultValue="week"
