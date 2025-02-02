@@ -18,16 +18,44 @@ import { NavUser } from '../ui/nav-user.jsx';
 import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
+import { useEffect, useState } from "react";
+import { auth, db } from "@/Firebase/firebase"; // Assuming you have your firebase config
+import { doc, getDoc } from "firebase/firestore";
+// import { useNavigate } from "react-router-dom";
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
+  
+  const [userDetails, setUserDetails] = useState(null);
+  // const navigate = useNavigate();
 
-  const user = {
-    username: 'JohnDoe08',
-    avatar: 'https://avatar.iran.liara.run/public/48',
-    email: 'johndoe08@gmail.com'
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = auth.currentUser; // We can directly use currentUser here if it's available
+      if (user) {
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+  
+        if (docSnap.exists()) {
+          setUserDetails(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+      } else {
+        console.log("No user is logged in");
+      }
+    };
+  
+    fetchUserData();
+  }, []); // This only runs once when the component mounts
+  
+  const user = userDetails ? {
+    username: userDetails.username,
+    avatar: 'https://avatar.iran.liara.run/public/48', // or use `userDetails.avatar` if you fetch it
+    email: userDetails.email,
+  } : null;  // Make sure userDetails is available before accessing it
+  
 
   const pathways = [
     {
@@ -52,6 +80,7 @@ const AppSidebar = () => {
       icon: <Bell size={18} />,
     }
   ];
+
 
   return (
     <Sidebar side="left" variant="floating" collapsible="icon">
