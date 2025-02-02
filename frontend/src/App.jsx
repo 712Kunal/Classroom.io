@@ -10,6 +10,7 @@ const LibraryPage = lazy(() => import('./Pages/LibraryPage.jsx'));
 const PathwayPage = lazy(() => import('./Pages/PathwayPage.jsx'));
 const NotificationsPage = lazy(() => import('./Pages/NotificationsPage.jsx'));
 const NotFoundPage = lazy(() => import('./Pages/NotFoundPage.jsx'));
+const FormDetailsPage = lazy(() => import('./Pages/FormDetails.jsx'));
 
 const TimelineView = lazy(() => import('./components/pathway/TimelineView.jsx'));
 const CalenderView = lazy(() => import('./components/pathway/CalenderView.jsx'));
@@ -30,6 +31,7 @@ function App() {
           <Route path="/" element={suspenseComponent(<LandingPage />)} />
           <Route path="/login" element={suspenseComponent(<LoginPage />)} />
           <Route path="/signup" element={suspenseComponent(<SignupPage />)} />
+          <Route path="/detailsForm" element={suspenseComponent(<FormDetailsPage />)} />
           <Route path="/app" element={suspenseComponent(<AppWrapper />)}>
             <Route path="profile" element={suspenseComponent(<ProfilePage />)} />
             <Route path="library" element={suspenseComponent(<LibraryPage />)} />
