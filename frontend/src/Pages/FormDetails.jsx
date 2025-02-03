@@ -8,7 +8,8 @@ import {
   Linkedin,
   Twitter,
   BriefcaseBusiness,
-  GraduationCap
+  GraduationCap,
+  ShipWheel
 } from 'lucide-react';
 import { Input } from '../Components/ui/input2';
 import { Label } from '../Components/ui/label2';
@@ -149,6 +150,11 @@ function FormDetails() {
                   <Languages placeholder="Eg: Devops, Cloud computing, AI" />
                 </div>
               </div>
+              <button
+                className="relative group/btn hover:shadow-md hover:shadow-blue-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium"
+                type="submit">
+                Submit Details <ShipWheel />
+              </button>
             </div>
           </div>
         </form>
