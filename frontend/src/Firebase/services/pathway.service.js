@@ -16,6 +16,7 @@ export const addTrip = async (userId, pathwayData) => {
     throw error;
   }
 };
+
 // get single pathway from database
 export const getSinglePathway = async (pathwayId) => {
   try {
