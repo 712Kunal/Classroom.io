@@ -148,16 +148,25 @@ const loadingStages = [
   { id: 0, message: "Gathering your background data.", icon: <Shapes size={iconSize} /> },
   { id: 1, message: "Formulating a prompt based on your needs.", icon: <PenLine size={iconSize} /> },
   { id: 2, message: "Prompting Gemini for your pathway.", icon: <SquareTerminal size={iconSize} /> },
-  { id: 3, message: "Gemini is thinking.", icon: <SiGooglegemini size={iconSize} /> },
+  { id: 3, message: "Gemini is thinking.", icon: <SiGooglegemini size={iconSize} />, },
   { id: 4, message: "Collecting response from Gemini.", icon: <Mailbox size={iconSize} /> },
   { id: 5, message: "Formatting the response.", icon: <Baseline size={iconSize} /> },
   { id: 6, message: "Generating a timeline for you.", icon: <Route size={iconSize} /> },
   { id: 7, message: "Your personalised pathway is ready.", icon: <CircleCheck size={iconSize} /> },
 ]
+const backdropsList = [
+  "/assets/gif/retrofuturistic-circuit-loop.gif",
+  "/assets/gif/ai-chip.gif",
+  "/assets/gif/gemini.gif"
+]
 
 const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) => {
   const [currentDoneStages, setDoneStages] = useState([0, 1, 2, 3]);
+  const [currentBackDrop, setBackdrop] = useState(0);
 
+  const rotateBackDrop = () => {
+    
+  }
 
   return (
     <div className="loaderWrapper flex justify-center items-center h-full w-full">
