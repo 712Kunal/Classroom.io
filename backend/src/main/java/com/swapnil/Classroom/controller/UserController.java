@@ -4,6 +4,8 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserRecord;
 import com.swapnil.Classroom.entity.Notification;
 import com.swapnil.Classroom.entity.UserRegistration;
 import com.swapnil.Classroom.service.UserService;
@@ -65,24 +67,22 @@ public class UserController {
             @PathVariable String userId
     ) throws ExecutionException, InterruptedException {
 
-        DocumentReference userDoc=firestore.collection("UserRegistration").document(userId);
-
-        ApiFuture<DocumentSnapshot> future = userDoc.get();
-        DocumentSnapshot document = future.get();
-        String userEmail= (String) document.get("email");
-
-        if(userEmail==null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User email not found with: "+userId);
-
-        }
-
-
         try{
+            UserRecord userRecord = FirebaseAuth.getInstance().getUser(userId);
+            String userEmail = userRecord.getEmail();
 
-                System.out.println("Sending email and in-app notifications");
-//                notification.setNotificationType(Notification.NotificationType.BOTH);
-                sendEmailAndNotification(userId, userEmail);
-                return ResponseEntity.ok("Email and Notification sent successfully");
+            if(userEmail==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User email not found with: "+userId);
+
+            }
+
+
+
+
+            System.out.println("Sending email and in-app notifications");
+//          notification.setNotificationType(Notification.NotificationType.BOTH);
+            sendEmailAndNotification(userId, userEmail);
+            return ResponseEntity.ok("Email and Notification sent successfully");
 
 
 

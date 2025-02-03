@@ -76,7 +76,6 @@ public class UserService {
             notification.setUserId(userId);
             notification.setNotificationReason(null);
             notification.setNotificationSendDate(notificationSendDate);
-            notification.setNotificationReadDate(null);
             notification.setRelatedEntity(null);
             notification.setDescription("Welcome to the Personalized Learning Pathway Generator! Your account has been successfully created. Start exploring personalized learning pathways to achieve your goals.");
 
@@ -92,7 +91,7 @@ public class UserService {
 
     public void sendUserSignupEmail(String userId, String userEmail) throws ExecutionException, InterruptedException, MessagingException {
 
-        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
 
         String userName=(String) userDoc.get("username");
