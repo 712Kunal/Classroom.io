@@ -41,7 +41,7 @@ function FormDetails() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 2, ease: 'easeInOut' }}
+            transition={{ duration: 1, ease: 'easeInOut' }}
             className="outer-container w-full flex flex-wrap">
             {/* left Section */}
             <div className="Personal-details w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
@@ -159,7 +159,13 @@ function FormDetails() {
               <button
                 className="relative group/btn hover:shadow-md hover:shadow-blue-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium"
                 type="submit">
-                Submit Details <ShipWheel />
+                Submit Details{' '}
+                <motion.span
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, ease: 'easeInOut', repeat: Infinity }}>
+                  <ShipWheel />
+                </motion.span>
               </button>
             </div>
           </motion.div>
