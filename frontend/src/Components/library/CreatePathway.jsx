@@ -1,6 +1,6 @@
 import { Input } from "../ui/input2";
 import { Label } from "../ui/label2";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectIntervalType from "../originUi/select-interval-type";
 import SelectResourceType from "../originUi/select-resource";
 import InputIntervalCount from "../originUi/input-interval-count";
@@ -154,24 +154,23 @@ const loadingStages = [
   { id: 6, message: "Generating a timeline for you.", icon: <Route size={iconSize} /> },
   { id: 7, message: "Your personalised pathway is ready.", icon: <CircleCheck size={iconSize} /> },
 ]
-const backdropsList = [
-  "/assets/gif/retrofuturistic-circuit-loop.gif",
-  "/assets/gif/ai-chip.gif",
-  "/assets/gif/gemini.gif"
-]
 
 const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) => {
   const [currentDoneStages, setDoneStages] = useState([0, 1, 2, 3]);
-  const [currentBackDrop, setBackdrop] = useState(0);
-
-  const rotateBackDrop = () => {
-    
-  }
 
   return (
-    <div className="loaderWrapper flex justify-center items-center h-full w-full">
-      <div className="bg flex justify-start h-full w-full p-8 items-center">
-        <Card className="rounded-lg overflow-hidden h-fit">
+    <div className="loaderWrapper relative flex justify-center items-center h-full w-full overflow-hidden">
+      <div className="backdropContainer absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+        <img
+          className="absolute top-1/2 left-[70%] -translate-y-1/2 -translate-x-1/2 min-w-[100%] min-h-[100%] object-cover"
+          src="/assets/gif/ai-chip.gif"
+          alt="loader background gif"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent z-20"></div>
+      </div>
+      <div className="relative z-30 flex justify-start h-full w-full p-8 items-center">
+        <Card className="rounded-lg overflow-hidden h-fit w-[500px]">
           <CardHeader className="bg-neutral-950 p-4">
             <CardTitle>Somethings Cooking</CardTitle>
             <CardDescription>
@@ -187,7 +186,7 @@ const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) =
                 <div key={index}>
                   {!isFirst && <div className={`mx-auto line w-[1px] h-4 ${isDone ? "bg-neutral-100" : "bg-neutral-600"}`}></div>}
                   <div className="stageRow flex gap-2 justify-start items-center text-sm">
-                    <span className={`rounded-full aspect-square border-2 p-1 ${isActive ? "border-blue-500 text-blue-500" : isDone ? "text-neutral-50 border-neutral-50" : "text-neutral-50"}`}>{isActive ? <LoaderCircle className="animate-spin" size={iconSize}/> : stage.icon}</span>
+                    <span className={`rounded-full aspect-square border-2 p-1 ${isActive ? "border-blue-500 text-blue-500" : isDone ? "text-neutral-50 border-neutral-50" : "text-neutral-50"}`}>{isActive ? <LoaderCircle className="animate-spin" size={iconSize} /> : stage.icon}</span>
                     <span className={isActive ? "text-blue-500" : ""}>{stage.message}</span>
                   </div>
                 </div>
