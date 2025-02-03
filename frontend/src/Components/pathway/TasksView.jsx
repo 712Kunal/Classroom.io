@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card.jsx"
 import { Badge } from "@/components/ui/badge.jsx"
 import { CalendarIcon, BookOpenIcon, MonitorPlay, SquareMousePointer, CopyPlus, CopyMinus, CalendarCheck, Clock, BadgeCheck, CircleCheck, BadgeAlert, CircleAlert, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button.jsx"
+import { useGlobal } from "../context/GlobalContext.jsx";
 
 const ResourceTypeToIconMap = {
   'Documentation': <BookOpenIcon size={24} className="text-blue-500" />,
@@ -69,8 +70,9 @@ const taskStateToDisplayTextMap = {
 
 const TasksView = () => {
   const { pathway } = usePathway();
-  const { topic, description, duration, startDate, endDate } = pathway.data;
+  const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const taskList = pathway.toTaskList();
+  const { setActivePathwayId } = useGlobal();
 
   const [expandedTasks, setExpandedTasks] = useState([]);
 
@@ -81,6 +83,11 @@ const TasksView = () => {
       setExpandedTasks([...expandedTasks, task]);
     }
   };
+
+  const startPathway = () => {
+    setActivePathwayId(pathway.data._id);
+    pathway.populateWithDates(Date.now())
+  }
 
   const toggleCollapseExpandAll = () => {
     if (expandedTasks.length === 0) {
@@ -112,7 +119,12 @@ const TasksView = () => {
   return (
     <div className="w-full h-full p-6 grid place-items-center">
       <div className="max-w-7xl">
-        <h1 className="text-3xl font-bold mb-4">{topic}</h1>
+        <div className="flex justify-between">
+          <h1 className="text-3xl font-bold mb-4">{topic}</h1>
+          {!isActive && <div className="StartBox ml-auto">
+            <Button onClick={startPathway}>Start Your Learning Journey now</Button>
+          </div>}
+        </div>
         <p className="text-gray-600 text-2xl mb-4">{description}</p>
         <div className="flex justify-between items-center gap-4 text-sm text-gray-800 dark:text-gray-500">
           <div className="flex gap-2">
@@ -166,7 +178,7 @@ const TasksView = () => {
                             <span>{taskStateToDisplayTextMap[taskState]}</span>
                           </div>
                           {(taskState === 'pending' || taskState === 'lateMark') && (
-                            <Button type="button" className="bg-neutral-200"><CheckCircle/> | Mark As Done</Button>
+                            <Button type="button" className="bg-neutral-200"><CheckCircle /> | Mark As Done</Button>
                           )}
                         </div>
                       </div>
