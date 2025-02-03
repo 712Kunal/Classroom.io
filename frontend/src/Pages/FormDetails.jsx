@@ -163,7 +163,7 @@ function FormDetails() {
                 <motion.span
                   initial={{ rotate: 0 }}
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 1, ease: 'easeInOut', repeat: Infinity }}>
+                  transition={{ duration: 2, ease: 'easeIn', repeat: Infinity }}>
                   <ShipWheel />
                 </motion.span>
               </button>
