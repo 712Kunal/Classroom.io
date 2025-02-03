@@ -1,4 +1,6 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+
 import {
   ReceiptText,
   FileUser,
@@ -36,7 +38,11 @@ function FormDetails() {
 
       <div className="formContainder w-full p-2 mt-4">
         <form className="flex gap-2" onSubmit={handleSubmit}>
-          <div className="outer-container w-full flex flex-wrap">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2, ease: 'easeInOut' }}
+            className="outer-container w-full flex flex-wrap">
             {/* left Section */}
             <div className="Personal-details w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
               <h2 className="text-xl dark:text-green-500 flex items-center">
@@ -156,7 +162,7 @@ function FormDetails() {
                 Submit Details <ShipWheel />
               </button>
             </div>
-          </div>
+          </motion.div>
         </form>
       </div>
     </div>
