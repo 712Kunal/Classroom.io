@@ -1,4 +1,6 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+
 import {
   ReceiptText,
   FileUser,
@@ -8,7 +10,8 @@ import {
   Linkedin,
   Twitter,
   BriefcaseBusiness,
-  GraduationCap
+  GraduationCap,
+  ShipWheel
 } from 'lucide-react';
 import { Input } from '../Components/ui/input2';
 import { Label } from '../Components/ui/label2';
@@ -35,7 +38,11 @@ function FormDetails() {
 
       <div className="formContainder w-full p-2 mt-4">
         <form className="flex gap-2" onSubmit={handleSubmit}>
-          <div className="outer-container w-full flex flex-wrap">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2, ease: 'easeInOut' }}
+            className="outer-container w-full flex flex-wrap">
             {/* left Section */}
             <div className="Personal-details w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
               <h2 className="text-xl dark:text-green-500 flex items-center">
@@ -149,8 +156,13 @@ function FormDetails() {
                   <Languages placeholder="Eg: Devops, Cloud computing, AI" />
                 </div>
               </div>
+              <button
+                className="relative group/btn hover:shadow-md hover:shadow-blue-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium"
+                type="submit">
+                Submit Details <ShipWheel />
+              </button>
             </div>
-          </div>
+          </motion.div>
         </form>
       </div>
     </div>
