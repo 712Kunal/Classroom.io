@@ -12,7 +12,7 @@ const addUserDetails = async (userDetails) => {
 
     // Get the related user document reference
     const userDetailsRef = doc(db, 'Users', user.uid);
-
+    
     const docRef = await addDoc(collection(db, 'UserDetails'), {
       ...userDetails,
       createdAt: new Date().toISOString(),
