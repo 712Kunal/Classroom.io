@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route,Navigate } from 'react-router-dom';
 
 const LandingPage = lazy(() => import('./Pages/LandingPage.jsx'));
 const LoginPage = lazy(() => import('./Pages/LoginPage.jsx'));
+const ForgotPassword = lazy(() => import('./Pages/ForgotPassword'));
 const SignupPage = lazy(() => import('./Pages/SignupPage.jsx'));
 const ProfilePage = lazy(() => import('./Pages/ProfilePage.jsx'));
 const LibraryPage = lazy(() => import('./Pages/LibraryPage.jsx'));
@@ -46,6 +47,7 @@ function App() {
         <Routes>
           <Route path="/" element={user ? <Navigate to="/app/profile" /> :suspenseComponent(<LandingPage />)}/>
           <Route path="/login" element={user ? <Navigate to="/app/profile" /> :suspenseComponent(<LoginPage />)} />
+          <Route path="/forgot-password" element={suspenseComponent(<ForgotPassword />)} />
           <Route path="/signup" element={suspenseComponent(<SignupPage />)} />
           <Route path="/detailsForm" element={suspenseComponent(<FormDetailsPage />)} />
           <Route path="/app" element={suspenseComponent(<AppWrapper />)}>

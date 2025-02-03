@@ -90,7 +90,6 @@ public class NotificationService {
             notification.setUserId(userId);
             notification.setNotificationReason(Notification.NotificationReason.TASK);
             notification.setNotificationSendDate(notificationSendDate);
-            notification.setNotificationReadDate(null);
             notification.setRelatedEntity(String.valueOf(taskId));
             notification.setDescription(description);
 
@@ -164,7 +163,6 @@ public class NotificationService {
             notification.setUserId(userId);
             notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
             notification.setNotificationSendDate(notificationSendDate);
-            notification.setNotificationReadDate(null);
             notification.setRelatedEntity(String.valueOf(pathwayId));
             notification.setDescription(description);
 
@@ -210,7 +208,6 @@ public class NotificationService {
             notification.setUserId(userId);
             notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
             notification.setNotificationSendDate(notificationSendDate);
-            notification.setNotificationReadDate(null);
             notification.setRelatedEntity(String.valueOf(pathwayId));
             notification.setDescription(description);
 
@@ -256,7 +253,7 @@ public class NotificationService {
             notification.setUserId(userId);
             notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
             notification.setNotificationSendDate(notificationSendDate);
-            notification.setNotificationReadDate(null);
+
             notification.setRelatedEntity(String.valueOf(pathwayId));
             notification.setDescription(description);
 
@@ -303,7 +300,6 @@ public class NotificationService {
             notification.setUserId(userId);
             notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
             notification.setNotificationSendDate(notificationSendDate);
-            notification.setNotificationReadDate(null);
             notification.setRelatedEntity(String.valueOf(pathwayId));
             notification.setDescription(description);
 
@@ -357,7 +353,6 @@ public class NotificationService {
             notification.setUserId(userId);
             notification.setNotificationReason(Notification.NotificationReason.PATHWAY);
             notification.setNotificationSendDate(notificationSendDate);
-            notification.setNotificationReadDate(null);
             notification.setRelatedEntity(String.valueOf(pathwayId));
             notification.setDescription(description);
 

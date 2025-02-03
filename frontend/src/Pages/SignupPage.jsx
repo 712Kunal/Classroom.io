@@ -4,6 +4,7 @@ import Spline from '@splinetool/react-spline';
 import { useState } from 'react'; 
 import { auth, db } from "@/Firebase/firebase"; 
 import { setDoc, doc } from "firebase/firestore";
+import axios from "axios"; 
 
 function Signup() {
   const [passwordVisible, setPasswordVisible] = useState(false); 
@@ -48,6 +49,16 @@ function Signup() {
         });
 
         console.log("Done");
+
+      // Send request to backend for email & notification
+      const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
+
+      await axios.post(backendUrl, {
+        email: user.email,
+        username: username,
+      });
+
+      console.log("Notification and email request sent to backend.");
 
       }
     } catch (error) {
