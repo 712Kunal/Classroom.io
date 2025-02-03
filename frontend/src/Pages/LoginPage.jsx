@@ -1,44 +1,43 @@
-import { Link } from "react-router-dom";
-import Spline from "@splinetool/react-spline"; 
-import { useState } from "react"; 
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/Firebase/firebase";
+import { Link } from 'react-router-dom';
+import Spline from '@splinetool/react-spline';
+import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/Firebase/firebase';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
-  const [passwordVisible, setPasswordVisible] = useState(false); 
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handelSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!email || !password) {
-      console.log("Please fill in both email and password")
+      console.log('Please fill in both email and password');
       return;
     }
-  
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/app/profile"); // Full URL path
+      navigate('/app/profile'); // Full URL path
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
-        console.log("User not found. Please check your email and try again.")
+        console.log('User not found. Please check your email and try again.');
       } else if (error.code === 'auth/wrong-password') {
-        console.log("Incorrect password. Please try again.")
+        console.log('Incorrect password. Please try again.');
       } else {
-        console.log(error.message)
+        console.log(error.message);
       }
     }
   };
-  
 
   return (
     <div className="w-[100dvw] h-[100dvh] grid grid-cols-1 lg:grid-cols-2">
@@ -52,11 +51,7 @@ export default function LoginPage() {
       <div className="signupform grid place-items-center p-4">
         <div className="w-auto max-w-md space-y-8 Dark:bg-white p-8 rounded-lg shadow-md border-2 border-orange-100">
           <div className="flex items-center justify-center">
-            <img
-              src="brand/logo.png"
-              alt="Your Company"
-              className="w-32 h-auto" 
-            />
+            <img src="brand/logo.png" alt="Your Company" className="w-32 h-auto" />
           </div>
 
           <h2 className="mb-8 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
@@ -67,7 +62,7 @@ export default function LoginPage() {
           <form className="space-y-6" action="#" method="POST" onSubmit={handelSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                Email
               </label>
               <input
                 id="email"
@@ -89,12 +84,12 @@ export default function LoginPage() {
               <input
                 id="password"
                 name="password"
-                type={passwordVisible ? "text" : "password"} 
+                type={passwordVisible ? 'text' : 'password'}
                 placeholder="******AB"
                 required
                 autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)} 
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-2 w-full rounded-md border border-gray-600 bg-gray-800 p-2.5 text-gray-200 shadow-sm placeholder-gray-500 focus:border-indigo-400 focus:ring-indigo-400 sm:text-sm"
               />
             </div>
@@ -116,9 +111,8 @@ export default function LoginPage() {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <a
-                  href="#"
-                  className="font-medium text-purple-600 hover:text-indigo-500"
-                >
+                  href="/forgot-password" 
+                  className="font-medium text-purple-600 hover:text-indigo-500">
                   Forgot your password?
                 </a>
               </div>
@@ -127,9 +121,8 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Sign in
+                className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Login
               </button>
             </div>
           </form>
