@@ -7,6 +7,7 @@ import InputIntervalCount from "../originUi/input-interval-count";
 import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
 import Spline from '@splinetool/react-spline';
+
 import {
   LoaderCircle,
   ShipWheel,
@@ -157,15 +158,17 @@ const loadingStages = [
 
 const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) => {
   const [currentDoneStages, setDoneStages] = useState([0, 1, 2, 3]);
+  const [isBackdropLoaded, setBackedAsLoaded] = useState(false);
 
   return (
     <div className="loaderWrapper relative flex justify-center items-center h-full w-full overflow-hidden">
       <div className="backdropContainer absolute inset-0 w-full h-full">
         <div className="absolute inset-0 bg-black/50 z-10"></div>
         <img
-          className="absolute top-1/2 left-[70%] -translate-y-1/2 -translate-x-1/2 min-w-[100%] min-h-[100%] object-cover"
+          className={`${isBackdropLoaded ? "block" : "hidden"} absolute top-1/2 left-[70%] -translate-y-1/2 -translate-x-1/2 min-w-[100%] min-h-[100%] object-cover`}
           src="/assets/gif/ai-chip.gif"
           alt="loader background gif"
+          onLoad={() => setBackedAsLoaded(true)}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent z-20"></div>
       </div>
