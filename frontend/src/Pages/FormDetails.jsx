@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { auth } from '../Firebase/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+
+import addUserDetails from '../Firebase/services/userDetails.servies.js';
 
 import {
   ReceiptText,
@@ -18,11 +23,28 @@ import { Label } from '../Components/ui/label2';
 import Languages from '../Components/originUi/languages-known';
 
 function FormDetails() {
+  const navigate = useNavigate();
+
+  const [userDetails, setUserDetails] = useState(null);
+
   const [languagesKnown, setlanguagesKnown] = useState([]);
   const [learningStyles, setlearningStyles] = useState([]);
   const [skills, setskills] = useState([]);
   const [hobies, setHobies] = useState([]);
   const [interest, setinterest] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('user', user);
+      } else {
+        navigate('/signup');
+        console.log('no user');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,32 +65,41 @@ function FormDetails() {
     const experience = formData.get('experience');
     const occupation = formData.get('occupation');
 
-    console.log('languagesKnown', languagesKnown);
+    const userData = {
+      personalInfo: {
+        fullName,
+        contact,
+        bio,
+        dob,
+        gender
+      },
+      socialLinks: {
+        insta,
+        git,
+        linkedin,
+        twitter,
+        portfolio
+      },
+      background: {
+        study,
+        degree,
+        experience,
+        occupation,
+        languagesKnown,
+        learningStyles,
+        skills,
+        hobies,
+        interest
+      }
+    };
 
-    console.log(
-      fullName,
-      contact,
-      study,
-      degree,
-      experience,
-      bio,
-      dob,
-      gender,
-      insta,
-      git,
-      linkedin,
-      twitter,
-      portfolio,
-      study,
-      degree,
-      experience,
-      occupation,
-      languagesKnown,
-      learningStyles,
-      skills,
-      hobies,
-      interest
-    );
+    setUserDetails(userData);
+
+    try {
+      const adduserData = addUserDetails(userDetails);
+    } catch (error) {
+      console.error('Error adding user details:', error);
+    }
   };
 
   return (
