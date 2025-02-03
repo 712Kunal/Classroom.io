@@ -14,7 +14,7 @@ public class Notification {
     private NotificationReason notificationReason;
     private String relatedEntity;
     private Date notificationSendDate;
-    private Date notificationReadDate;
+//    private Date notificationReadDate;
     private String description;
 
 

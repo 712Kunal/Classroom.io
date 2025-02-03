@@ -148,7 +148,7 @@ export function WeekTask() {
               }}
             ></div>
             <div className="text-center text-xs text-gray-400 font-semibold mt-2">
-              {day.day}
+              {day.day} 
             </div>
           </div>
         ))}
@@ -167,9 +167,9 @@ export function RecentTask() {
         </div>
 
         {/* Column 2 */}
-        <div className="p-6 rounded-lg shadow-md shadow-gray-700  dark:shadow-gray-700 transition-all shadow-md hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
+        <div className=" p-6 rounded-lg shadow-md shadow-gray-700  dark:shadow-gray-700 transition-all shadow-md hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
           <h2 className="text-xl text-center font-semibold text-gray-800 dark:text-gray-100">Weekly Report</h2>
-          <div className="flex-grow"></div>
+          <div className="pb-8 flex-grow"></div>
           <WeekTask />
         </div>
       </div>
