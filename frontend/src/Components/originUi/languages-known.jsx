@@ -1,30 +1,20 @@
 'use client';
 // Add the following to tailwind.config.ts: "./node_modules/emblor/dist/index.mjs",
 
-import { Label } from '@/components/ui/label';
 import { TagInput } from 'emblor';
 import { useId, useState } from 'react';
 
-const tags = [
-  {
-    id: '1',
-    text: 'Red'
-  }
-];
-
-export default function Languages({ placeholder }) {
+export default function Languages({ placeholder, tags = [], setTags = () => {} }) {
   const id = useId();
-  const [exampleTags, setExampleTags] = useState(tags);
   const [activeTagIndex, setActiveTagIndex] = useState(null);
 
   return (
     <div className="space-y-2">
       <TagInput
         id={id}
-        tags={exampleTags}
-        setTags={(newTags) => {
-          setExampleTags(newTags);
-        }}
+        name="info"
+        tags={tags}
+        setTags={setTags}
         placeholder={placeholder}
         styleClasses={{
           inlineTagsContainer:
