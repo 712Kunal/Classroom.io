@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { Link } from 'react-router-dom';
 import Spline from '@splinetool/react-spline';
 import { useState } from 'react';
@@ -40,7 +40,10 @@ function Signup() {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      const userNew = await updateProfile(auth.currentUser, { displayName: username }).catch(
+        (err) => console.log(err)
+      );
+      const user = userNew.user;
 
       if (user) {
         console.log('User registered successfully:', user);

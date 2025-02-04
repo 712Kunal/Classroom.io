@@ -5,11 +5,11 @@ import AppSidebar from './AppSidebar.jsx';
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
 import { GlobalProvider } from '../context/GlobalContext.jsx';
 
-function AppWrapper() {
+function AppWrapper({user}) {
   const isMobile = useIsMobile();
 
   return (
-    <GlobalProvider initialData={null}>
+    <GlobalProvider initialData={{user: user}}>
       <div className="w-screen h-screen flex">
         <aside>
           <SidebarProvider defaultOpen={false}>
