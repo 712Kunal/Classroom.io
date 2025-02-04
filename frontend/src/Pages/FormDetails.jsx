@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { auth } from '../Firebase/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+
+import addUserDetails from '../Firebase/services/userDetails.servies.js';
 
 import {
   ReceiptText,
@@ -15,14 +20,86 @@ import {
 } from 'lucide-react';
 import { Input } from '../Components/ui/input2';
 import { Label } from '../Components/ui/label2';
-import BirthDate from '../Components/originUi/birth-date';
 import Languages from '../Components/originUi/languages-known';
 
 function FormDetails() {
+  const navigate = useNavigate();
+
+  const [userDetails, setUserDetails] = useState(null);
+
+  const [languagesKnown, setlanguagesKnown] = useState([]);
+  const [learningStyles, setlearningStyles] = useState([]);
+  const [skills, setskills] = useState([]);
+  const [hobies, setHobies] = useState([]);
+  const [interest, setinterest] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('user', user);
+      } else {
+        navigate('/signup');
+        console.log('no user');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    console.log(formData);
+
+    const fullName = formData.get('name');
+    const contact = formData.get('contact');
+    const bio = formData.get('bio');
+    const dob = formData.get('dob');
+    const gender = formData.get('gender');
+    const insta = formData.get('insta');
+    const git = formData.get('git');
+    const linkedin = formData.get('linkedin');
+    const twitter = formData.get('twitter');
+    const portfolio = formData.get('portfolio');
+    const study = formData.get('study');
+    const degree = formData.get('degree');
+    const experience = formData.get('experience');
+    const occupation = formData.get('occupation');
+
+    const userData = {
+      personalInfo: {
+        fullName,
+        contact,
+        bio,
+        dob,
+        gender
+      },
+      socialLinks: {
+        insta,
+        git,
+        linkedin,
+        twitter,
+        portfolio
+      },
+      background: {
+        study,
+        degree,
+        experience,
+        occupation,
+        languagesKnown,
+        learningStyles,
+        skills,
+        hobies,
+        interest
+      }
+    };
+
+    setUserDetails(userData);
+
+    try {
+      const adduserData = addUserDetails(userDetails);
+    } catch (error) {
+      console.error('Error adding user details:', error);
+    }
   };
 
   return (
@@ -44,18 +121,23 @@ function FormDetails() {
             transition={{ duration: 1, ease: 'easeInOut' }}
             className="outer-container w-full flex flex-wrap">
             {/* left Section */}
-            <div className="Personal-details w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
+            <div className="Personal-details w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4 border">
               <h2 className="text-xl dark:text-green-500 flex items-center">
                 <FileUser />
                 Personal Details :
               </h2>
               <div>
                 <Label htmlFor="fullname">Enter your full name: </Label>
-                <Input id="name" placeholder="Eg: John Doe" type="text" />
+                <Input name="name" placeholder="Eg: John Doe" type="text" />
               </div>
               <div>
                 <Label htmlFor="contact">Enter your contact number: </Label>
-                <Input id="contact" placeholder="Eg: +91-1234567890" type="number" maxLength="12" />
+                <Input
+                  name="contact"
+                  placeholder="Eg: +91-1234567890"
+                  type="number"
+                  maxLength="12"
+                />
               </div>
               <div>
                 <Label htmlFor="bio" className="block">
@@ -71,7 +153,11 @@ function FormDetails() {
               </div>
               <div>
                 <Label htmlFor="dob">Enter your date of birth: </Label>
-                <BirthDate />
+                <input
+                  type="date"
+                  name="dob"
+                  className="w-full dark:bg-zinc-800 p-2 rounded-md border-none focus:border-none"
+                />
               </div>
               <div>
                 <Label htmlFor="gender">Enter your gender: </Label>
@@ -84,7 +170,7 @@ function FormDetails() {
                   <option value="other">Other</option>
                 </select>
               </div>
-              <div className="social-links rounded-md p-4 flex flex-col gap-4">
+              <div className="social-links rounded-md p-4 flex flex-col gap-4 border">
                 <h2 className="text-xl dark:text-pink-500 flex items-center">
                   <MessageCircleHeart />
                   Social Links :
@@ -92,68 +178,88 @@ function FormDetails() {
                 <div className="flex flex-wrap gap-2 justify-center items-center">
                   <div className="flex items-center gap-1">
                     <Instagram className="text-red-400" />
-                    <Input id="insta" placeholder="https://www.instagram.com/" type="text" />
+                    <Input name="insta" placeholder="https://www.instagram.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <Github className="text-slate-400" />
-                    <Input id="git" placeholder="https://github.com/" type="text" />
+                    <Input name="git" placeholder="https://github.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <Linkedin className="text-blue-400" />
-                    <Input id="git" placeholder="https://linkedin.com/" type="text" />
+                    <Input name="linkedin" placeholder="https://linkedin.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <Twitter className="text-orange-400" />
-                    <Input id="twitter" placeholder="https://twitter.com/" type="text" />
+                    <Input name="twitter" placeholder="https://twitter.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <BriefcaseBusiness className="text-cyan-200" />
-                    <Input id="portfolio" placeholder="https://portfolio.com/" type="text" />
+                    <Input name="portfolio" placeholder="https://portfolio.com/" type="url" />
                   </div>
                 </div>
               </div>
             </div>
             {/*  Right Section */}
             <div className="background w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
-              <div className="background rounded-md p-4 flex flex-col gap-4">
+              <div className="background rounded-md p-4 flex flex-col gap-4 border">
                 <h2 className="text-xl dark:text-yellow-400 flex items-center">
                   <GraduationCap /> Background :
                 </h2>
                 <div>
                   <Label htmlFor="study">Field of study: </Label>
-                  <Input id="study" placeholder="Eg: Computer Science" type="text" />
+                  <Input name="study" placeholder="Eg: Computer Science" type="text" />
                 </div>
                 <div>
                   <Label htmlFor="degree">Degree: </Label>
-                  <Input id="degree" placeholder="Eg: B.tech" type="text" />
+                  <Input name="degree" placeholder="Eg: B.tech" type="text" />
                 </div>
                 <div>
                   <Label htmlFor="experience">Year's of experience: </Label>
-                  <Input id="experience" placeholder="Eg: 10" type="number" />
+                  <Input name="experience" placeholder="Eg: 10" type="number" />
                 </div>
                 <div>
                   <Label htmlFor="occupation">Occupation: </Label>
-                  <Input id="occupation" placeholder="Eg: Software Developer" type="text" />
+                  <Input name="occupation" placeholder="Eg: Software Developer" type="text" />
                 </div>
                 <div>
                   <Label htmlFor="languages">Language's known: </Label>
-                  <Languages placeholder="Eg: Hindi, English, Marathi" />
+                  <Languages
+                    tags={languagesKnown}
+                    setTags={setlanguagesKnown}
+                    placeholder="Eg: Hindi, English, Marathi"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="learningStyes">Preffered learning Styles: </Label>
-                  <Languages placeholder="Eg: Video Tutorials, Written Guides, Interactive Exercises" />
+                  <Languages
+                    tags={learningStyles}
+                    setTags={setlearningStyles}
+                    placeholder="Eg: Video Tutorials, Written Guides, Interactive Exercises"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="skills">Technical Skills: </Label>
-                  <Languages placeholder="Eg: React, JavaScript, Node.js" />
+                  <Languages
+                    tags={skills}
+                    setTags={setskills}
+                    placeholder="Eg: React, JavaScript, Node.js"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="hobies">Hobies: </Label>
-                  <Languages placeholder="Eg: Drawing, Gyming, Cooking" />
+                  <Languages
+                    tags={hobies}
+                    setTags={setHobies}
+                    placeholder="Eg: Drawing, Gyming, Cooking"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="skills">Interest: </Label>
-                  <Languages placeholder="Eg: Devops, Cloud computing, AI" />
+                  <Languages
+                    tags={interest}
+                    setTags={setinterest}
+                    placeholder="Eg: Devops, Cloud computing, AI"
+                  />
                 </div>
               </div>
               <button

@@ -1,31 +1,34 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
 import Spline from '@splinetool/react-spline';
-import { useState } from 'react'; 
-import { auth, db } from "@/Firebase/firebase"; 
-import { setDoc, doc } from "firebase/firestore";
-import axios from "axios"; 
+import { useState } from 'react';
+import { auth, db } from '@/Firebase/firebase';
+import { setDoc, doc } from 'firebase/firestore';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
-  const [passwordVisible, setPasswordVisible] = useState(false); 
-  const [username, setUsername] = useState(""); 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); 
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const navigate = useNavigate();
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [errors, setErrors] = useState({});
 
   // Form validation function
   const validateForm = () => {
     const errors = {};
-    if (!username) errors.username = "Username is required.";
+    if (!username) errors.username = 'Username is required.';
     if (!email) {
-      errors.email = "Email is required.";
+      errors.email = 'Email is required.';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Email is not valid.";
+      errors.email = 'Email is not valid.';
     }
-    if (!password) errors.password = "Password is required.";
+    if (!password) errors.password = 'Password is required.';
     else if (password.length < 6) {
-      errors.password = "Password must be at least 6 characters.";
+      errors.password = 'Password must be at least 6 characters.';
     }
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -37,38 +40,34 @@ function Signup() {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user; 
+      const user = userCredential.user;
 
       if (user) {
-        console.log("User registered successfully:", user);
+        console.log('User registered successfully:', user);
 
-
-        await setDoc(doc(db, "Users", user.uid), {
+        await setDoc(doc(db, 'Users', user.uid), {
           email: user.email,
-          username: username,
+          username: username
         });
 
-        console.log("Done");
+        console.log('Done');
+        navigate('/detailsForm');
 
-      // Send request to backend for email & notification
-      const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
+        // Send request to backend for email & notification
+        const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
 
-      await axios.post(backendUrl, {
-        email: user.email,
-        username: username,
-      });
+        await axios.post(backendUrl, {
+          email: user.email,
+          username: username
+        });
 
-      console.log("Notification and email request sent to backend.");
-
+        console.log('Notification and email request sent to backend.');
       }
     } catch (error) {
-      console.error("Error during registration:", error.message);
+      console.error('Error during registration:', error.message);
       setErrorMessage(error.message);
-
-
     }
   };
-
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -77,11 +76,7 @@ function Signup() {
   return (
     <div className="w-auto max-w-md space-y-8 Dark:bg-white p-8 rounded-lg shadow-md border-2 border-orange-100">
       <div className="flex items-center justify-center">
-        <img
-          src="brand/logo.png"
-          alt="Your Company"
-          className="w-32 h-auto" 
-        />
+        <img src="brand/logo.png" alt="Your Company" className="w-32 h-auto" />
       </div>
 
       <h2 className="mb-8 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
@@ -94,9 +89,7 @@ function Signup() {
         </div>
       )}
 
-
       <form className="space-y-6" onSubmit={handleRegister}>
-
         <div>
           <label htmlFor="username" className="block text-sm font-medium text-gray-700">
             Username
@@ -106,10 +99,11 @@ function Signup() {
             name="username"
             type="text"
             value={username}
-            onChange={(e) => setUsername(e.target.value)} 
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your username"
-            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${errors.username ? 'border-red-500' : ''}`}
-
+            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
+              errors.username ? 'border-red-500' : ''
+            }`}
           />
           {errors.username && <p className="text-xs text-red-500">{errors.username}</p>}
         </div>
@@ -123,9 +117,11 @@ function Signup() {
             name="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} 
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Ex-abc@mail.com"
-            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${errors.email ? 'border-red-500' : ''}`}
+            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
+              errors.email ? 'border-red-500' : ''
+            }`}
           />
           {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
         </div>
@@ -138,11 +134,13 @@ function Signup() {
           <input
             id="password"
             name="password"
-            type={passwordVisible ? 'text' : 'password'} 
+            type={passwordVisible ? 'text' : 'password'}
             value={password}
-            onChange={(e) => setPassword(e.target.value)} 
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="******AB"
-            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${errors.password ? 'border-red-500' : ''}`}
+            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
+              errors.password ? 'border-red-500' : ''
+            }`}
           />
           {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
         </div>
@@ -165,8 +163,7 @@ function Signup() {
         <div>
           <button
             type="submit"
-            className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
+            className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             Sign up
           </button>
         </div>
