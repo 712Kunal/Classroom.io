@@ -40,7 +40,7 @@ const resourceStateToIcon = {
 
 const TimelineView = () => {
   const { pathway } = usePathway();
-  const { topic, description, duration, startDate, endDate } = pathway.data;
+  const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const { pathway: intervals, intervalType } = pathway.data.response;
 
   const data = intervals.map((interval) => ({
@@ -63,6 +63,7 @@ const TimelineView = () => {
       startDate={startDate}
       endDate={endDate}
       percentageComplete={getPercentageComplete()}
+      isActivePathway={isActive}
     />
   </div>;
 };

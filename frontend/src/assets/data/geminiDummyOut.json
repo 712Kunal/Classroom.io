@@ -1,0 +1,295 @@
+{
+  "description": "90-day learning pathway for Basic React tailored to a 21-year-old male Computer Science student in Pune, India, who prefers video tutorials.",
+  "duration": 90,
+  "intervalType": "week",
+  "intervals": 13,
+  "pathway": [
+    {
+      "intervalNumber": 1,
+      "summary": "Introduction to React and Setting up Development Environment",
+      "tasks": [
+        {
+          "description": "Learn about React's core concepts and its benefits.",
+          "expectedOutcome": "Understand what React is and why it's used.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=Ke90Tje7VS0",
+              "title": "React JS Tutorial for Beginners",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Introduction to React"
+        },
+        {
+          "description": "Set up Node.js, npm, and create a new React application using create-react-app.",
+          "expectedOutcome": "A working React development environment.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=j942wKiXFu8",
+              "title": "Setting Up a React Development Environment",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 2,
+          "taskTitle": "Setting Up the Environment"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 2,
+      "summary": "JSX and Components",
+      "tasks": [
+        {
+          "description": "Learn JSX syntax and how to write HTML-like structures in JavaScript.",
+          "expectedOutcome": "Ability to write JSX code.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=PjX8JEK3yKE",
+              "title": "Understanding JSX in React",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Understanding JSX"
+        },
+        {
+          "description": "Learn about functional and class components and how to create them.",
+          "expectedOutcome": "Ability to create functional and class components.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=qVVV9_19vK4",
+              "title": "React Components: Functional vs Class",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 2,
+          "taskTitle": "Creating React Components"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 3,
+      "summary": "Props and State",
+      "tasks": [
+        {
+          "description": "Learn how to pass data from parent to child components using props.",
+          "expectedOutcome": "Ability to pass data down the component tree.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=KhJyrJzVl4M",
+              "title": "React Props Explained",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Working with Props"
+        },
+        {
+          "description": "Learn how to manage component-specific data using state.",
+          "expectedOutcome": "Ability to manage state within a component.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=O6P86uwfdR0",
+              "title": "Understanding React State",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 2,
+          "taskTitle": "Managing State in React"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 4,
+      "summary": "Handling Events",
+      "tasks": [
+        {
+          "description": "Learn how to handle user events like clicks, form submissions, etc.",
+          "expectedOutcome": "Ability to handle user interactions in React.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=4l-r8Du9n-8",
+              "title": "Handling Events in React",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Event Handling"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 5,
+      "summary": "Conditional Rendering",
+      "tasks": [
+        {
+          "description": "Learn how to conditionally render different elements based on state or props.",
+          "expectedOutcome": "Ability to show or hide elements based on conditions.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=t1wcQn7UEnQ",
+              "title": "Conditional Rendering in React",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Conditional Rendering"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 6,
+      "summary": "Lists and Keys",
+      "tasks": [
+        {
+          "description": "Learn how to render lists of data dynamically using map and provide unique keys.",
+          "expectedOutcome": "Ability to render lists of data efficiently.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=y0CjfzT6rnc",
+              "title": "Rendering Lists in React with Keys",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Rendering Lists"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 7,
+      "summary": "Forms in React",
+      "tasks": [
+        {
+          "description": "Learn how to create and handle forms in React, including controlled and uncontrolled components.",
+          "expectedOutcome": "Ability to create and manage forms.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=iP1t6S7xOic",
+              "title": "React Forms Tutorial",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Handling Forms"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 8,
+      "summary": "React Hooks (useState and useEffect)",
+      "tasks": [
+        {
+          "description": "Learn the basics of React Hooks, focusing on useState for state management and useEffect for side effects.",
+          "expectedOutcome": "Ability to use useState and useEffect hooks.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=KJP1E-Yjugg",
+              "title": "React Hooks Tutorial",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Introduction to Hooks"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 9,
+      "summary": "Styling React Components",
+      "tasks": [
+        {
+          "description": "Explore different ways to style React components: inline styles, CSS stylesheets, and CSS modules.",
+          "expectedOutcome": "Ability to style React components effectively.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=hkMzYkNWNtc",
+              "title": "Styling React Components",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Styling Techniques"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 10,
+      "summary": "Fetching Data with useEffect",
+      "tasks": [
+        {
+          "description": "Learn how to fetch data from an API using useEffect and update the component's state.",
+          "expectedOutcome": "Ability to fetch and display data from an API.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+              "title": "Fetching Data with useEffect",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Fetching Data"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 11,
+      "summary": "Simple React Project - Todo App (Part 1)",
+      "tasks": [
+        {
+          "description": "Start building a simple Todo app to consolidate learned concepts. Implement adding tasks.",
+          "expectedOutcome": "A functional Todo app with task adding capability.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=hQAHSlcmYcU",
+              "title": "Build a React Todo App (Part 1)",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Todo App - Adding Tasks"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 12,
+      "summary": "Simple React Project - Todo App (Part 2)",
+      "tasks": [
+        {
+          "description": "Continue building the Todo app. Implement deleting and completing tasks.",
+          "expectedOutcome": "A complete Todo app with add, delete, and complete functionalities.",
+          "resources": [
+            {
+              "link": "https://www.youtube.com/watch?v=wBk2W01gUog",
+              "title": "Build a React Todo App (Part 2)",
+              "type": "video tutorial"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Todo App - Deleting and Completing Tasks"
+        }
+      ]
+    },
+    {
+      "intervalNumber": 13,
+      "summary": "Review and Practice",
+      "tasks": [
+        {
+          "description": "Review all concepts learned over the past 12 weeks. Build another small project or refactor the Todo app.",
+          "expectedOutcome": "Solid understanding of React basics and ability to apply them.",
+          "resources": [
+            {
+              "link": "https://react.dev/",
+              "title": "React Official Documentation",
+              "type": "documentation"
+            }
+          ],
+          "taskNumber": 1,
+          "taskTitle": "Review and Practice"
+        }
+      ]
+    }
+  ],
+  "topic": "Basic React"
+}

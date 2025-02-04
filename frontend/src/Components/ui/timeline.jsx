@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip.jsx"
+import { Button } from "./button.jsx";
 
 export const Timeline = ({
   data,
@@ -17,6 +18,7 @@ export const Timeline = ({
   startDate,
   endDate,
   percentageComplete,
+  isActivePathway,
 }) => {
   const ref = useRef(null);
   const [height, setHeight] = useState(0);
@@ -29,7 +31,10 @@ export const Timeline = ({
     }
   }, [ref]);
 
-  const heightOfProgressTracer = `${parseInt(percentageComplete)}%`;
+  if(!isActivePathway) {
+    percentageComplete = 0;
+  }
+  const heightOfProgressTracer = `${isActivePathway ? parseInt(percentageComplete) : 0}%`;
 
   return (
     (<div className="w-full relative bg-white rounded-lg dark:bg-neutral-950 font-sans md:px-10" ref={containerRef}>
@@ -52,17 +57,25 @@ export const Timeline = ({
           </div>
         </div>
         <div className="progress flex flex-col gap-8 w-1/2">
-          <p className="text-xl">Your Progress Till Now:</p>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Progress value={parseInt(percentageComplete)} />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-base">{parseInt(percentageComplete) + "%"}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {isActivePathway ? (
+            <>
+              <p className="text-xl">Your Progress Till Now: <span className="text-blue-500">{parseInt(percentageComplete) + "%"}</span></p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Progress value={parseInt(percentageComplete)} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-base">{"Your have completed " + parseInt(percentageComplete) + "% of this pathway."}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </>
+          ) : (
+            <div className="StartBox ml-auto">
+              <Button>Start Your Learning Journey now</Button>
+            </div>
+          )}
         </div>
       </div>
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
@@ -94,7 +107,7 @@ export const Timeline = ({
             height: height + "px",
           }}
           className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] flex flex-col items-start justify-start bg-neutral-600">
-          <div className="bg-gradient-to-b from-purple-500 to-blue-500 w-full" style={{height: `${heightOfProgressTracer}`}}></div>
+          <div className="bg-gradient-to-b from-purple-500 to-blue-500 w-full" style={{ height: `${heightOfProgressTracer}` }}></div>
         </div>
       </div>
     </div>)

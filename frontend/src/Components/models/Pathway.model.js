@@ -45,6 +45,7 @@ const PathwaySchema = z.object({
   "startDate": z.coerce.date(),
   "endDate": z.coerce.date(),
   "responseRaw": z.string(),
+  "isActive": z.boolean(),
   "response": PathwayResponseSchema,
 })
 
@@ -87,6 +88,10 @@ class Pathway {
       })
     })
     return taskList;
+  }
+
+  populateWithDates(startDate) {
+    this.data._id = new Date(startDate);
   }
 }
 
