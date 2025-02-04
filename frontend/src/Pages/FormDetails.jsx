@@ -38,7 +38,7 @@ function FormDetails() {
       if (user) {
         console.log('user', user);
       } else {
-        navigate('/signup');
+        // navigate('/signup');
         console.log('no user');
       }
     });
@@ -121,55 +121,58 @@ function FormDetails() {
             transition={{ duration: 1, ease: 'easeInOut' }}
             className="outer-container w-full flex flex-wrap">
             {/* left Section */}
-            <div className="Personal-details w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4 border">
-              <h2 className="text-xl dark:text-green-500 flex items-center">
-                <FileUser />
-                Personal Details :
-              </h2>
-              <div>
-                <Label htmlFor="fullname">Enter your full name: </Label>
-                <Input name="name" placeholder="Eg: John Doe" type="text" />
+            <div className="w-full lg:w-1/2 rounded-md  flex flex-col gap-4 ">
+              <div className="Personal-details rounded-md p-4 flex flex-col gap-4 border">
+                <h2 className="text-xl dark:text-green-500 flex items-center">
+                  <FileUser />
+                  Personal Details :
+                </h2>
+                <div>
+                  <Label htmlFor="fullname">Enter your full name: </Label>
+                  <Input name="name" placeholder="Eg: John Doe" type="text" />
+                </div>
+                <div>
+                  <Label htmlFor="contact">Enter your contact number: </Label>
+                  <Input
+                    name="contact"
+                    placeholder="Eg: +91-1234567890"
+                    type="number"
+                    maxLength="12"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="bio" className="block">
+                    Enter your bio:
+                  </Label>
+                  <textarea
+                    name="bio"
+                    id="bio"
+                    placeholder="Eg: I am a student"
+                    cols="80"
+                    rows="10"
+                    className="w-full text-white bg-gray-50 dark:bg-zinc-800 p-2 rounded-md mt-1"></textarea>
+                </div>
+                <div>
+                  <Label htmlFor="dob">Enter your date of birth: </Label>
+                  <input
+                    type="date"
+                    name="dob"
+                    className="w-full dark:bg-zinc-800 p-2 rounded-md border-none focus:border-none"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="gender">Enter your gender: </Label>
+                  <select
+                    name="gender"
+                    id="gender"
+                    className="w-full dark:bg-zinc-800 p-2 rounded-md border-none">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <Label htmlFor="contact">Enter your contact number: </Label>
-                <Input
-                  name="contact"
-                  placeholder="Eg: +91-1234567890"
-                  type="number"
-                  maxLength="12"
-                />
-              </div>
-              <div>
-                <Label htmlFor="bio" className="block">
-                  Enter your bio:
-                </Label>
-                <textarea
-                  name="bio"
-                  id="bio"
-                  placeholder="Eg: I am a student"
-                  cols="80"
-                  rows="10"
-                  className="w-full text-white bg-gray-50 dark:bg-zinc-800 p-2 rounded-md mt-1"></textarea>
-              </div>
-              <div>
-                <Label htmlFor="dob">Enter your date of birth: </Label>
-                <input
-                  type="date"
-                  name="dob"
-                  className="w-full dark:bg-zinc-800 p-2 rounded-md border-none focus:border-none"
-                />
-              </div>
-              <div>
-                <Label htmlFor="gender">Enter your gender: </Label>
-                <select
-                  name="gender"
-                  id="gender"
-                  className="w-full dark:bg-zinc-800 p-2 rounded-md border-none">
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
+
               <div className="social-links rounded-md p-4 flex flex-col gap-4 border">
                 <h2 className="text-xl dark:text-pink-500 flex items-center">
                   <MessageCircleHeart />
