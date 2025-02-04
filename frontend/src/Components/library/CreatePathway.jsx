@@ -29,6 +29,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "../ui/button";
+import { useGlobal } from "../context/GlobalContext";
 
 const intervalCountLimit = {
   day: 10,
@@ -46,14 +47,44 @@ const CreatePathway = () => {
 
   const [isGenerating, setGenerating] = useState(false);
   const [pathwayReady, setPathwayReady] = useState(false);
+  const { user } = useGlobal();
 
-  // const HandleCreatePathway = (e) => {
-  //   e.preventDefault();
-  //   const userId = auth.currentUser.uid;
-  //   const { result, pathwayId } = createPathwayFunc(userId, userDetails, additionalInfo, formData);
-  //   console.log(result);
-  //   console.log(pathwayId);
-  // }
+  const handleCreatePathway = async (e) => {
+    e.preventDefault();
+    const userId = "SVb80cJyj8NRDJRGWkJqUsx5IHG3";
+    const userDetails = {
+      age: 21,
+      gender: "male",
+      fieldOfStudy: "Computer Science",
+      degree: "Bachelor of Science",
+      yearsOfExperience: 1,
+      location: "India",
+      occupation: "Student",
+      languagesKnown: "English, Marathi",
+    }
+
+    const additionalInfo = {
+      skills: "JavaScript, React, Node.js, MongoDB, Express.js",
+      hobbies: "Reading, Writing, Coding",
+      interests: "Learning new technologies, Developing new skills, Exploring different fields of study",
+    }
+
+    const pathwayRequirements = {
+      topic: formData.topic,
+      duration: 100,
+      intervalsType: formData.intervalType,
+      preferredLearningMaterialType: formData.preferedResourceType,
+    }
+
+    const { result, pathwayId } = await createPathwayFunc(
+      userId, 
+      userDetails, 
+      additionalInfo,
+      pathwayRequirements
+    );
+    console.log(result);
+    console.log(pathwayId);
+  }
 
   return isGenerating ? (
     <PathwayLoader topic={formData.topic} intervalCount={formData.intervalCount} intervalType={formData.intervalType} isPathwayReady={pathwayReady} />
@@ -106,7 +137,7 @@ const CreatePathway = () => {
               <button
                 className="relative group/btn bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                 type="submit"
-                onClick={HandCreatePathway}
+                onClick={handleCreatePathway}
               >
                 Generate a pathway for me <ShipWheel />
                 <BottomGradient />

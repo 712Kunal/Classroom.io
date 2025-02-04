@@ -18,43 +18,39 @@ import { NavUser } from '../ui/nav-user.jsx';
 import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
-import { useEffect, useState } from "react";
-import { auth, db } from "@/Firebase/firebase"; 
-import { doc, getDoc } from "firebase/firestore";
+import { useGlobal } from '../context/GlobalContext.jsx';
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
+  const { user: contextUser } = useGlobal();
   
-  const [userDetails, setUserDetails] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser; 
-      if (user) {
-        const docRef = doc(db, "Users", user.uid);
-        const docSnap = await getDoc(docRef);
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const user = auth.currentUser; 
+  //     if (user) {
+  //       const docRef = doc(db, "Users", user.uid);
+  //       const docSnap = await getDoc(docRef);
   
-        if (docSnap.exists()) {
-          setUserDetails(docSnap.data());
-        } else {
-          console.log("No such document!");
-        }
-      } else {
-        console.log("No user is logged in");
-      }
-    };
+  //       if (docSnap.exists()) {
+  //         setUserDetails(docSnap.data());
+  //       } else {
+  //         console.log("No such document!");
+  //       }
+  //     } else {
+  //       console.log("No user is logged in");
+  //     }
+  //   };
   
-    fetchUserData();
-  }, []); 
+  //   fetchUserData();
+  // }, []); 
   
-  const user = userDetails ? {
-    username: userDetails.username,
+  const user = contextUser ? {
+    username: contextUser.displayName,
     avatar: 'https://avatar.iran.liara.run/public/48',
-    email: userDetails.email,
+    email: contextUser.email,
   } : null;  
   
-
   const pathways = [
     {
       id: 1,
@@ -132,7 +128,7 @@ const AppSidebar = () => {
         <div className="flex items-center justify-start">
           {!open && <MobileModeToggle/>}
         </div>
-        <NavUser user={user} />
+        <NavUser user={user}/>
       </SidebarFooter>
     </Sidebar>
   );

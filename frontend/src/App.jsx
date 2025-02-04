@@ -50,7 +50,7 @@ function App() {
           <Route path="/forgot-password" element={suspenseComponent(<ForgotPassword />)} />
           <Route path="/signup" element={suspenseComponent(<SignupPage />)} />
           <Route path="/detailsForm" element={suspenseComponent(<FormDetailsPage />)} />
-          <Route path="/app" element={suspenseComponent(<AppWrapper />)}>
+          <Route path="/app" element={suspenseComponent(<AppWrapper user={user} />)}>
             <Route path="profile" element={suspenseComponent(<ProfilePage />)} />
             <Route path="library" element={suspenseComponent(<LibraryPage />)} />
             <Route path="library/new" element={suspenseComponent(<CreatePathway />)} />
