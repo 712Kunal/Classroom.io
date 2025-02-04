@@ -3,7 +3,7 @@ import { Label } from "../ui/label2";
 import { useState, useEffect } from "react";
 import SelectIntervalType from "../originUi/select-interval-type";
 import SelectResourceType from "../originUi/select-resource";
-import InputIntervalCount from "../originUi/input-interval-count";
+import InputDurationInDays from "../originUi/input-duration-in-days";
 import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
 import { createPathway as createPathwayFunc } from "@/gemini/pathway.utils.js";
@@ -18,6 +18,7 @@ import {
   Baseline,
   Route,
   CircleCheck,
+  Compass,
 } from "lucide-react";
 import { SiGooglegemini } from "react-icons/si";
 import {
@@ -30,18 +31,19 @@ import {
 } from "@/components/ui/card"
 import { Button } from "../ui/button";
 import { useGlobal } from "../context/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
-const intervalCountLimit = {
+const durationLimit = {
   day: 10,
-  week: 12,
-  month: 6
+  week: 100,
+  month: 365
 }
 
 const CreatePathway = () => {
   const [formData, setFormData] = useState({
     topic: "",
     intervalType: "week",
-    intervalCount: 0,
+    duration: 0,
     preferedResourceType: ""
   })
 
@@ -51,7 +53,8 @@ const CreatePathway = () => {
 
   const handleCreatePathway = async (e) => {
     e.preventDefault();
-    const userId = "SVb80cJyj8NRDJRGWkJqUsx5IHG3";
+    setGenerating(true);
+    const userId = user?.uid || "9YwXaz34CtPK6g79Y1hWDF6s4GD3";
     const userDetails = {
       age: 21,
       gender: "male",
@@ -71,23 +74,25 @@ const CreatePathway = () => {
 
     const pathwayRequirements = {
       topic: formData.topic,
-      duration: 100,
+      duration: formData.duration,
       intervalsType: formData.intervalType,
       preferredLearningMaterialType: formData.preferedResourceType,
     }
 
     const { result, pathwayId } = await createPathwayFunc(
-      userId, 
-      userDetails, 
+      userId,
+      userDetails,
       additionalInfo,
       pathwayRequirements
     );
     console.log(result);
     console.log(pathwayId);
+
+    setPathwayReady(true);
   }
 
   return isGenerating ? (
-    <PathwayLoader topic={formData.topic} intervalCount={formData.intervalCount} intervalType={formData.intervalType} isPathwayReady={pathwayReady} />
+    <PathwayLoader topic={formData.topic} duration={formData.duration} intervalType={formData.intervalType} isPathwayReady={pathwayReady} />
   ) : (
     <div className='w-full h-full py-4 px-4 flex gap-2'>
       <div className="w-full lg:w-1/2 p-4">
@@ -114,14 +119,14 @@ const CreatePathway = () => {
                 setFormData({ ...formData, intervalType: value });
               }} />
             </div>
-            <div className="intervalCountFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
-              <Label htmlFor="intervalCountField">How many intervals of above duration do you want to learn this in: </Label>
-              <InputIntervalCount
-                value={formData.intervalCount}
+            <div className="durationFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
+              <Label htmlFor="durationField">How many days do you plan to learn this in: </Label>
+              <InputDurationInDays
+                value={formData.duration}
                 setValue={(value) => {
-                  setFormData({ ...formData, intervalCount: value });
+                  setFormData({ ...formData, duration: value });
                 }}
-                max={intervalCountLimit[formData.intervalType]}
+                max={durationLimit[formData.intervalType]}
               />
             </div>
             <div className="resourceTypePreferenceFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
@@ -148,7 +153,7 @@ const CreatePathway = () => {
       </div>
       <Separator orientation="vertical" className="hidden lg:block w-[1px] h-full bg-neutral-700" />
       <div className="hidden lg:grid right w-1/2 h-full rounded-lg overflow-hidden object-cover bg-black">
-        <img 
+        <img
           src="/assets/gif/ascending.gif"
           alt="an image to fill the right side space"
           className="object-cover w-full h-full -translate-y-36"
@@ -163,7 +168,7 @@ export default CreatePathway;
 /* pathway form */
 // topic (text)
 // interval (week or day or month) (select)
-// number of intervals / duration (limits on number of intervals based on duration size) (number)
+// duration (limits on number of days) (number)
 // what you prefer most: [ reading material, video tutorials, interactive execises, all ] (select)
 
 const LabelInputContainer = ({
@@ -199,8 +204,33 @@ const loadingStages = [
 ]
 
 const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) => {
-  const [currentDoneStages, setDoneStages] = useState([0, 1, 2, 3]);
+  const [currentDoneStages, setDoneStages] = useState([]);
   const [isBackdropLoaded, setBackedAsLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let intervalRef;
+    const incrementDoneStages = () => {
+      setDoneStages((prev) => {
+        const newDoneStages = [...prev];
+        const next = prev.length + 1;
+        if (next > 7) {
+          clearInterval(intervalRef);
+          return prev;
+        };
+        newDoneStages.push(next);
+        return newDoneStages;
+      });
+    };
+
+    intervalRef = setInterval(incrementDoneStages, 3000);
+
+    return () => {
+      if(intervalRef) {
+        clearInterval(intervalRef);
+      }
+    };
+  }, []);
 
   return (
     <div className="loaderWrapper relative flex justify-center items-center h-full w-full overflow-hidden">
@@ -226,12 +256,14 @@ const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) =
             {loadingStages.map((stage, index) => {
               const isDone = currentDoneStages.includes(stage.id);
               const isFirst = stage === loadingStages[0];
-              const isActive = (stage.id === currentDoneStages[currentDoneStages.length - 1]);
+              const isActive = (
+                stage.id === currentDoneStages[currentDoneStages.length - 1] && stage.id !== loadingStages[loadingStages.length - 1].id
+              );
               return (
                 <div key={index}>
                   {!isFirst && <div className={`mx-auto line w-[1px] h-4 ${isDone ? "bg-neutral-100" : "bg-neutral-600"}`}></div>}
                   <div className="stageRow flex gap-2 justify-start items-center text-sm">
-                    <span className={`rounded-full aspect-square border-2 p-1 ${isActive ? "border-blue-500 text-blue-500" : isDone ? "text-neutral-50 border-neutral-50" : "text-neutral-50"}`}>{isActive ? <LoaderCircle className="animate-spin" size={iconSize} /> : stage.icon}</span>
+                    <span className={`rounded-full aspect-square border-2 p-1 ${isActive ? "border-blue-500 text-blue-500" : isDone ? "text-neutral-50 border-neutral-50" : "text-neutral-50"} ${isFirst ? "border-neutral-50" : ""}`}>{isActive ? <LoaderCircle className="animate-spin" size={iconSize} /> : stage.icon}</span>
                     <span className={isActive ? "text-blue-500" : ""}>{stage.message}</span>
                   </div>
                 </div>
@@ -239,8 +271,8 @@ const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) =
             })}
           </CardContent>
           <CardFooter className="bg-neutral-900 p-4">
-            <Button className="w-full" disabled={!isPathwayReady}>
-              {/* {icon} */}
+            <Button className="w-full flex items-center gap-2" disabled={!isPathwayReady} onClick={navigate("/app/library/pathways/1/timeline")}>
+              <Compass />
               Explore your pathway
             </Button>
           </CardFooter>

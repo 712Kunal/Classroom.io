@@ -11,10 +11,10 @@ const TaskSchema = z.object({
   taskNumber: z.number(),
   taskTitle: z.string(),
   description: z.string(),
-  scheduledDate: z.coerce.date(),
-  completedDate: z.coerce.date().nullable(),
-  isDone: z.boolean(),
-  lateMark: z.boolean(),
+  scheduledDate: z.coerce.date().optional(),
+  completedDate: z.coerce.date().optional(),
+  isDone: z.boolean().default(false),
+  lateMark: z.boolean().default(false),
   resources: z.array(ResourceSchema),
   expectedOutcome: z.string(),
   completionEmailSent: z.boolean().optional().default(false),
@@ -24,8 +24,8 @@ const TaskSchema = z.object({
 const IntervalSchema = z.object({
   intervalNumber: z.number(),
   summary: z.string(),
-  pathwayStartDate: z.coerce.date(),
-  pathwayEndDate: z.coerce.date(),
+  pathwayStartDate: z.coerce.date().optional(),
+  pathwayEndDate: z.coerce.date().optional(),
   tasks: z.array(TaskSchema)
 });
 
@@ -42,12 +42,44 @@ const PathwaySchema = z.object({
   "topic": z.string(),
   "description": z.string(),
   "duration": z.number(),
-  "startDate": z.coerce.date(),
-  "endDate": z.coerce.date(),
-  "responseRaw": z.string(),
-  "isActive": z.boolean(),
+  "startDate": z.coerce.date().optional(),
+  "endDate": z.coerce.date().optional(),
+  "isActive": z.boolean().default(false),
   "response": PathwayResponseSchema,
 })
+
+const convertResourceTypes = {
+  "documentation": "Documentation",
+  "video": "Video",
+  "video tutorial": "Video Tutorial",
+  "interactive exercise": "Interactive Exercise"
+}
+
+const convertFetchedPathwayToPathway = (pathwayData) => {
+  return {
+    "_id": pathwayData.id,
+    userId: pathwayData.userId,
+    topic: pathwayData.topic,
+    description: pathwayData.description,
+    duration: pathwayData.duration,
+    isActive: false,
+    response: {
+      topic: pathwayData.topic,
+      intervals: pathwayData.intervals,
+      intervalType: pathwayData.intervalType,
+      pathway: pathwayData.pathway.map((interval) => {
+        interval.tasks = interval.tasks.map((task) => {
+          task.resources = task.resources.map((resource) => {
+            resource.type = convertResourceTypes[resource.type];
+            return resource;
+          });
+          return task;
+        });
+        return interval;
+      }),
+    }
+  }
+}
 
 const validatePathway = (data) => {
   try {
@@ -58,14 +90,15 @@ const validatePathway = (data) => {
       throw result.error.format();
     }
   } catch (error) {
-    console.error('Pathway Validation Error:', JSON.stringify(error));
     throw error;
   }
 }
 
 class Pathway {
   constructor(pathwayData) {
-    this.data = validatePathway(pathwayData);
+    const convertedPathway = convertFetchedPathwayToPathway(pathwayData);
+    console.log(convertedPathway);
+    this.data = validatePathway(convertedPathway);
   }
 
   markAsDone(intervalNumber, taskNumber) {

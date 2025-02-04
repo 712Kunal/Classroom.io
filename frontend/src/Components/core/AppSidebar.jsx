@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Sidebar,
@@ -19,11 +19,28 @@ import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
 import { useGlobal } from '../context/GlobalContext.jsx';
+import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service.js';
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
   const { user: contextUser } = useGlobal();
+  const { pathwaysList, setPathwaysList } = useGlobal();
+
+  useEffect(() => {
+    if(contextUser) {
+      const fetchPathways = async () => {
+        try {
+          const pathways = await getAllPathwaysOfUser(contextUser.uid);
+          setPathwaysList(pathways);
+          console.log(pathways);
+        } catch (error) {
+          console.error("Error fetching pathways:", error);
+        }
+      };
+      fetchPathways();
+    };
+  }, [contextUser]);
   
   // useEffect(() => {
   //   const fetchUserData = async () => {
@@ -51,16 +68,13 @@ const AppSidebar = () => {
     email: contextUser.email,
   } : null;  
   
-  const pathways = [
+  const pathways = pathwaysList.map((pathway, index) => (
     {
-      id: 1,
-      name: 'Pathway 1'
-    },
-    {
-      id: 2,
-      name: 'Pathway 2'
+      id: pathway.id,
+      name: pathway.topic,
+      pathwayId: pathway.id,
     }
-  ];
+  ));
 
   const routes = [
     {

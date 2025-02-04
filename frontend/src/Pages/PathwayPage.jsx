@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu.jsx"
 import { PathwayProvider } from "@/components/context/PathwayContext.jsx"
 import DummyPathway from '../assets/data/dummy.json';
+import { useGlobal } from '@/components/context/GlobalContext';
+import { useState } from 'react';
 
 function PathwayPage() {
   const { pathwayId } = useParams();
@@ -45,20 +47,8 @@ function PathwayPage() {
   }
   const currentView = viewOptions[lastWord];
 
-  const pathways = [
-    {
-      id: 1,
-      name: "Basic React",
-    },
-    {
-      id: 2,
-      name: "Advanced React",
-    },
-    {
-      id: 3,
-      name: "Full Stack React",
-    },
-  ];
+  const { pathwaysList: pathways } = useGlobal();
+  const [currentPathway] = useState(pathways.find((pathway) => pathway.id === pathwayId));
 
   return (
     <div className="text-4xl w-full p-2 h-full rounded-lg flex flex-col">
@@ -78,7 +68,7 @@ function PathwayPage() {
                 <DropdownMenuTrigger>
                   <Badge variant="outline" className="text-sm flex items-center gap-1">
                     <RouteIcon size={16} />
-                    {pathways[pathwayId - 1].name}
+                    {pathways.find((pathway) => pathway.id === pathwayId)?.topic}
                     <ChevronDownIcon />
                   </Badge>
                 </DropdownMenuTrigger>
@@ -87,7 +77,7 @@ function PathwayPage() {
                     <DropdownMenuItem key={pathway.id}>
                       <Link to={`/app/library/pathways/${pathway.id}/timeline`} className='flex items-center gap-2 text-sm'>
                         <RouteIcon size={16} />
-                        {pathway.name}
+                        {pathway.topic}
                       </Link>
                     </DropdownMenuItem>
                   ))}
@@ -123,7 +113,7 @@ function PathwayPage() {
       </div>
       <Separator />
       <ScrollArea className="h-full relative">
-        <PathwayProvider initialPathway={DummyPathway}>
+        <PathwayProvider initialPathway={currentPathway}>
           <Outlet />
         </PathwayProvider>
       </ScrollArea>

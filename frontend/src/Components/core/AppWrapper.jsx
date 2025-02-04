@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar.jsx';
 import AppSidebar from './AppSidebar.jsx';
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
-import { GlobalProvider } from '../context/GlobalContext.jsx';
+import { GlobalProvider, useGlobal } from '../context/GlobalContext.jsx';
+import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service.js';
 
 function AppWrapper({user}) {
   const isMobile = useIsMobile();
-
   return (
     <GlobalProvider initialData={{user: user}}>
       <div className="w-screen h-screen flex">

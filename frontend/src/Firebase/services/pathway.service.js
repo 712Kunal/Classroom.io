@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 
 const pathwaysCollectionRef = collection(db, 'pathways');
 

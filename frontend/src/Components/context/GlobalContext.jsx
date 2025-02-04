@@ -8,6 +8,7 @@ export const GlobalProvider = ({ children, initialData }) => {
   const [activePathwayId, setActivePathwayId] = useState(initialData?.activePathwayId || "");
   const [isAuth, setIsAuth] = useState(initialData?.auth || false);
   const [user, setUser] = useState(initialData?.user || null);
+  const [pathwaysList, setPathwaysList] = useState(initialData?.pathwaysList || []);
 
   return (
     <GlobalContext.Provider value={{ 
@@ -17,6 +18,8 @@ export const GlobalProvider = ({ children, initialData }) => {
       setIsAuth,
       user,
       setUser,
+      pathwaysList,
+      setPathwaysList,
     }}>
       {children}
     </GlobalContext.Provider>
