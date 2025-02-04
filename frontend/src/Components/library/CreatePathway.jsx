@@ -6,7 +6,6 @@ import SelectResourceType from "../originUi/select-resource";
 import InputIntervalCount from "../originUi/input-interval-count";
 import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
-import Spline from '@splinetool/react-spline';
 
 import {
   LoaderCircle,
@@ -44,7 +43,7 @@ const CreatePathway = () => {
     preferedResourceType: ""
   })
 
-  const [isGenerating, setGenerating] = useState(true);
+  const [isGenerating, setGenerating] = useState(false);
   const [pathwayReady, setPathwayReady] = useState(false);
 
   return isGenerating ? (
@@ -107,10 +106,12 @@ const CreatePathway = () => {
         </div>
       </div>
       <Separator orientation="vertical" className="hidden lg:block w-[1px] h-full bg-neutral-700" />
-      <div className="hidden lg:grid right w-1/2 h-full rounded-lg overflow-hidden">
-        {/* <Spline
-          scene="https://prod.spline.design/iP9fwSaPUgyeNnzA/scene.splinecode"
-        /> */}
+      <div className="hidden lg:grid right w-1/2 h-full rounded-lg overflow-hidden object-cover bg-black">
+        <img 
+          src="/assets/gif/ascending.gif"
+          alt="an image to fill the right side space"
+          className="object-cover w-full h-full -translate-y-36"
+        />
       </div>
     </div>
   );
