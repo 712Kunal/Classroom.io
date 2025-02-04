@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { auth } from '../Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import addUserDetails from '../Firebase/services/userDetails.servies.js';
+import addProfile from '../Firebase/services/userDetails.servies.js';
 
 import {
   ReceiptText,
@@ -46,12 +46,31 @@ function FormDetails() {
     return () => unsubscribe();
   }, []);
 
+  const handleUseraddDetails = async () => {
+    try {
+      try {
+        const userId = auth.currentUser.uid;
+        const adduserData = await addProfile(userDetails, userId);
+        console.log(adduserData);
+        if (adduserData.success == true) {
+          console.log('User added successfully');
+          navigate('/app/profile');
+        }
+      } catch (error) {
+        console.error('Error adding user details:', error);
+      }
+    } catch (error) {
+      console.error('Error adding user details:', error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     const fullName = formData.get('name');
     const contact = formData.get('contact');
+    const location = formData.get('location');
     const bio = formData.get('bio');
     const dob = formData.get('dob');
     const gender = formData.get('gender');
@@ -69,6 +88,7 @@ function FormDetails() {
       personalInfo: {
         fullName,
         contact,
+        location,
         bio,
         dob,
         gender
@@ -94,12 +114,7 @@ function FormDetails() {
     };
 
     setUserDetails(userData);
-
-    try {
-      const adduserData = addUserDetails(userDetails);
-    } catch (error) {
-      console.error('Error adding user details:', error);
-    }
+    handleUseraddDetails();
   };
 
   return (
@@ -139,6 +154,10 @@ function FormDetails() {
                     type="number"
                     maxLength="12"
                   />
+                </div>
+                <div>
+                  <Label htmlFor="location">Enter your location: </Label>
+                  <Input name="location" placeholder="Eg: Pune" type="text" />
                 </div>
                 <div>
                   <Label htmlFor="bio" className="block">

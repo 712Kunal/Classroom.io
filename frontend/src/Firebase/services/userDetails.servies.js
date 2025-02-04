@@ -8,7 +8,7 @@ COMMENT BY Vighnesh
 hence addProfile, updateProfile, getProfile, etc
 */
 
-const addUserDetails = async (userDetails) => {
+const addProfile = async (userDetails, userId) => {
   try {
     const user = auth.currentUser;
 
@@ -16,20 +16,20 @@ const addUserDetails = async (userDetails) => {
       throw new Error('No user found');
     }
 
-    // Get the related user document reference
     const userDetailsRef = doc(db, 'Users', user.uid);
-    
-    const docRef = await addDoc(collection(db, 'UserDetails'), {
+
+    const docRef = await addDoc(collection(db, 'UserProfiles'), {
+      userId: userId,
       ...userDetails,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
 
-    return docRef.id;
+    return { success: true, docRef };
   } catch (error) {
     console.error('Error adding user details:', error);
     throw error;
   }
 };
 
-export default addUserDetails;
+export default addProfile;
