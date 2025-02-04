@@ -6,6 +6,7 @@ import SelectResourceType from "../originUi/select-resource";
 import InputIntervalCount from "../originUi/input-interval-count";
 import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
+import { createPathway as createPathwayFunc } from "@/gemini/pathway.utils.js";
 
 import {
   LoaderCircle,
@@ -45,6 +46,14 @@ const CreatePathway = () => {
 
   const [isGenerating, setGenerating] = useState(false);
   const [pathwayReady, setPathwayReady] = useState(false);
+
+  // const HandleCreatePathway = (e) => {
+  //   e.preventDefault();
+  //   const userId = auth.currentUser.uid;
+  //   const { result, pathwayId } = createPathwayFunc(userId, userDetails, additionalInfo, formData);
+  //   console.log(result);
+  //   console.log(pathwayId);
+  // }
 
   return isGenerating ? (
     <PathwayLoader topic={formData.topic} intervalCount={formData.intervalCount} intervalType={formData.intervalType} isPathwayReady={pathwayReady} />
@@ -97,6 +106,7 @@ const CreatePathway = () => {
               <button
                 className="relative group/btn bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                 type="submit"
+                onClick={HandCreatePathway}
               >
                 Generate a pathway for me <ShipWheel />
                 <BottomGradient />
