@@ -3,8 +3,8 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimes
 
 const pathwaysCollectionRef = collection(db, 'pathways');
 
-/** adds pathway to db (pathwayData Obj) */
-export const addPathway = async (pathwayData) => {
+/** adds pathway to db (userId, pathwayData Obj) */
+export const addPathway = async (userId, pathwayData) => {
   try {
     // add doc as pathway in pathways collection
     // inject createdAt, modifiedAt
@@ -45,11 +45,11 @@ export const getActivePathwayOfUser = async (userId) => {
     const q = query(pathwaysCollectionRef, where("userId", "==", userId), where("isActive", "==", true));
     const querySnapshot = await getDocs(q);
 
-    if(querySnapshot.docs.length == 0) {
+    if (querySnapshot.docs.length == 0) {
       throw new Error("No active pathway found");
     }
-    
-    if(querySnapshot.docs.length > 1) {
+
+    if (querySnapshot.docs.length > 1) {
       throw new Error("User has multiple active pathways.");
     }
 
@@ -79,8 +79,8 @@ export const getAllPathwaysOfUser = async (userId) => {
 export const getNonActivePathwaysOnlyOfUser = async (userId) => {
   try {
     const q = query(
-      pathwaysCollectionRef, 
-      where("userId", "==", userId), 
+      pathwaysCollectionRef,
+      where("userId", "==", userId),
       where("isActive", "==", false)
     );
     const querySnapshot = await getDocs(q);
@@ -95,17 +95,17 @@ export const getNonActivePathwaysOnlyOfUser = async (userId) => {
 export const deletePathwayOfUser = async (userId, pathwayId) => {
   try {
     const q = query(
-      pathwaysCollectionRef, 
-      where("userId", "==", userId), 
+      pathwaysCollectionRef,
+      where("userId", "==", userId),
       where("id", "==", pathwayId)
     );
     const querySnapshot = await getDocs(q);
-    
-    if(querySnapshot.docs.length == 0) {
+
+    if (querySnapshot.docs.length == 0) {
       throw new Error("No pathway found");
     }
-    
-    if(querySnapshot.docs.length > 1) {
+
+    if (querySnapshot.docs.length > 1) {
       throw new Error("Multiple pathways found.");
     }
 
@@ -124,9 +124,9 @@ export const updatePathway = async (pathwayId, updates) => {
   try {
     const docRef = doc(pathwaysCollectionRef, pathwayId);
     const updatedPathway = await updateDoc(
-      docRef, 
+      docRef,
       {
-        updates, 
+        updates,
         modifiedAt: serverTimestamp()
       }
     );
@@ -135,7 +135,7 @@ export const updatePathway = async (pathwayId, updates) => {
       id: updatePathway.id,
       ...updatedPathway.data()
     };
-  } catch(error) {
+  } catch (error) {
     console.error("Error updating pathway:", error);
     throw error;
   }
