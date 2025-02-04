@@ -1,18 +1,22 @@
 import LandingNavbar from '@/components/core/LandingNavbar.jsx';
+import Spline from '@splinetool/react-spline';
 
 function LandingPage() {
   return (
-    <div className="border w-full h-full">
+    <div className="border w-full h-full bg-gradient-to-br from-purple-800/5 via-purple-950/40 to-black/50">
       <LandingNavbar />
       <main className="w-full h-auto">
         <div className="hero-section relative h-[calc(100dvh-85px)] overflow-hidden">
           {/* Spline Background Container */}
           <div className="absolute inset-0 w-full h-full">
-            {/* Example: <Spline scene="..." /> */}
+            <Spline
+              className="w-full h-full"
+              scene="https://prod.spline.design/JSqVBBBg2uBpaN9H/scene.splinecode"
+            />
           </div>
 
           {/* Overlay to ensure text readability */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-purple-900/30" />
+          {/* <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-black/50" /> */}
 
           {/* Content Container */}
           <div className="relative flex items-center h-full w-full">
