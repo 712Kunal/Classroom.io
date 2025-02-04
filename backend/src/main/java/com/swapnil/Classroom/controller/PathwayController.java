@@ -66,7 +66,7 @@ public class PathwayController {
     ) throws ExecutionException, InterruptedException {
 
 
-        DocumentReference userDoc=firestore.collection("UserRegistration").document(userId);
+        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
 
         ApiFuture<DocumentSnapshot> future = userDoc.get();
         DocumentSnapshot document = future.get();
@@ -122,7 +122,7 @@ public class PathwayController {
     ) throws ExecutionException, InterruptedException {
 
 
-        DocumentReference userDoc=firestore.collection("UserRegistration").document(userId);
+        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
 
         ApiFuture<DocumentSnapshot> future = userDoc.get();
         DocumentSnapshot document = future.get();
@@ -181,7 +181,7 @@ public class PathwayController {
     ) throws ExecutionException, InterruptedException {
 
 
-        DocumentReference userDoc=firestore.collection("UserRegistration").document(userId);
+        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
 
         ApiFuture<DocumentSnapshot> future = userDoc.get();
         DocumentSnapshot document = future.get();
@@ -247,7 +247,7 @@ public class PathwayController {
             return ResponseEntity.badRequest().body("Progress percentage must be between 0 and 100.");
         }
 
-        DocumentReference userDoc=firestore.collection("UserRegistration").document(userId);
+        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
 
         ApiFuture<DocumentSnapshot> future = userDoc.get();
         DocumentSnapshot document = future.get();

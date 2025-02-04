@@ -32,7 +32,7 @@ public class NotificationService {
     public void save(Notification notification){
 
         try {
-            firestore.collection("userNotification")
+            firestore.collection("notifications")
                     .document(notification.getNotificationId())
                     .set(notification)
                     .get();
@@ -141,7 +141,7 @@ public class NotificationService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
 
@@ -184,7 +184,7 @@ public class NotificationService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
 
@@ -226,7 +226,7 @@ public class NotificationService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
 
@@ -272,7 +272,7 @@ public class NotificationService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
 
