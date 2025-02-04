@@ -68,8 +68,11 @@ public class UserController {
     ) throws ExecutionException, InterruptedException {
 
         try{
-            UserRecord userRecord = FirebaseAuth.getInstance().getUser(userId);
-            String userEmail = userRecord.getEmail();
+            DocumentReference docRef = firestore.collection("Users").document(userId);
+            DocumentSnapshot document = docRef.get().get();
+
+            String userEmail= document.getString("email");
+
 
             if(userEmail==null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User email not found with: "+userId);
