@@ -96,17 +96,17 @@ public class UserService {
 
         String userName=(String) userDoc.get("username");
 
-        String subject = "Welcome to Pathify!";
+        String subject = "🎉 Welcome to Pathify! 🚀";
         String body = String.format(
                 "Hello %s,\n\n" +
-                        "Welcome to Pathify, your personalized learning companion!\n\n" +
-                        "Your account has been successfully created, and we're excited to have you on board. Start exploring tailored learning pathways designed just for you and achieve your goals with ease.\n\n" +
-                        "If you have any questions or need assistance, feel free to reach out to our support team.\n\n" +
-                        "Happy learning!\n\n" +
-                        "Best regards,\n" +
-                        "Team Pathify",
+                        "🎊 Welcome to Pathify! Your account is ready. Start exploring your personalized pathways! 💡\n\n" +
+                        "Need help? Contact support. 🤝\n\n" +
+                        "Happy learning! \n\n" +
+                        "Best,\n" +
+                        "💖 Team Pathify",
                 userName
         );
+
 
         mailService.sendEmail(userEmail, subject, body);
 
