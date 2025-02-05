@@ -10,45 +10,44 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area.jsx';
 import { Separator } from "@/components/ui/separator.jsx"
 import { Badge } from "@/components/ui/badge.jsx"
-import { ChevronDownIcon, Library, Clock, Calendar, Pencil, List, RouteIcon } from "lucide-react"
+import { ChevronDownIcon, Library, Clock, Calendar, List, RouteIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.jsx"
-import { PathwayProvider } from "@/components/context/PathwayContext.jsx"
-import DummyPathway from '../assets/data/dummy.json';
 import { useGlobal } from '@/components/context/GlobalContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const viewOptions = {
+  timeline: {
+    name: "Timeline View",
+    icon: <Clock size={16} />
+  },
+  calender: {
+    name: "Calender View",
+    icon: <Calendar size={16} />
+  },
+  tasks: {
+    name: "Tasks View",
+    icon: <List size={16} />
+  }
+}
 
 function PathwayPage() {
-  const { pathwayId } = useParams();
   const { pathname } = useLocation();
-
+  const { pathwayId } = useParams();
   const lastWord = pathname.split('/').pop();
-  const viewOptions = {
-    timeline: {
-      name: "Timeline View",
-      icon: <Clock size={16} />
-    },
-    calender: {
-      name: "Calender View",
-      icon: <Calendar size={16} />
-    },
-    create: {
-      name: "Create Pathway",
-      icon: <Pencil size={16} />
-    },
-    tasks: {
-      name: "Tasks View",
-      icon: <List size={16} />
-    }
-  }
-  const currentView = viewOptions[lastWord];
+  const [currentView, setCurrentView] = useState(viewOptions[lastWord]);
+
+  useEffect(() => {
+    const lastWord = pathname.split('/').pop();
+    setCurrentView(viewOptions[lastWord]);
+  }, [pathname]);
 
   const { pathwaysList: pathways } = useGlobal();
-  const [currentPathway] = useState(pathways.find((pathway) => pathway.id === pathwayId));
+  const pathway = pathways.find((pathway) => pathway.data._id === pathwayId);
 
   return (
     <div className="text-4xl w-full p-2 h-full rounded-lg flex flex-col">
@@ -68,16 +67,16 @@ function PathwayPage() {
                 <DropdownMenuTrigger>
                   <Badge variant="outline" className="text-sm flex items-center gap-1">
                     <RouteIcon size={16} />
-                    {pathways.find((pathway) => pathway.id === pathwayId)?.topic}
+                    {pathway.data.topic}
                     <ChevronDownIcon />
                   </Badge>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
-                  {pathways.map((pathway) => (
-                    <DropdownMenuItem key={pathway.id}>
-                      <Link to={`/app/library/pathways/${pathway.id}/timeline`} className='flex items-center gap-2 text-sm'>
+                  {pathways.map((pathway, index) => (
+                    <DropdownMenuItem key={index}>
+                      <Link to={`/app/library/pathways/${pathway.data._id}/${lastWord}`} className='flex items-center gap-2 text-sm'>
                         <RouteIcon size={16} />
-                        {pathway.topic}
+                        {pathway.data.topic}
                       </Link>
                     </DropdownMenuItem>
                   ))}
@@ -113,9 +112,7 @@ function PathwayPage() {
       </div>
       <Separator />
       <ScrollArea className="h-full relative">
-        <PathwayProvider initialPathway={currentPathway}>
-          <Outlet />
-        </PathwayProvider>
+        <Outlet />
       </ScrollArea>
     </div>
   );

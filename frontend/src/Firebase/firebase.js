@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { browserLocalPersistence, getAuth, sendPasswordResetEmail, setPersistence } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
@@ -16,6 +16,11 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+  console.error('Failed to set persistence:', error);
+});
+
 export { sendPasswordResetEmail };
 
 export default app;

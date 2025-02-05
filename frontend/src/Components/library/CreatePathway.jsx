@@ -49,6 +49,7 @@ const CreatePathway = () => {
 
   const [isGenerating, setGenerating] = useState(false);
   const [pathwayReady, setPathwayReady] = useState(false);
+  const [createdPathwayId, setCreatedPathwayId] = useState(null);
   const { user } = useGlobal();
 
   const handleCreatePathway = async (e) => {
@@ -87,12 +88,13 @@ const CreatePathway = () => {
     );
     console.log(result);
     console.log(pathwayId);
+    setCreatedPathwayId(pathwayId);
 
     setPathwayReady(true);
   }
 
   return isGenerating ? (
-    <PathwayLoader topic={formData.topic} duration={formData.duration} intervalType={formData.intervalType} isPathwayReady={pathwayReady} />
+    <PathwayLoader topic={formData.topic} duration={formData.duration} intervalType={formData.intervalType} isPathwayReady={pathwayReady} createdPathwayId={createdPathwayId} />
   ) : (
     <div className='w-full h-full py-4 px-4 flex gap-2'>
       <div className="w-full lg:w-1/2 p-4">
@@ -203,7 +205,7 @@ const loadingStages = [
   { id: 7, message: "Your personalised pathway is ready.", icon: <CircleCheck size={iconSize} /> },
 ]
 
-const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) => {
+const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady, createdPathwayId }) => {
   const [currentDoneStages, setDoneStages] = useState([]);
   const [isBackdropLoaded, setBackedAsLoaded] = useState(false);
   const navigate = useNavigate();
@@ -271,7 +273,7 @@ const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady }) =
             })}
           </CardContent>
           <CardFooter className="bg-neutral-900 p-4">
-            <Button className="w-full flex items-center gap-2" disabled={!isPathwayReady} onClick={navigate("/app/library/pathways/1/timeline")}>
+            <Button className="w-full flex items-center gap-2" disabled={!isPathwayReady} onClick={() => navigate(`/app/library/pathways/${createdPathwayId}/timeline`)}>
               <Compass />
               Explore your pathway
             </Button>

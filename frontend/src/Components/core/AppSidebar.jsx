@@ -20,20 +20,23 @@ import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
 import { useGlobal } from '../context/GlobalContext.jsx';
 import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service.js';
+import { Pathway } from '../models/Pathway.model.js';
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
   const { user: contextUser } = useGlobal();
   const { pathwaysList, setPathwaysList } = useGlobal();
-
+  
   useEffect(() => {
     if(contextUser) {
       const fetchPathways = async () => {
         try {
           const pathways = await getAllPathwaysOfUser(contextUser.uid);
-          setPathwaysList(pathways);
-          console.log(pathways);
+          const pathwaysList = pathways.map((pathway) => {
+            return new Pathway(pathway);
+          })
+          setPathwaysList(pathwaysList);
         } catch (error) {
           console.error("Error fetching pathways:", error);
         }
@@ -70,9 +73,9 @@ const AppSidebar = () => {
   
   const pathways = pathwaysList.map((pathway, index) => (
     {
-      id: pathway.id,
-      name: pathway.topic,
-      pathwayId: pathway.id,
+      id: pathway.data._id,
+      name: pathway.data.topic,
+      pathwayId: pathway.data._id,
     }
   ));
 

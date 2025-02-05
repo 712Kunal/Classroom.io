@@ -97,7 +97,6 @@ const validatePathway = (data) => {
 class Pathway {
   constructor(pathwayData) {
     const convertedPathway = convertFetchedPathwayToPathway(pathwayData);
-    console.log(convertedPathway);
     this.data = validatePathway(convertedPathway);
   }
 
@@ -115,9 +114,12 @@ class Pathway {
 
   toTaskList() {
     const taskList = [];
+    let taskNumber = 1;
     this.data.response.pathway.forEach((interval) => {
       interval.tasks.forEach((task) => {
+        task.taskNumber = taskNumber;
         taskList.push(task);
+        taskNumber++;
       })
     })
     return taskList;

@@ -1,4 +1,4 @@
-import { usePathway } from "../context/PathwayContext.jsx";
+import { useGlobal } from "../context/GlobalContext.jsx";
 import { Timeline } from "@/components/ui/timeline.jsx";
 import {
   Card,
@@ -20,7 +20,7 @@ import {
   DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog.jsx"
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button } from "../ui/button.jsx";
 
 const taskStateToObject = {
@@ -39,7 +39,9 @@ const resourceStateToIcon = {
 }
 
 const TimelineView = () => {
-  const { pathway } = usePathway();
+  const { pathwayId } = useParams();
+  const { pathwaysList } = useGlobal();
+  const pathway = pathwaysList.find((pathway) => pathway.data._id === pathwayId);
   const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const { pathway: intervals, intervalType } = pathway.data.response;
 

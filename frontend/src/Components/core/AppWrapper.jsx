@@ -3,8 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar.jsx';
 import AppSidebar from './AppSidebar.jsx';
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
-import { GlobalProvider, useGlobal } from '../context/GlobalContext.jsx';
-import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service.js';
+import { GlobalProvider } from '../context/GlobalContext.jsx';
 
 function AppWrapper({user}) {
   const isMobile = useIsMobile();

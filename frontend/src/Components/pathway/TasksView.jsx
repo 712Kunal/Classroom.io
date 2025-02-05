@@ -1,11 +1,11 @@
-import { usePathway } from "../context/PathwayContext.jsx";
+import { useGlobal } from "../context/GlobalContext.jsx";
 import { useState } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion.jsx"
 import { Card } from "@/components/ui/card.jsx"
 import { Badge } from "@/components/ui/badge.jsx"
 import { CalendarIcon, BookOpenIcon, MonitorPlay, SquareMousePointer, CopyPlus, CopyMinus, CalendarCheck, Clock, BadgeCheck, CircleCheck, BadgeAlert, CircleAlert, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button.jsx"
-import { useGlobal } from "../context/GlobalContext.jsx";
+import { useParams } from "react-router-dom";
 
 const ResourceTypeToIconMap = {
   'Documentation': <BookOpenIcon size={24} className="text-blue-500" />,
@@ -69,11 +69,13 @@ const taskStateToDisplayTextMap = {
 }
 
 const TasksView = () => {
-  const { pathway } = usePathway();
+  const { pathwayId } = useParams();
+  const { pathwaysList } = useGlobal();
+  const pathway = pathwaysList.find((pathway) => pathway.data._id === pathwayId);
+
   const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const taskList = pathway.toTaskList();
   const { setActivePathwayId } = useGlobal();
-
   const [expandedTasks, setExpandedTasks] = useState([]);
 
   const toggleInterval = (task) => {
@@ -91,7 +93,7 @@ const TasksView = () => {
 
   const toggleCollapseExpandAll = () => {
     if (expandedTasks.length === 0) {
-      setExpandedTasks(tasks.map((task) => task.taskNumber));
+      setExpandedTasks(expandedTasks.map((task) => task.taskNumber));
     } else {
       setExpandedTasks([]);
     }
@@ -158,7 +160,7 @@ const TasksView = () => {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="pl-4 border-l-2 border-gray-200 ml-4 mt-2">
-                    <Card key={task.taskNumber} className={`mb-4 p-4 ${taskStateToBgColorMap[taskState]} border-2 ${taskStateToBorderColorMap[taskState]} ${['completedOnTime', 'completedLate'].includes(taskState) ? 'opacity-75' : ''}`}>
+                    <Card className={`mb-4 p-4 ${taskStateToBgColorMap[taskState]} border-2 ${taskStateToBorderColorMap[taskState]} ${['completedOnTime', 'completedLate'].includes(taskState) ? 'opacity-75' : ''}`}>
                       <div className="top flex items-center justify-between">
                         <div className="left">
                           <h3 className={`text-lg font-semibold mb-2 ${taskStateToTextColorMap[taskState]}`}>{task.taskTitle}</h3>
