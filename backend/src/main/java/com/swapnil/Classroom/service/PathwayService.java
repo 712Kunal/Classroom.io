@@ -118,7 +118,7 @@ public class PathwayService {
     private String getUserEmailByUserId(String userId) throws Exception {
 
 
-        DocumentReference userRef = firestore.collection("UserRegistration").document(userId);
+        DocumentReference userRef = firestore.collection("Users").document(userId);
 
         DocumentSnapshot userDoc = userRef.get().get();
         if (!userDoc.exists()) {
@@ -130,7 +130,7 @@ public class PathwayService {
 
     public String getUserIdFromPathwayId(String pathwayId) throws Exception {
 
-        DocumentReference documentReference= firestore.collection("Pathway").document(pathwayId);
+        DocumentReference documentReference= firestore.collection("pathways").document(pathwayId);
 
         DocumentSnapshot document=documentReference.get().get();
 
@@ -192,7 +192,7 @@ public class PathwayService {
         System.out.println("Finding pathway by Id..."+pathwayId);
 
         try {
-            ApiFuture<DocumentSnapshot> future = firestore.collection("Pathway").document(pathwayId).get();
+            ApiFuture<DocumentSnapshot> future = firestore.collection("pathways").document(pathwayId).get();
             DocumentSnapshot document = future.get();
 
             if (document.exists()) {
@@ -214,7 +214,7 @@ public class PathwayService {
 
         System.out.println("userId: "+userId);
 
-        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
 
         String userEmail= (String) userDoc.get("email");
@@ -226,7 +226,7 @@ public class PathwayService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
         try {
@@ -259,7 +259,7 @@ public class PathwayService {
 
         System.out.println("userId: "+userId);
 
-        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
 
         String userEmail= (String) userDoc.get("email");
@@ -271,7 +271,7 @@ public class PathwayService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
         try {
@@ -306,7 +306,7 @@ public class PathwayService {
 
         System.out.println("userId: "+userId);
 
-        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
 
         String userEmail= (String) userDoc.get("email");
@@ -318,7 +318,7 @@ public class PathwayService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
         try {
@@ -356,7 +356,7 @@ public class PathwayService {
 
         System.out.println("userId: "+userId);
 
-        DocumentReference documentReference=firestore.collection("UserRegistration").document(userId);
+        DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
 
         String userEmail= (String) userDoc.get("email");
@@ -368,7 +368,7 @@ public class PathwayService {
         String pathwayDescription="";
         Map<String, Object> pathwayData = getPathwayById(pathwayId);
         if(pathwayData!=null){
-            pathwayDescription = (String) pathwayData.get("description");
+            pathwayDescription = (String) pathwayData.get("topic");
 
         }
         try {

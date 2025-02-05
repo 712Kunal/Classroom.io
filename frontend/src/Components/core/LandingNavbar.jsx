@@ -43,13 +43,13 @@ export default function LandingNavbar() {
                   <ProductItem
                     title="Task Scheduler AI"
                     href="https://userogue.com"
-                    src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
+                    src="src/assets/scheduler.png"
                     description="Smart task management with AI-suggested prioritization and reminders."
                   />
                   <ProductItem
                     title="Smart Notifications"
                     href="https://smartnotifications.com"
-                    src="https://example.com/smart-notifications.webp"
+                    src="src/assets/notif.png"
                     description="Stay on track with timely reminders and motivational nudges"
                   />
                 </div>
