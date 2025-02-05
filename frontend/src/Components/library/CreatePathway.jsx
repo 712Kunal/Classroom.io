@@ -7,6 +7,8 @@ import InputDurationInDays from "../originUi/input-duration-in-days";
 import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
 import { createPathway as createPathwayFunc } from "@/gemini/pathway.utils.js";
+import { Pathway } from "../models/Pathway.model";
+import { getAllPathwaysOfUser } from "@/Firebase/services/pathway.service";
 
 import {
   LoaderCircle,
@@ -208,6 +210,7 @@ const loadingStages = [
 const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady, createdPathwayId }) => {
   const [currentDoneStages, setDoneStages] = useState([]);
   const [isBackdropLoaded, setBackedAsLoaded] = useState(false);
+  const { setPathwaysList } = useGlobal();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -233,6 +236,22 @@ const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady, cre
       }
     };
   }, []);
+
+  const handleNewPathwayCreated = async () => {
+    const fetchPathways = async () => {
+      try {
+        const pathways = await getAllPathwaysOfUser(contextUser.uid);
+        const pathwaysList = pathways.map((pathway) => {
+          return new Pathway(pathway);
+        })
+        setPathwaysList(pathwaysList);
+      } catch (error) {
+        console.error("Error fetching pathways:", error);
+      }
+    };
+    await fetchPathways();
+    navigate(`/app/library/pathways/${createdPathwayId}/timeline`);
+  }
 
   return (
     <div className="loaderWrapper relative flex justify-center items-center h-full w-full overflow-hidden">
@@ -273,7 +292,7 @@ const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady, cre
             })}
           </CardContent>
           <CardFooter className="bg-neutral-900 p-4">
-            <Button className="w-full flex items-center gap-2" disabled={!isPathwayReady} onClick={() => navigate(`/app/library/pathways/${createdPathwayId}/timeline`)}>
+            <Button className="w-full flex items-center gap-2" disabled={!isPathwayReady} onClick={handleNewPathwayCreated}>
               <Compass />
               Explore your pathway
             </Button>

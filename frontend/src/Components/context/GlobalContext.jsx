@@ -1,29 +1,21 @@
+import { useAuthListener } from '@/hooks/use-auth';
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Create the context
 const GlobalContext = createContext(null);
 
 // Provider component
-export const GlobalProvider = ({ children, initialData }) => {
-  const [activePathwayId, setActivePathwayId] = useState(initialData?.activePathwayId || "");
-  const [isAuth, setIsAuth] = useState(initialData?.auth || false);
-  const [user, setUser] = useState(null);
-  const [pathwaysList, setPathwaysList] = useState(initialData?.pathwaysList || []);
-
-  useEffect(() => {
-    if(initialData && initialData.user) {
-      setUser(initialData.user)
-    }
-  }, [initialData]);
+export const GlobalProvider = ({ children }) => {
+  const [activePathwayId, setActivePathwayId] = useState("");
+  const { user, loading } = useAuthListener();
+  const [pathwaysList, setPathwaysList] = useState([]);
 
   return (
     <GlobalContext.Provider value={{ 
       activePathwayId,
       setActivePathwayId,
-      isAuth,
-      setIsAuth,
       user,
-      setUser,
+      loading,
       pathwaysList,
       setPathwaysList,
     }}>

@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar.jsx';
 import AppSidebar from './AppSidebar.jsx';
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
 import { GlobalProvider } from '../context/GlobalContext.jsx';
 
-function AppWrapper({user}) {
+function AppWrapper() {
   const isMobile = useIsMobile();
   return (
-    <GlobalProvider initialData={{user: user}}>
+    <GlobalProvider>
       <div className="w-screen h-screen flex">
         <aside>
           <SidebarProvider defaultOpen={false}>

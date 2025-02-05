@@ -16,6 +16,8 @@ export default function InputDurationInDays({value, setValue, max}) {
         unit: "day",
         unitDisplay: "long",
       }}
+      aria-label="duration-in-days"
+      aria-labelledby="duration"
     >
       <div className="space-y-2">
         <Group
