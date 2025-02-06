@@ -24,41 +24,6 @@ import { Pathway } from '../models/Pathway.model.js';
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
-
-  const { user: contextUser } = useGlobal();
-  const { pathwaysList, setPathwaysList } = useGlobal();
-  
-  useEffect(() => {
-    if(contextUser) {
-      const fetchPathways = async () => {
-        try {
-          const pathways = await getAllPathwaysOfUser(contextUser.uid);
-          const pathwaysList = pathways.map((pathway) => {
-            return new Pathway(pathway);
-          })
-          setPathwaysList(pathwaysList);
-        } catch (error) {
-          console.error("Error fetching pathways:", error);
-        }
-      };
-      fetchPathways();
-    };
-  }, [contextUser]);
-    
-  const user = contextUser ? {
-    username: contextUser.displayName,
-    avatar: 'https://avatar.iran.liara.run/public/48',
-    email: contextUser.email,
-  } : null;  
-  
-  const pathways = pathwaysList.map((pathway, index) => (
-    {
-      id: pathway.data._id,
-      name: pathway.data.topic,
-      pathwayId: pathway.data._id,
-    }
-  ));
-
   const { pathwaysList, isLoading } = useGlobal();
   let pathways = [];
 
