@@ -92,7 +92,7 @@ function NotificationsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.8 }}
-                  key={notification._id}
+                  key={notification.id}
                   className="animated-div">
                   <Card
                     className={`mb-4 relative overflow-hidden ${
