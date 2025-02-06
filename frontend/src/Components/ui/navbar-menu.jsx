@@ -31,7 +31,7 @@ export const MenuItem = ({ setActive, active, item, children }) => {
                 transition={transition}
                 // layoutId ensures smooth animation
                 layoutId="active"
-                className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl">
+                className="bg-white dark:bg-[#0300145e] backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl">
                 <motion.div
                   // layout ensures smooth animation
                   layout
@@ -52,7 +52,7 @@ export const Menu = ({ setActive, children }) => {
     <nav
       // resets the state
       onMouseLeave={() => setActive(null)}
-      className="relative rounded-xl border border-transparent dark:bg-[#0b0b0b] dark:border-white/[0.2] bg-white shadow-input flex justify-center space-x-16 px-4 py-2">
+      className="relative border border-[#7042f861] bg-[#0300145e] shadow-input flex justify-center space-x-16 px-[20px] py-[10px] rounded-full text-gray-200">
       {children}
     </nav>
   );
@@ -80,7 +80,7 @@ export const ProductItem = ({ title, description, href, src }) => {
 
 export const HoveredLink = ({ children, ...rest }) => {
   return (
-    <Link {...rest} className="text-neutral-700 dark:text-neutral-200 hover:text-black ">
+    <Link {...rest} className="text-neutral-700 dark:text-slate-200 hover:text-black ">
       {children}
     </Link>
   );
