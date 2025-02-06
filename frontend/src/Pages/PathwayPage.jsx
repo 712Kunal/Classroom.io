@@ -10,7 +10,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area.jsx';
 import { Separator } from "@/components/ui/separator.jsx"
 import { Badge } from "@/components/ui/badge.jsx"
-import { ChevronDownIcon, Library, Clock, Calendar, List, RouteIcon } from "lucide-react"
+import { ChevronDownIcon, Library, Clock, Calendar, List, RouteIcon, Terminal } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu.jsx"
 import { useGlobal } from '@/components/context/GlobalContext';
 import { useEffect, useState } from 'react';
+import { Loader } from './LibraryPage';
 
 const viewOptions = {
   timeline: {
@@ -40,6 +41,9 @@ function PathwayPage() {
   const { pathwayId } = useParams();
   const lastWord = pathname.split('/').pop();
   const [currentView, setCurrentView] = useState(viewOptions[lastWord]);
+  const { isPathwaysSetToRefresh } = useGlobal();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [minimumLoaderTimeElapsed, setMinimumLoaderTimeElapsed] = useState(false);
 
   useEffect(() => {
     const lastWord = pathname.split('/').pop();
@@ -48,6 +52,27 @@ function PathwayPage() {
 
   const { pathwaysList: pathways } = useGlobal();
   const pathway = pathways.find((pathway) => pathway.data.id === pathwayId);
+
+  // Handle initial loading state
+  useEffect(() => {
+    if (pathways.length >= 0 && minimumLoaderTimeElapsed) {
+      setIsInitialLoading(false);
+    }
+  }, [pathways, minimumLoaderTimeElapsed]);
+
+  // Handle minimum loader time and initial data load
+  useEffect(() => {
+    // Set minimum loader time
+    const loaderTimer = setTimeout(() => {
+      setMinimumLoaderTimeElapsed(true);
+    }, 5000);
+
+    return () => clearTimeout(loaderTimer);
+  }, []);
+
+  if (isPathwaysSetToRefresh || (isInitialLoading || !minimumLoaderTimeElapsed)) {
+    return <Loader backdrop="aiChip" />;
+  }
 
   return (
     <div className="text-4xl w-full p-2 h-full rounded-lg flex flex-col">

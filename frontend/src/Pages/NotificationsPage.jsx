@@ -1,15 +1,37 @@
 import { React, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import dummyNotif from '../assets/data/dummyNotif.json';
 import { Bell, Route, LayoutList, Coins, Award } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/Components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card';
 import { Badge } from '@/Components/ui/badge';
+import { getNotifications } from '../Firebase/services/notifications.service';
+import { auth } from '@/Firebase/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 function NotificationsPage() {
-  const [notifications, setNotifications] = useState(dummyNotif.notifications);
+  const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
 
   // useEffect to fetch all the notifications
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('user', user);
+        const userId = auth.currentUser.uid;
+
+        const fetchNotifications = async () => {
+          const usersNotifications = await getNotifications(userId);
+          console.log(usersNotifications);
+          setNotifications(usersNotifications);
+        };
+
+        fetchNotifications();
+      } else {
+        navigate('/login');
+        console.log('no user');
+      }
+    });
+  }, []);
 
   const relativeTimeFormat = (date) => {
     const sendDate = new Date(date);
@@ -41,17 +63,15 @@ function NotificationsPage() {
     }
   };
 
-  console.log(notifications);
-
   const getIcon = (notificationType) => {
     switch (notificationType) {
-      case 'Pathway':
+      case 'PATHWAY':
         return <Route className="text-green-400" />;
-      case 'Task':
+      case 'TASK':
         return <LayoutList className="text-blue-400" />;
-      case 'Points':
+      case 'POINTS':
         return <Coins className="text-yellow-400" />;
-      case 'Badge':
+      case 'BADGE':
         return <Award className="text-orange-500" />;
     }
   };
@@ -74,13 +94,13 @@ function NotificationsPage() {
               Notifications
             </motion.div>
           </CardTitle>
-          <motion.CardDescription
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: 'easeInOut' }}
             className="text-xl ml-5 text-gray-600 dark:text-gray-400">
             Stay updated with your latest notifications and reminders.
-          </motion.CardDescription>
+          </motion.div>
         </CardHeader>
 
         <CardContent className="p-4">
@@ -111,7 +131,7 @@ function NotificationsPage() {
                               Message
                             </Badge>
                             <span className="time text-xs text-slate-500">
-                              {relativeTimeFormat(notification.notifSendDate)}
+                              {relativeTimeFormat(notification.notificationSendDate)}
                             </span>
                           </div>
                         </div>
