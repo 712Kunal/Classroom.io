@@ -1,9 +1,7 @@
 package com.swapnil.Classroom.controller;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.*;
 import com.swapnil.Classroom.entity.Notification;
 import com.swapnil.Classroom.service.NotificationService;
 import com.swapnil.Classroom.service.PathwayService;
@@ -64,13 +62,7 @@ public class PathwayController {
             @PathVariable  String pathwayId
     ) throws ExecutionException, InterruptedException {
 
-
-        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
-
-        ApiFuture<DocumentSnapshot> future = userDoc.get();
-        DocumentSnapshot document = future.get();
-
-
+        DocumentSnapshot document = pathwayService.getUserDocumentByUserId(userId);
 
         Notification notification=new Notification();
 
@@ -120,13 +112,7 @@ public class PathwayController {
             @PathVariable  String pathwayId
     ) throws ExecutionException, InterruptedException {
 
-
-        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
-
-        ApiFuture<DocumentSnapshot> future = userDoc.get();
-        DocumentSnapshot document = future.get();
-
-
+        DocumentSnapshot document = pathwayService.getUserDocumentByUserId(userId);
 
         Notification notification=new Notification();
 
@@ -179,13 +165,7 @@ public class PathwayController {
             @PathVariable  String pathwayId
     ) throws ExecutionException, InterruptedException {
 
-
-        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
-
-        ApiFuture<DocumentSnapshot> future = userDoc.get();
-        DocumentSnapshot document = future.get();
-
-
+        DocumentSnapshot document = pathwayService.getUserDocumentByUserId(userId);
 
         Notification notification=new Notification();
 
@@ -246,12 +226,7 @@ public class PathwayController {
             return ResponseEntity.badRequest().body("Progress percentage must be between 0 and 100.");
         }
 
-        DocumentReference userDoc=firestore.collection("UserProfiles").document(userId);
-
-        ApiFuture<DocumentSnapshot> future = userDoc.get();
-        DocumentSnapshot document = future.get();
-
-
+        DocumentSnapshot document = pathwayService.getUserDocumentByUserId(userId);
 
         Notification notification=new Notification();
 
@@ -298,6 +273,9 @@ public class PathwayController {
         notificationService.sendPathwayProgressNotification(userId ,notification, pathwayId, progressPercentage);
 
     }
+
+
+
 
 
 
