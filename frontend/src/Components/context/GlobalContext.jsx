@@ -44,7 +44,7 @@ export const GlobalProvider = ({ children }) => {
       try {
         const refreshPathways = async (userId) => {
           const pathways = await getAllPathwaysOfUser(userId);
-          setPathwaysList(pathways.map((pathway) => new Pathway(pathway, userId)));
+          setPathwaysList(pathways.map((pathway) => new Pathway(pathway, null)));
         };
         const userId = user.uid;
         refreshPathways(userId);

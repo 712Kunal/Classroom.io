@@ -156,10 +156,10 @@ const Interval = ({ data }) => {
                       <div className="rounded-md flex gap-2">
                         {task.resources.map((resource, index) => (
                           <div key={index} className="flex gap-2 items-center border-2 border-neutral-500 dark:border-neutral-300 rounded-md p-2 hover:scale-105 cursor-pointer">
-                            <Link href={resource.link} target="_blank" className="text-blue-400 hover:text-blue-500 flex gap-2">
+                            <a href={resource.link} target="_blank" className="text-blue-400 hover:text-blue-500 flex gap-2">
                               {resourceStateToIcon[resource.type]}
                               <span>{resource.title}</span>
-                            </Link>
+                            </a>
                           </div>
                         ))}
                       </div>
