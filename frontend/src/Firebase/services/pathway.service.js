@@ -91,24 +91,9 @@ export const getNonActivePathwaysOnlyOfUser = async (userId) => {
   }
 };
 
-/** delete single specified user's pathway (userId, pathwayId) */
-export const deletePathwayOfUser = async (userId, pathwayId) => {
+/** delete single specified user's pathway (pathwayId) */
+export const deletePathwayOfUser = async (pathwayId) => {
   try {
-    const q = query(
-      pathwaysCollectionRef,
-      where("userId", "==", userId),
-      where("id", "==", pathwayId)
-    );
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.docs.length == 0) {
-      throw new Error("No pathway found");
-    }
-
-    if (querySnapshot.docs.length > 1) {
-      throw new Error("Multiple pathways found.");
-    }
-
     const docRef = doc(pathwaysCollectionRef, pathwayId);
 
     await deleteDoc(docRef);

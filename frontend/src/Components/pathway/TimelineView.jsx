@@ -42,6 +42,7 @@ const TimelineView = () => {
   const { pathwayId } = useParams();
   const { pathwaysList } = useGlobal();
   const pathway = pathwaysList.find((pathway) => pathway.data._id === pathwayId);
+  
   const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const { pathway: intervals, intervalType } = pathway.data.response;
 
