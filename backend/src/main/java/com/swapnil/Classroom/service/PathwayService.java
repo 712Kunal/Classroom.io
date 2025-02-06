@@ -303,12 +303,14 @@ public class PathwayService {
         }
     }
 
-    public void sendFirstPathwayGenerationEmail(String userId, String pathwayId) throws ExecutionException, InterruptedException {
+    public void sendPathwayGenerationEmail(String userId, String pathwayId, DocumentSnapshot document) throws ExecutionException, InterruptedException {
 
         System.out.println("userId: "+userId);
 
         DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
+
+        Long generatedPathwayCount= (Long) document.get("generatedPathwayCount");
 
         String userEmail= (String) userDoc.get("email");
         String userName=(String) userDoc.get("username");
@@ -317,6 +319,9 @@ public class PathwayService {
 
 
         String pathwayDescription="";
+        String subject="";
+        String body="";
+
         Map<String, Object> pathwayData = getPathwayById(pathwayId);
         if(pathwayData!=null){
             pathwayDescription = (String) pathwayData.get("topic");
@@ -329,17 +334,33 @@ public class PathwayService {
                 return;
             }
 
+            if(generatedPathwayCount==0){
 
-            String subject = "🎉 Welcome to Your First Pathway! 🚀";
-            String body = String.format(
+                subject = "🎉 Welcome to Your First Pathway! 🚀";
+                body = String.format(
+                        "Hello %s,\n\n" +
+                                "🎊 Congrats creating your first pathway: '%s'! 🎊\n\n" +
+                                "🚀 Dive in, explore, and take it step by step. Every effort brings you closer to success! 💡\n\n" +
+                                "🌟 Best of luck! 🌟\n\n" +
+                                "Warm regards,\n" +
+                                "Team Pathify",
+                        userName, pathwayDescription
+                );
+
+            }
+            else{
+
+            subject = "🎉 Welcome to Your New Pathway! 🚀";
+            body = String.format(
                     "Hello %s,\n\n" +
-                            "🎊 Congrats creating your first pathway: '%s'! 🎊\n\n" +
+                            "🎊 Congrats creating your new pathway: '%s'! 🎊\n\n" +
                             "🚀 Dive in, explore, and take it step by step. Every effort brings you closer to success! 💡\n\n" +
                             "🌟 Best of luck! 🌟\n\n" +
                             "Warm regards,\n" +
                             "Team Pathify",
                     userName, pathwayDescription
             );
+            }
 
 
 

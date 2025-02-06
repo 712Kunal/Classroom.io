@@ -223,24 +223,40 @@ public class NotificationService {
         }
     }
 
-    public void sendFirstPathwayGenerationNotification(String userId, Notification notification, String pathwayId) {
+    public void sendPathwayGenerationNotification(String userId, Notification notification, String pathwayId, DocumentSnapshot document) {
 
         System.out.println("Sending notification");
         String pathwayDescription="";
+        String description="";
         Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
         if(pathwayData!=null){
             pathwayDescription = (String) pathwayData.get("topic");
 
         }
 
+        Long generatedPathwayCount= (Long) document.get("generatedPathwayCount");
 
-        System.out.println("Pathway Description: " + pathwayDescription);
-        String description = String.format(
-                "🎉 Congratulations! 🎉\n\n" +
-                        "Your first personalized pathway '%s' has been successfully created. 🚀\n\n" +
-                        "Best of luck! 🍀\n",
-                pathwayDescription
-        );
+        if(generatedPathwayCount==0) {
+
+            System.out.println("Pathway Description: " + pathwayDescription);
+            description = String.format(
+                    "🎉 Congratulations! 🎉\n\n" +
+                            "Your first personalized pathway '%s' has been successfully created. 🚀\n\n" +
+                            "Best of luck! 🍀\n",
+                    pathwayDescription
+            );
+        }
+        else{
+
+            System.out.println("Pathway Description: " + pathwayDescription);
+            description = String.format(
+                    "🎉 Congratulations! 🎉\n\n" +
+                            "Your new personalized pathway '%s' has been successfully created. 🚀\n\n" +
+                            "Best of luck! 🍀\n",
+                    pathwayDescription
+            );
+
+        }
 
 
 
