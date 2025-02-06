@@ -70,12 +70,11 @@ const taskStateToDisplayTextMap = {
 
 const TasksView = () => {
   const { pathwayId } = useParams();
-  const { pathwaysList } = useGlobal();
-  const pathway = pathwaysList.find((pathway) => pathway.data._id === pathwayId);
+  const { pathwaysList, setActivePathwayId } = useGlobal();
+  const pathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
 
   const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const taskList = pathway.toTaskList();
-  const { setActivePathwayId } = useGlobal();
   const [expandedTasks, setExpandedTasks] = useState([]);
 
   const toggleInterval = (task) => {
@@ -87,7 +86,7 @@ const TasksView = () => {
   };
 
   const startPathway = () => {
-    setActivePathwayId(pathway.data._id);
+    setActivePathwayId(pathway.data.id);
     pathway.populateWithDates(Date.now())
   }
 

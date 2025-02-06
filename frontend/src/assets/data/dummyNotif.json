@@ -1,7 +1,7 @@
 {
   "notifications": [
     {
-      "_id": "507f1f77bcf86cd799439011",
+      "id": "507f1f77bcf86cd799439011",
       "userID": "auth0|5f9d3b2e1c9d440067a1b2c3",
       "notificationType": "InApp",
       "notificationReason": "Pathway",
@@ -12,7 +12,7 @@
       "description": "New milestone achieved in 'Frontend Development' pathway! Check your progress."
     },
     {
-      "_id": "507f1f77bcf86cd799439012",
+      "id": "507f1f77bcf86cd799439012",
       "userID": "auth0|5f9d3b2e1c9d440067a1b2c3",
       "notificationType": "InApp",
       "notificationReason": "Task",
@@ -23,7 +23,7 @@
       "description": "New task assigned: Complete the React Component Testing module by next week."
     },
     {
-      "_id": "507f1f77bcf86cd799439013",
+      "id": "507f1f77bcf86cd799439013",
       "userID": "auth0|5f9d3b2e1c9d440067a1b2d4",
       "notificationType": "InApp",
       "notificationReason": "Points",
@@ -34,7 +34,7 @@
       "description": "Daily streak bonus! You've earned 100 extra points for consistent learning."
     },
     {
-      "_id": "507f1f77bcf86cd799439014",
+      "id": "507f1f77bcf86cd799439014",
       "userID": "auth0|5f9d3b2e1c9d440067a1b2d4",
       "notificationType": "InApp",
       "notificationReason": "Badge",

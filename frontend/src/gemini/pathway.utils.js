@@ -20,8 +20,8 @@ const createPathway = async (userId, userDetails, additionalInfo, pathwayRequire
     interests: additionalInfo.interests,
   };
   const prompt = formulatePrompt(promptRequirements);
-  const { result, pathwayId } = await generatePathway(userId, prompt);
-  return { result, pathwayId };
+  const { pathwayId } = await generatePathway(userId, prompt);
+  return { pathwayId };
 }
 
 export { createPathway };

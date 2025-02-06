@@ -34,6 +34,7 @@ import {
 import { Button } from "../ui/button";
 import { useGlobal } from "../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
+import { useAuthListener } from "@/hooks/use-auth";
 
 const durationLimit = {
   day: 10,
@@ -52,7 +53,8 @@ const CreatePathway = () => {
   const [isGenerating, setGenerating] = useState(false);
   const [pathwayReady, setPathwayReady] = useState(false);
   const [createdPathwayId, setCreatedPathwayId] = useState(null);
-  const { user } = useGlobal();
+  const { setPathwaysToRefresh, isPathwaysSetToRefresh } = useGlobal();
+  const { user } = useAuthListener();
 
   const handleCreatePathway = async (e) => {
     e.preventDefault();
@@ -82,16 +84,34 @@ const CreatePathway = () => {
       preferredLearningMaterialType: formData.preferedResourceType,
     }
 
-    const { result, pathwayId } = await createPathwayFunc(
-      userId,
-      userDetails,
-      additionalInfo,
-      pathwayRequirements
-    );
-    console.log(result);
-    console.log(pathwayId);
-    setCreatedPathwayId(pathwayId);
-
+    try {
+      const { pathwayId } = await createPathwayFunc(
+        userId,
+        userDetails,
+        additionalInfo,
+        pathwayRequirements
+      );
+      setCreatedPathwayId(pathwayId);
+    } catch (error) {
+      setGenerating(false);
+      console.error(error);
+    }
+    setPathwaysToRefresh(true);
+    
+    function waitForPathwaysRefresh() {
+      return new Promise((resolve) => {
+        const checkState = () => {
+          if (!isPathwaysSetToRefresh) {
+            resolve();
+          } else {
+            setTimeout(checkState, 100); // Check again after 100ms
+          }
+        };
+        checkState(); // Start checking immediately
+      });
+    }
+    
+    await waitForPathwaysRefresh();
     setPathwayReady(true);
   }
 

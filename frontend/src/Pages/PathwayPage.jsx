@@ -47,7 +47,7 @@ function PathwayPage() {
   }, [pathname]);
 
   const { pathwaysList: pathways } = useGlobal();
-  const pathway = pathways.find((pathway) => pathway.data._id === pathwayId);
+  const pathway = pathways.find((pathway) => pathway.data.id === pathwayId);
 
   return (
     <div className="text-4xl w-full p-2 h-full rounded-lg flex flex-col">
@@ -74,7 +74,7 @@ function PathwayPage() {
                 <DropdownMenuContent align="start">
                   {pathways.map((pathway, index) => (
                     <DropdownMenuItem key={index}>
-                      <Link to={`/app/library/pathways/${pathway.data._id}/${lastWord}`} className='flex items-center gap-2 text-sm'>
+                      <Link to={`/app/library/pathways/${pathway.data.id}/${lastWord}`} className='flex items-center gap-2 text-sm'>
                         <RouteIcon size={16} />
                         {pathway.data.topic}
                       </Link>

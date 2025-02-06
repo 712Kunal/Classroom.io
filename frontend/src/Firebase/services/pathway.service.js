@@ -3,19 +3,13 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimes
 
 const pathwaysCollectionRef = collection(db, 'pathways');
 
-/** adds pathway to db (userId, pathwayData Obj) */
-export const addPathway = async (userId, pathwayData) => {
+/** adds pathway to db (pathwayData Obj) */
+export const addPathway = async (pathwayData) => {
   try {
     // add doc as pathway in pathways collection
-    // inject createdAt, modifiedAt
     // returns id of the doc
 
-    const docRef = await addDoc(pathwaysCollectionRef, {
-      ...pathwayData,
-      userId,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    const docRef = await addDoc(pathwaysCollectionRef, pathwayData);
     return docRef.id;
   } catch (error) {
     console.error('Error adding pathway:', error);
