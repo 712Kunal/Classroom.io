@@ -1,3 +1,5 @@
+import { updatePathway } from '@/Firebase/services/pathway.service';
+import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
 // Zod Schemas
@@ -85,13 +87,13 @@ const calculateTaskDates = (intervalStart, intervalEnd, taskCount) => {
  * @returns {Object} Interval with initialized dates
  */
 const initializeIntervalDates = (interval, startDate, intervalDuration) => {
-  const intervalStartDate = new Date(startDate);
-  const intervalEndDate = new Date(startDate);
-  intervalEndDate.setDate(startDate.getDate() + intervalDuration);
+  const intervalStartDate = new Date(startDate.getTime());
+  const intervalEndDate = new Date(startDate.getTime());
+  intervalEndDate.setDate(intervalStartDate.getDate() + intervalDuration);
 
   const taskDates = calculateTaskDates(
-    intervalStartDate, 
-    intervalEndDate, 
+    intervalStartDate,
+    intervalEndDate,
     interval.tasks.length
   );
 
@@ -179,7 +181,8 @@ class Pathway {
     if (userId) {
       this.data = convertGeminiPathwayToDBFormat(geminiPathwayData, userId);
     } else {
-      this.data = geminiPathwayData;
+      this.data = convertTimestampsToDates(geminiPathwayData);
+      console.info(JSON.stringify(this.data, null, 2));
     }
   }
 
@@ -190,17 +193,24 @@ class Pathway {
   startPathway(startDate = new Date()) {
     const intervalDuration = Math.floor(this.data.duration / this.data.response.intervals);
     
+    // Convert to Firestore Timestamps
     this.data.startDate = startDate;
-    this.data.endDate = new Date(startDate);
-    this.data.endDate.setDate(startDate.getDate() + this.data.duration);
+    this.data.endDate = new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000);
     this.data.isActive = true;
 
     this.data.response.pathway = this.data.response.pathway.map((interval, index) => {
-      const intervalStartDate = new Date(startDate);
+      const intervalStartDate = new Date(startDate.getTime());
       intervalStartDate.setDate(startDate.getDate() + (index * intervalDuration));
-      
       return initializeIntervalDates(interval, intervalStartDate, intervalDuration);
     });
+
+    console.log("before: ", this.data);
+
+    updatePathway(this.data.id, this.data)
+      .then((result) => {
+        this.data = result;
+      })
+      .catch((error) => console.error("Error starting pathway:", error))
   }
 
   /**
@@ -284,3 +294,19 @@ pathway.startPathway(new Date());
 // Save to database
 await addPathway(userId, pathway.toDBFormat());
 */
+
+function convertTimestampsToDates(obj) {
+  if (obj !== null && typeof obj === 'object') {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (obj[key] instanceof Timestamp) {
+          obj[key] = obj[key].toDate();
+        } else if (typeof obj[key] === 'object') {
+          // Recursively convert dates in nested objects
+          convertTimestampsToDates(obj[key]);
+        }
+      }
+    }
+  }
+  return obj;
+}

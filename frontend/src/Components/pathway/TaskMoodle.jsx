@@ -44,8 +44,6 @@ const ResourceTypeToBgColorMap = {
 };
 
 function TaskMoodle({ event, setIsTaskMoodleOpen }) {
-  console.log(event);
-
   return (
     <Card className="shadow-md rounded-lg shadow-black bg-white/85 dark:shadow-blue-500 dark:bg-black w-3/4 relative md:w-1/2">
       <CardHeader>

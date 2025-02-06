@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 function LibraryPage() {
-  const { pathwaysList, isPathwaysSetToRefresh, setPathwaysToRefresh } = useGlobal();
+  const { pathwaysList, isLoading, refetchPathways } = useGlobal();
   const navigate = useNavigate();
   const [localPathways, setLocalPathways] = useState([]);
 
@@ -23,19 +23,6 @@ function LibraryPage() {
   useEffect(() => {
     setLocalPathways(pathwaysList);
   }, [pathwaysList]);
-
-  function waitForPathwaysRefresh() {
-    return new Promise((resolve) => {
-      const checkState = () => {
-        if (!isPathwaysSetToRefresh) {
-          resolve();
-        } else {
-          setTimeout(checkState, 100);
-        }
-      };
-      checkState();
-    });
-  }
 
   const handleNewPathwayOption = () => {
     navigate("/app/library/new");
@@ -48,23 +35,25 @@ function LibraryPage() {
   const handlePathwayDelete = async (pathwayId) => {
     try {
       // Optimistically remove the pathway from local state
-      setLocalPathways(current =>
-        current.filter(pathway => pathway.data.id !== pathwayId)
+      setLocalPathways((current) =>
+        current.filter((pathway) => pathway.data.id !== pathwayId)
       );
-
+  
       // Perform the actual deletion
       await deletePathwayOfUser(pathwayId);
-      setPathwaysToRefresh(true);
-      await waitForPathwaysRefresh();
+  
+      // Refresh pathways but let state update naturally
+      refetchPathways();
     } catch (error) {
       console.error(error);
       // Revert local state if deletion fails
       setLocalPathways(pathwaysList);
     }
-  }
+  };
+  
 
   // Show full-screen loader for initial load
-  if (isPathwaysSetToRefresh) {
+  if (isLoading) {
     return <Loader backdrop="aiChip" />;
   }
 
@@ -82,7 +71,7 @@ function LibraryPage() {
         </Button>
       </div>
       <h1 className="text-4xl">Your Pathways</h1>
-      {localPathways.length > 0 ? (
+      {(localPathways && localPathways.length > 0) ? (
         <motion.div
           className="content flex-1 p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-8"
           layout // This helps maintain smooth transitions when grid items change
@@ -108,8 +97,8 @@ function LibraryPage() {
                   </CardHeader>
                   <CardContent className="flex-1">
                     <div className="flex flex-col justify-between gap-2">
-                      {pathway.data.startDate && <p className="text-sm text-neutral-500">{pathway.data.startDate}</p>}
-                      {pathway.data.endDate && <p className="text-sm text-neutral-500">{pathway.data.endDate}</p>}
+                      {pathway.data.startDate && <p className="text-sm text-neutral-500">{pathway.data.startDate.toLocaleDateString()}</p>}
+                      {pathway.data.endDate && <p className="text-sm text-neutral-500">{pathway.data.endDate.toLocaleDateString()}</p>}
                       <p className="text-sm text-neutral-300">Status: {pathway.data.isActive ? <span className="text-green-500">Active</span> : <span className="text-red-500">Inactive</span>}</p>
                       <p className="text-sm text-neutral-300">Duration: {pathway.data.duration} Days</p>
                     </div>

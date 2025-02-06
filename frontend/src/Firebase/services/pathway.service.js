@@ -102,18 +102,15 @@ export const deletePathwayOfUser = async (pathwayId) => {
 export const updatePathway = async (pathwayId, updates) => {
   try {
     const docRef = doc(pathwaysCollectionRef, pathwayId);
-    const updatedPathway = await updateDoc(
+    await updateDoc(
       docRef,
       {
-        updates,
+        ...updates,
         modifiedAt: serverTimestamp()
       }
     );
-
-    return {
-      id: updatePathway.id,
-      ...updatedPathway.data()
-    };
+    const pathway = await getDoc(docRef);
+    return pathway.data();
   } catch (error) {
     console.error("Error updating pathway:", error);
     throw error;

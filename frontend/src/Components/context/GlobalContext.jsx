@@ -1,116 +1,81 @@
-import { useAuthListener } from '@/hooks/use-auth';
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { useAuthListener } from '@/hooks/use-auth.jsx';
 import { getUserProfileByUserId } from '@/Firebase/services/userDetails.servies';
-import { getAllPathwaysOfUser, getSinglePathway, updatePathway } from '@/Firebase/services/pathway.service';
+import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service';
 import { Pathway } from '../models/Pathway.model';
 
-// Create the context
 const GlobalContext = createContext(null);
 
-// Provider component
 export const GlobalProvider = ({ children }) => {
-  const { user, loading } = useAuthListener();
-
+  const { user, loading: authLoading } = useAuthListener();
+  
+  const [userDetails, setUserDetails] = useState(null);
   const [pathwaysList, setPathwaysList] = useState([]);
-  const [isPathwaysSetToRefresh, setPathwaysToRefresh] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [activePathwayId, setActivePathwayId] = useState(null);
-
-  const [userDetails, setUserDetails] = useState({});
-  const [isUserDetailsSetToRefresh, setUserDetailsToRefresh] = useState(true);
-
-  // fetch user details of user / keep userDetails in sync
-  useEffect(() => {
-    if (user && isUserDetailsSetToRefresh) {
-      try {
-        const userId = user.uid;
-        const getUserDetails = async () => {
-          const userDetails = await getUserProfileByUserId(userId);
-          if (userDetails) {
-            setUserDetails(userDetails);
-          }
-        };
-        getUserDetails();
-        setUserDetailsToRefresh(false);
-      } catch (error) {
-        console.error('Error getting user details:', error);
-      }
+  // Fetch user details
+  const fetchUserDetails = useCallback(async () => {
+    if (!user?.uid) return;
+    
+    try {
+      setIsLoading(true);
+      const data = await getUserProfileByUserId(user.uid);
+      setUserDetails(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
     }
-  }, [user, loading, isUserDetailsSetToRefresh]);
+  }, [user?.uid]);
 
-  // fetch pathways of user / keep pathways in sync
-  useEffect(() => {
-    if (user && isPathwaysSetToRefresh) {
-      try {
-        const refreshPathways = async (userId) => {
-          const pathways = await getAllPathwaysOfUser(userId);
-          setPathwaysList(pathways.map((pathway) => new Pathway(pathway, null)));
-        };
-        const userId = user.uid;
-        refreshPathways(userId);
-        setPathwaysToRefresh(false);
-      } catch (error) {
-        console.error('Error getting pathways:', error);
-      }
+  // Fetch pathways
+  const fetchPathways = useCallback(async () => {
+    if (!user?.uid) return;
+
+    try {
+      setIsLoading(true);
+      const data = await getAllPathwaysOfUser(user.uid);
+      setPathwaysList(data.map((pathway) => new Pathway(pathway, null)));
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
     }
-  }, [user, loading, isPathwaysSetToRefresh]);
+  }, [user?.uid]);
 
-  // keep activePathwayId in sync
+  // Perform fetch when user changes
   useEffect(() => {
-    if (activePathwayId) {
-      const changeActivePathway = async (activePathwayId) => {
-        try {
-          const pathway = await getSinglePathway(activePathwayId);
-          if(pathway) {
-            const updatedPathway = await updatePathway(activePathwayId, { isActive: true });
-            setPathwaysToRefresh(true);
-          }
-        } catch (error) {
-          console.error('Error changing active pathway:', error);
-        }
-      }
+    if (!user?.uid) return;
 
-      const oldActivePathwayIndex = pathwaysList.findIndex((pathway) => pathway.isActive);
-      const newActivePathwayIndex = pathwaysList.findIndex((pathway) => pathway.data.id === activePathwayId);
-      
-      if (oldActivePathwayIndex !== newActivePathwayIndex) {
-        changeActivePathway(activePathwayId);
-        setActivePathwayId(pathwaysList[newActivePathwayIndex].data.id);
-      }
-    } else {
-      const oldActivePathwayIndex = pathwaysList.findIndex((pathway) => pathway.isActive);
-      if(oldActivePathwayIndex !== -1) {
-        setActivePathwayId(oldActivePathwayIndex);
-      } else {
-        setActivePathwayId(null);
-      }
-    }
-  }, [activePathwayId]);
+    fetchUserDetails();
+    fetchPathways();
+  }, [user?.uid, fetchUserDetails, fetchPathways]);
+
+  const refetchUserDetails = () => fetchUserDetails();
+  const refetchPathways = () => fetchPathways();
+
+  const contextValue = {
+    userDetails,
+    pathwaysList,
+    isLoading: authLoading || isLoading,
+    error,
+    refetchUserDetails,
+    refetchPathways,
+  };
 
   return (
-    <GlobalContext.Provider value={{
-      pathwaysList,
-      setPathwaysList,
-      isPathwaysSetToRefresh,
-      setPathwaysToRefresh,
-      activePathwayId,
-      setActivePathwayId,
-      userDetails,
-      setUserDetailsToRefresh,
-    }}>
+    <GlobalContext.Provider value={contextValue}>
       {children}
     </GlobalContext.Provider>
   );
 };
 
-// Custom hook for using the context
 export const useGlobal = () => {
   const context = useContext(GlobalContext);
-
   if (!context) {
     throw new Error('useGlobal must be used within its provider');
   }
-
   return context;
 };
 
