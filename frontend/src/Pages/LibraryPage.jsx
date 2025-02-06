@@ -17,34 +17,12 @@ import { motion, AnimatePresence } from "framer-motion";
 function LibraryPage() {
   const { pathwaysList, isPathwaysSetToRefresh, setPathwaysToRefresh } = useGlobal();
   const navigate = useNavigate();
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [minimumLoaderTimeElapsed, setMinimumLoaderTimeElapsed] = useState(false);
   const [localPathways, setLocalPathways] = useState([]);
-
-  // Handle minimum loader time and initial data load
-  useEffect(() => {
-    // Set minimum loader time
-    const loaderTimer = setTimeout(() => {
-      setMinimumLoaderTimeElapsed(true);
-    }, 5000);
-
-    // Initialize local pathways
-    setLocalPathways(pathwaysList);
-
-    return () => clearTimeout(loaderTimer);
-  }, []);
 
   // Update local pathways when global pathways change
   useEffect(() => {
     setLocalPathways(pathwaysList);
   }, [pathwaysList]);
-
-  // Handle initial loading state
-  useEffect(() => {
-    if (pathwaysList.length >= 0 && minimumLoaderTimeElapsed) {
-      setIsInitialLoading(false);
-    }
-  }, [pathwaysList, minimumLoaderTimeElapsed]);
 
   function waitForPathwaysRefresh() {
     return new Promise((resolve) => {
@@ -70,10 +48,10 @@ function LibraryPage() {
   const handlePathwayDelete = async (pathwayId) => {
     try {
       // Optimistically remove the pathway from local state
-      setLocalPathways(current => 
+      setLocalPathways(current =>
         current.filter(pathway => pathway.data.id !== pathwayId)
       );
-      
+
       // Perform the actual deletion
       await deletePathwayOfUser(pathwayId);
       setPathwaysToRefresh(true);
@@ -86,18 +64,18 @@ function LibraryPage() {
   }
 
   // Show full-screen loader for initial load
-  if (isInitialLoading || !minimumLoaderTimeElapsed) {
-    return <Loader />;
+  if (isPathwaysSetToRefresh) {
+    return <Loader backdrop="aiChip" />;
   }
 
   return (
     <div className="p-4 w-full h-full flex flex-col rounded-lg">
       <div className="newButtonContainer p-8 absolute bottom-0 right-0">
-        <Button 
-          type="button" 
-          className="w-12 h-12 p-0 rounded-full" 
-          variant="outline" 
-          size="icon" 
+        <Button
+          type="button"
+          className="w-12 h-12 p-0 rounded-full"
+          variant="outline"
+          size="icon"
           onClick={handleNewPathwayOption}
         >
           <Plus size={48} />
@@ -105,13 +83,13 @@ function LibraryPage() {
       </div>
       <h1 className="text-4xl">Your Pathways</h1>
       {localPathways.length > 0 ? (
-        <motion.div 
+        <motion.div
           className="content flex-1 p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-8"
           layout // This helps maintain smooth transitions when grid items change
         >
           <AnimatePresence mode="popLayout">
             {localPathways.map((pathway) => (
-              <motion.div 
+              <motion.div
                 key={pathway.data.id}
                 layout // This helps with grid reorganization
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -157,8 +135,13 @@ function LibraryPage() {
 
 export default LibraryPage;
 
-const Loader = () => {
+export const Loader = ({ backdrop }) => {
   const [isBackdropLoaded, setBackedAsLoaded] = useState(false);
+
+  const backdrops = {
+    aiChip: "/assets/gif/ai-chip.gif",
+    ascending: "/assets/gif/ascending.gif",
+  }
 
   return (
     <div className="loaderWrapper relative flex justify-center items-center h-full w-full overflow-hidden">
@@ -166,7 +149,7 @@ const Loader = () => {
         <div className="absolute inset-0 bg-black/50 z-10"></div>
         <img
           className={`${isBackdropLoaded ? "block" : "hidden"} absolute top-1/2 left-[70%] -translate-y-1/2 -translate-x-1/2 min-w-[100%] min-h-[100%] object-cover`}
-          src="/assets/gif/ai-chip.gif"
+          src={backdrops[backdrop]}
           alt="loader background gif"
           onLoad={() => setBackedAsLoaded(true)}
         />

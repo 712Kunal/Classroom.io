@@ -42,7 +42,7 @@ const TimelineView = () => {
   const { pathwayId } = useParams();
   const { pathwaysList } = useGlobal();
   const pathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
-  
+
   const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const { pathway: intervals, intervalType } = pathway.data.response;
 
@@ -72,7 +72,7 @@ const TimelineView = () => {
 };
 
 const Interval = ({ data }) => {
-  const { intervalNumber, summary: title, tasks, pathwayStartDate: startDate, pathwayEndDate: endDate } = data;
+  const { summary: title, tasks, pathwayStartDate: startDate, pathwayEndDate: endDate } = data;
 
   const getTaskState = (scheduledDate, completedDate, isDone, lateMark) => {
     const today = new Date();
@@ -103,11 +103,11 @@ const Interval = ({ data }) => {
       <CardHeader className="flex flex-col gap-2">
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription className="flex gap-2">
-          <Badge className="flex gap-2 w-fit bg-neutral-200 text-black hover:bg-neutral-300">
+          {(startDate || endDate) && <Badge className="flex gap-2 w-fit bg-neutral-200 text-black hover:bg-neutral-300">
             <Calendar size={16} />
             <Separator orientation="vertical" />
-            {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
-          </Badge>
+            {startDate ? new Date(startDate).toLocaleDateString() : "No Start Date"} - {endDate ? new Date(endDate).toLocaleDateString() : "No End Date"}
+          </Badge>}
           {isIntervalComplete() && <Badge className="flex gap-2 w-fit bg-green-400 text-black hover:bg-neutral-300">
             <CircleCheck size={16} />
             <Separator orientation="vertical" />
@@ -148,11 +148,11 @@ const Interval = ({ data }) => {
                   <DialogDescription>{""}</DialogDescription>
                   <div className="flex gap-2 justify-stretch w-fit">
                     <div className="left flex flex-col gap-2">
-                      <div className="flex gap-2 text-bold"><ClipboardList/> Todo:</div>
+                      <div className="flex gap-2 text-bold"><ClipboardList /> Todo:</div>
                       <div className="border-2 border-blue-400 rounded-md p-2">
                         {task.description}
                       </div>
-                      <div className="flex gap-2 text-bold mt-5"><Database/> Refer these resources:</div>
+                      <div className="flex gap-2 text-bold mt-5"><Database /> Refer these resources:</div>
                       <div className="rounded-md flex gap-2">
                         {task.resources.map((resource, index) => (
                           <div key={index} className="flex gap-2 items-center border-2 border-neutral-500 dark:border-neutral-300 rounded-md p-2 hover:scale-105 cursor-pointer">
