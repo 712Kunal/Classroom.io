@@ -3,15 +3,15 @@ import Spline from '@splinetool/react-spline';
 
 function LandingPage() {
   return (
-    <div className="border w-full h-full bg-gradient-to-br from-purple-800/5 via-purple-950/40 to-black/50">
-      <LandingNavbar />
+    <div className="border w-full h-full">
       <main className="w-full h-auto">
-        <div className="hero-section relative h-[calc(100dvh-85px)] overflow-hidden">
+        <div className="hero-section relative h-screen overflow-hidden">
+          <LandingNavbar />
           {/* Spline Background Container */}
           <div className="absolute inset-0 w-full h-full">
             <Spline
               className="w-full h-full"
-              scene="https://prod.spline.design/JSqVBBBg2uBpaN9H/scene.splinecode"
+              scene="https://prod.spline.design/0XkBsySMprkHqiga/scene.splinecode"
             />
           </div>
 

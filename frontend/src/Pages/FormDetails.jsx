@@ -38,7 +38,7 @@ function FormDetails() {
       if (user) {
         console.log('user', user);
       } else {
-        // navigate('/signup');
+        navigate('/signup');
         console.log('no user');
       }
     });
