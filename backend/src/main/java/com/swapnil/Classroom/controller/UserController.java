@@ -7,7 +7,6 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
 import com.swapnil.Classroom.entity.Notification;
-import com.swapnil.Classroom.entity.UserRegistration;
 import com.swapnil.Classroom.service.UserService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -29,26 +28,26 @@ public class UserController {
 
 
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegistration userRegistration){
+//    @PostMapping("/register")
+//    public ResponseEntity<String> register(@RequestBody UserRegistration userRegistration){
+//
+//        try{
+//            String response= userService.registerUser(userRegistration);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//        } catch (ExecutionException | InterruptedException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user: "+e.getMessage());
+//        }
+//    }
 
-        try{
-            String response= userService.registerUser(userRegistration);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user: "+e.getMessage());
-        }
-    }
-
-    // Fetch user by username
-    @GetMapping("/{username}")
-    public UserRegistration getUserByUsername(@PathVariable String username) throws ExecutionException, InterruptedException {
-
-        UserRegistration user=userService.getUserByUsername(username);
-        System.out.println("Username: "+user.getUsername());
-        return user;
-    }
+//    // Fetch user by username
+//    @GetMapping("/{username}")
+//    public UserRegistration getUserByUsername(@PathVariable String username) throws ExecutionException, InterruptedException {
+//
+//        UserRegistration user=userService.getUserByUsername(username);
+//        System.out.println("Username: "+user.getUsername());
+//        return user;
+//    }
 
 
 
@@ -56,11 +55,11 @@ public class UserController {
 
 
     // Update an existing user
-    @PutMapping("/{username}")
-    public void updateUser(@PathVariable String username, @RequestBody UserRegistration user) throws ExecutionException, InterruptedException {
-        user.setUsername(username);
-        userService.updateUser(user);
-    }
+//    @PutMapping("/{username}")
+//    public void updateUser(@PathVariable String username, @RequestBody UserRegistration user) throws ExecutionException, InterruptedException {
+//        user.setUsername(username);
+//        userService.updateUser(user);
+//    }
 
     @PostMapping("/user-signUp/{userId}")
     public ResponseEntity<String> sendUserSignupNotification(
