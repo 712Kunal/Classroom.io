@@ -92,6 +92,8 @@ public class NotificationService {
             notification.setRelatedEntity(String.valueOf(taskId));
             notification.setDescription(description);
 
+
+
             save(notification);
 
             logger.info("Notification send for taskId: "+taskId+" to userId: "+userId);
@@ -147,7 +149,7 @@ public class NotificationService {
 
         System.out.println("Pathway Description: "+pathwayDescription);
         String description = String.format(
-                "Welcome!\n You've activated the pathway: '%s'. Good luck on your journey!",
+                "🚀 Welcome! \n✨ You've activated the pathway: '%s'. \n🎯 Good luck on your journey! 💪",
                 pathwayDescription
         );
 
@@ -331,10 +333,11 @@ public class NotificationService {
 //        System.out.println("Pathway Description: " + pathwayDescription);
         String description = String.format(
                 "⏳ Task Reminder! ⏳\n\n" +
-                        "Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
-                        "❗ If not completed by the deadline, it will be marked **Late** in your tracker.\n\n" +
-                taskTitle, pathwayTopic
+                        "📌 Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
+                        "⚠️ ❗ If not completed by the deadline, it will be marked **Late** in your tracker. ⏰\n\n" +
+                        taskTitle, pathwayTopic
         );
+
 
 
 

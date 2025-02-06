@@ -241,7 +241,7 @@ public class PathwayService {
                     "Hello %s,\n\n" +
                             "🎊 Congratulations on activating the '%s' pathway! 🎊\n\n" +
                             "✨ Best regards, ✨\n" +
-                            "💡 Team Pathify 💡",
+                            "Team Pathify",
                     userName, pathwayDescription
             );
 
@@ -333,7 +333,7 @@ public class PathwayService {
             String subject = "🎉 Welcome to Your First Pathway! 🚀";
             String body = String.format(
                     "Hello %s,\n\n" +
-                            "🎊 Congrats on activating your first pathway: '%s'! 🎊\n\n" +
+                            "🎊 Congrats creating your first pathway: '%s'! 🎊\n\n" +
                             "🚀 Dive in, explore, and take it step by step. Every effort brings you closer to success! 💡\n\n" +
                             "🌟 Best of luck! 🌟\n\n" +
                             "Warm regards,\n" +
@@ -399,6 +399,27 @@ public class PathwayService {
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    public DocumentSnapshot getUserDocumentByUserId(String userId) {
+        CollectionReference userProfiles = firestore.collection("UserProfiles");
+
+        Query query = userProfiles.whereEqualTo("userId", userId);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        try {
+            List<QueryDocumentSnapshot> documents = querySnapshot.get().getDocuments();
+            if (!documents.isEmpty()) {
+                return documents.get(0);
+            } else {
+                System.out.println("No matching document found!");
+                return null;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

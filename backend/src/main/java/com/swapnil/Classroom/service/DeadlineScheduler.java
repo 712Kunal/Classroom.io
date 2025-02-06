@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,7 @@ public class DeadlineScheduler {
 
     private final Firestore firestore;
     private final MailService mailService;
+    private final PathwayService pathwayService;
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationService notificationService;
 
@@ -85,7 +87,7 @@ public class DeadlineScheduler {
 
 
 //                                Boolean scheduledEmailSent = (Boolean) task.get("scheduledEmailSent");
-                                Boolean taskStatus = (Boolean) task.get("done");
+                                Boolean taskStatus = (Boolean) task.get("isDone");
 
                                 // Skip tasks already processed
                                 if ( Boolean.TRUE.equals(taskStatus)) {
@@ -141,9 +143,8 @@ public class DeadlineScheduler {
             System.out.println("Sending deadline for the task: "+taskTitle);
             String userId = mailService.getUserIdFromFirebase(userEmail);
 
-            DocumentReference userDoc = firestore.collection("Users").document(userId);
-            ApiFuture<DocumentSnapshot> future = userDoc.get();
-            DocumentSnapshot document = future.get();
+            DocumentSnapshot document = pathwayService.getUserDocumentByUserId(userId);
+
 
             if (document == null || !document.exists()) {
                 logger.error("User document not found");
