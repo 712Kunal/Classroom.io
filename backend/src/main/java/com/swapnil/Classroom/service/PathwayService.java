@@ -2,7 +2,6 @@ package com.swapnil.Classroom.service;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.swapnil.Classroom.entity.Pathway;
 import com.swapnil.Classroom.exception.PathwayNotFoundException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -25,30 +24,30 @@ public class PathwayService {
         this.mailService = mailService;
     }
 
-    public void createPathway(Pathway pathway) throws ExecutionException, InterruptedException {
+//    public void createPathway(Pathway pathway) throws ExecutionException, InterruptedException {
+//
+//        System.out.println("Pathway Id: " + pathway.getPathwayId());
+//
+//
+//        if (pathway.getPathwayId() == null) {
+//            firestore.collection("Pathway").add(pathway).get();
+//        } else {
+//            firestore.collection("Pathway").document(pathway.getPathwayId()).set(pathway).get();
+//        }
+//    }
 
-        System.out.println("Pathway Id: " + pathway.getPathwayId());
-
-
-        if (pathway.getPathwayId() == null) {
-            firestore.collection("Pathway").add(pathway).get();
-        } else {
-            firestore.collection("Pathway").document(pathway.getPathwayId()).set(pathway).get();
-        }
-    }
-
-    public List<Pathway> getPathwaysByUser(String userId) throws ExecutionException, InterruptedException {
-        CollectionReference collectionReference = firestore.collection("Pathway");
-        QuerySnapshot querySnapshot = collectionReference.whereEqualTo("userId", userId).get().get();
-
-        List<Pathway> pathways = new ArrayList<>();
-        querySnapshot.forEach(document -> {
-            Pathway pathway = document.toObject(Pathway.class);
-            pathways.add(pathway);
-        });
-
-        return pathways;
-    }
+//    public List<Pathway> getPathwaysByUser(String userId) throws ExecutionException, InterruptedException {
+//        CollectionReference collectionReference = firestore.collection("Pathway");
+//        QuerySnapshot querySnapshot = collectionReference.whereEqualTo("userId", userId).get().get();
+//
+//        List<Pathway> pathways = new ArrayList<>();
+//        querySnapshot.forEach(document -> {
+//            Pathway pathway = document.toObject(Pathway.class);
+//            pathways.add(pathway);
+//        });
+//
+//        return pathways;
+//    }
 
 
     public void taskCompletionEmail(String pathwayId, Long taskId) {

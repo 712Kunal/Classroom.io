@@ -8,7 +8,6 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.swapnil.Classroom.entity.Notification;
-import com.swapnil.Classroom.entity.Pathway;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
