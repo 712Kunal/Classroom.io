@@ -56,8 +56,8 @@ public class PathwayController {
 
 
 
-    @PostMapping("/user/{userId}/firstPathway/{pathwayId}")
-    public ResponseEntity<String> firstPathwayGenerated(
+    @PostMapping("/user/{userId}/pathwayGeneration/{pathwayId}")
+    public ResponseEntity<String> pathwayGeneration(
             @PathVariable  String userId,
             @PathVariable  String pathwayId
     ) throws ExecutionException, InterruptedException {
@@ -78,13 +78,13 @@ public class PathwayController {
 
                 System.out.println("Sending email and in-app notifications");
                 notification.setNotificationType(Notification.NotificationType.BOTH);
-                sendEmailAndNotificationForGeneratingFirstPathway(userId, notification, pathwayId);
+                sendEmailAndNotificationForGeneratingPathway(userId, notification, pathwayId, document);
                 return ResponseEntity.ok("Email and Notification sent successfully");
             } else {
 
                 notification.setNotificationType(Notification.NotificationType.IN_APP);
                 System.out.println("Sending in-app notifications");
-                sendNotificationOnlyForGeneratingFirstPathway(userId, notification, pathwayId);
+                sendNotificationOnlyForGeneratingPathway(userId, notification, pathwayId, document);
                 return ResponseEntity.ok("Notification sent successfully");
             }
         } catch (Exception e) {
@@ -94,15 +94,15 @@ public class PathwayController {
 
         }
     }
-    public void sendEmailAndNotificationForGeneratingFirstPathway(String userId, Notification notification, String pathwayId) throws ExecutionException, InterruptedException {
+    public void sendEmailAndNotificationForGeneratingPathway(String userId, Notification notification, String pathwayId, DocumentSnapshot document) throws ExecutionException, InterruptedException {
 
-        notificationService.sendFirstPathwayGenerationNotification(userId,  notification, pathwayId);
-        pathwayService.sendFirstPathwayGenerationEmail(userId, pathwayId);
+        notificationService.sendPathwayGenerationNotification(userId,  notification, pathwayId, document);
+        pathwayService.sendPathwayGenerationEmail(userId, pathwayId, document);
 
     }
 
-    public void sendNotificationOnlyForGeneratingFirstPathway(String userId, Notification notification, String pathwayId){
-        notificationService.sendFirstPathwayGenerationNotification(userId ,notification, pathwayId);
+    public void sendNotificationOnlyForGeneratingPathway(String userId, Notification notification, String pathwayId, DocumentSnapshot document){
+        notificationService.sendPathwayGenerationNotification(userId ,notification, pathwayId, document);
 
     }
 
