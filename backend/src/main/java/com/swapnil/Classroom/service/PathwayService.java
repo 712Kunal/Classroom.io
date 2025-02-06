@@ -237,14 +237,15 @@ public class PathwayService {
             }
 
 
-            String subject = "Welcome to Your New Pathway!";
+            String subject = "🎉 Welcome to Your New Pathway! 🚀";
             String body = String.format(
                     "Hello %s,\n\n" +
-                            "Congratulations on activating the '%s' pathway!\n\n" +
-                            "Best regards,\n" +
-                            "Team Pathify",
+                            "🎊 Congratulations on activating the '%s' pathway! 🎊\n\n" +
+                            "✨ Best regards, ✨\n" +
+                            "💡 Team Pathify 💡",
                     userName, pathwayDescription
             );
+
 
             System.out.println("Email is sent to: "+userEmail);
             mailService.sendEmail(userEmail, subject, body);
@@ -282,15 +283,16 @@ public class PathwayService {
             }
 
 
-            String subject = "Pathway Completion!";
+            String subject = "🎉 Pathway Completion! 🏆";
             String body = String.format(
                     "Hello %s,\n\n" +
-                            "Congratulations on successfully completing the '%s' pathway!\n\n" +
-                            "We hope you enjoyed the journey and learned a lot.\n\n" +
+                            "🎊 Congratulations on successfully completing the '%s' pathway! 🎊\n\n" +
+                            "📚 We hope you enjoyed the journey and learned a lot. 🚀✨\n\n" +
                             "Best regards,\n" +
                             "Team Pathify",
                     userName, pathwayDescription
             );
+
 
 
             System.out.println("Email is sent to: "+userEmail);
@@ -329,17 +331,17 @@ public class PathwayService {
             }
 
 
-            String subject = "Welcome to Your First Personalized Pathway!";
+            String subject = "🎉 Welcome to Your First Pathway! 🚀";
             String body = String.format(
                     "Hello %s,\n\n" +
-                            "Congratulations on activating your first personalized pathway: '%s'!\n\n" +
-                            "This marks the beginning of an exciting journey toward achieving your goals. Dive into the modules, explore the resources, and take it step by step. Remember, every small effort you put in will bring you closer to success.\n\n" +
-                            "If you need any assistance or have questions along the way, our team is here to help.\n\n" +
-                            "Best of luck on this journey!\n\n" +
+                            "🎊 Congrats on activating your first pathway: '%s'! 🎊\n\n" +
+                            "🚀 Dive in, explore, and take it step by step. Every effort brings you closer to success! 💡\n\n" +
+                            "🌟 Best of luck! 🌟\n\n" +
                             "Warm regards,\n" +
                             "Team Pathify",
                     userName, pathwayDescription
             );
+
 
 
             System.out.println("Email is sent to: "+userEmail);
@@ -379,15 +381,16 @@ public class PathwayService {
             }
 
 
-            String subject = "Your Pathway Progress Update!";
+            String subject = "🚀 Your Pathway Progress Update! 📈";
             String body = String.format(
                     "Hello %s,\n\n" +
-                            "You’re making great progress on your pathway: '%s'!\n\n" +
-                            "Current progress: %d%%. Keep it up—you're closer to your goal!\n\n" +
+                            "🎉 You’re making great progress on your pathway: '%s'! 🎊\n\n" +
+                            "📊 Current progress: %d%%. Keep it up—you're closer to your goal! 🎯\n\n" +
                             "Cheers,\n" +
                             "Team Pathify",
                     userName, pathwayDescription, progressPercentage
             );
+
 
 
 

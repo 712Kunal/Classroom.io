@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { auth } from '../Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import addProfile from '../Firebase/services/userDetails.servies.js';
+import { addProfile } from '../Firebase/services/userDetails.servies.js';
 
 import {
   ReceiptText,

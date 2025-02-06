@@ -31,7 +31,7 @@ export const Timeline = ({
     }
   }, [ref]);
 
-  if(!isActivePathway) {
+  if (!isActivePathway) {
     percentageComplete = 0;
   }
   const heightOfProgressTracer = `${isActivePathway ? parseInt(percentageComplete) : 0}%`;
@@ -51,9 +51,9 @@ export const Timeline = ({
             <Badge variant="outline" className="p-2">
               Duration: {duration} days
             </Badge>
-            <Badge variant="outline" className="p-2">
-              {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
-            </Badge>
+            {(startDate || endDate) && <Badge variant="outline" className="p-2">
+              {startDate ? new Date(startDate).toLocaleDateString() : "No Start Date"} - {endDate ? new Date(endDate).toLocaleDateString() : "No End Date"}
+            </Badge>}
           </div>
         </div>
         <div className="progress flex flex-col gap-8 w-1/2">

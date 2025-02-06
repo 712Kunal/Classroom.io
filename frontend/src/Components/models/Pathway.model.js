@@ -11,8 +11,8 @@ const TaskSchema = z.object({
   taskNumber: z.number(),
   taskTitle: z.string(),
   description: z.string(),
-  scheduledDate: z.coerce.date().optional(),
-  completedDate: z.coerce.date().optional(),
+  scheduledDate: z.date().nullable(),
+  completedDate: z.date().nullable(),
   isDone: z.boolean().default(false),
   lateMark: z.boolean().default(false),
   resources: z.array(ResourceSchema),
@@ -24,8 +24,8 @@ const TaskSchema = z.object({
 const IntervalSchema = z.object({
   intervalNumber: z.number(),
   summary: z.string(),
-  pathwayStartDate: z.coerce.date().optional(),
-  pathwayEndDate: z.coerce.date().optional(),
+  pathwayStartDate: z.date().nullable(),
+  pathwayEndDate: z.date().nullable(),
   tasks: z.array(TaskSchema)
 });
 
@@ -37,97 +37,250 @@ const PathwayResponseSchema = z.object({
 });
 
 const PathwaySchema = z.object({
-  "_id": z.string(),
+  "id": z.string().default(""),
   "userId": z.string(),
   "topic": z.string(),
   "description": z.string(),
   "duration": z.number(),
-  "startDate": z.coerce.date().optional(),
-  "endDate": z.coerce.date().optional(),
+  "startDate": z.date().nullable(),
+  "endDate": z.date().nullable(),
   "isActive": z.boolean().default(false),
   "response": PathwayResponseSchema,
+  createdAt: z.string(),
+  updatedAt: z.string()
 })
 
-const convertResourceTypes = {
+const RESOURCE_TYPE_MAP = {
   "documentation": "Documentation",
   "video": "Video",
   "video tutorial": "Video Tutorial",
   "interactive exercise": "Interactive Exercise"
-}
+};
 
-const convertFetchedPathwayToPathway = (pathwayData) => {
+/**
+ * Calculates evenly distributed dates for tasks within an interval
+ * @param {Date} intervalStart - Start date of the interval
+ * @param {Date} intervalEnd - End date of the interval
+ * @param {number} taskCount - Number of tasks in the interval
+ * @returns {Date[]} Array of calculated dates for tasks
+ */
+const calculateTaskDates = (intervalStart, intervalEnd, taskCount) => {
+  const dates = [];
+  const totalDuration = intervalEnd.getTime() - intervalStart.getTime();
+  const segmentDuration = totalDuration / (taskCount + 1);
+
+  for (let i = 1; i <= taskCount; i++) {
+    const taskDate = new Date(intervalStart.getTime() + (segmentDuration * i));
+    dates.push(taskDate);
+  }
+
+  return dates;
+};
+
+/**
+ * Initializes dates for an interval and its tasks
+ * @param {Object} interval - Interval to initialize dates for
+ * @param {Date} startDate - Start date for the interval
+ * @param {number} intervalDuration - Duration of the interval in days
+ * @returns {Object} Interval with initialized dates
+ */
+const initializeIntervalDates = (interval, startDate, intervalDuration) => {
+  const intervalStartDate = new Date(startDate);
+  const intervalEndDate = new Date(startDate);
+  intervalEndDate.setDate(startDate.getDate() + intervalDuration);
+
+  const taskDates = calculateTaskDates(
+    intervalStartDate, 
+    intervalEndDate, 
+    interval.tasks.length
+  );
+
+  const updatedTasks = interval.tasks.map((task, index) => ({
+    ...task,
+    scheduledDate: taskDates[index],
+    completedDate: task.isDone ? task.completedDate : null
+  }));
+
   return {
-    "_id": pathwayData.id,
-    userId: pathwayData.userId,
+    ...interval,
+    pathwayStartDate: intervalStartDate,
+    pathwayEndDate: intervalEndDate,
+    tasks: updatedTasks
+  };
+};
+
+/**
+ * Converts a Gemini-generated pathway to the correct database format
+ * @param {Object} pathwayData - Raw pathway data from Gemini
+ * @param {string} userId - User ID for the pathway
+ * @returns {Object} Formatted pathway data matching PathwaySchema
+ */
+const convertGeminiPathwayToDBFormat = (pathwayData, userId) => {
+  const formattedPathway = {
+    id: crypto.randomUUID(),
+    userId,
     topic: pathwayData.topic,
     description: pathwayData.description,
     duration: pathwayData.duration,
+    startDate: null,
+    endDate: null,
     isActive: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     response: {
       topic: pathwayData.topic,
       intervals: pathwayData.intervals,
       intervalType: pathwayData.intervalType,
-      pathway: pathwayData.pathway.map((interval) => {
-        interval.tasks = interval.tasks.map((task) => {
-          task.resources = task.resources.map((resource) => {
-            resource.type = convertResourceTypes[resource.type];
-            return resource;
-          });
-          return task;
-        });
-        return interval;
-      }),
+      pathway: pathwayData.pathway.map(interval => ({
+        ...interval,
+        pathwayStartDate: null,
+        pathwayEndDate: null,
+        tasks: interval.tasks.map(task => ({
+          ...task,
+          scheduledDate: null,
+          completedDate: null,
+          isDone: false,
+          lateMark: false,
+          completionEmailSent: false,
+          deadlineEmailSent: false,
+          resources: task.resources.map(resource => ({
+            ...resource,
+            type: RESOURCE_TYPE_MAP[resource.type.toLowerCase()]
+          }))
+        }))
+      }))
     }
-  }
-}
+  };
 
+  return validatePathway(formattedPathway);
+};
+
+/**
+ * Validates pathway data against the PathwaySchema
+ * @param {Object} data - Pathway data to validate
+ * @returns {Object} Validated pathway data
+ * @throws {Error} If validation fails
+ */
 const validatePathway = (data) => {
   try {
     const result = PathwaySchema.safeParse(data);
-    if (result.success) {
-      return result.data;
-    } else {
+    if (!result.success) {
       throw result.error.format();
     }
+    return result.data;
   } catch (error) {
+    console.error('Pathway validation failed:', error);
     throw error;
   }
-}
+};
 
 class Pathway {
-  constructor(pathwayData) {
-    const convertedPathway = convertFetchedPathwayToPathway(pathwayData);
-    this.data = validatePathway(convertedPathway);
+  constructor(geminiPathwayData, userId = null) {
+    if (userId) {
+      this.data = convertGeminiPathwayToDBFormat(geminiPathwayData, userId);
+    } else {
+      this.data = geminiPathwayData;
+    }
   }
 
+  /**
+   * Starts or resumes the pathway, initializing all necessary dates
+   * @param {Date} startDate - Date to start/resume the pathway from
+   */
+  startPathway(startDate = new Date()) {
+    const intervalDuration = Math.floor(this.data.duration / this.data.response.intervals);
+    
+    this.data.startDate = startDate;
+    this.data.endDate = new Date(startDate);
+    this.data.endDate.setDate(startDate.getDate() + this.data.duration);
+    this.data.isActive = true;
+
+    this.data.response.pathway = this.data.response.pathway.map((interval, index) => {
+      const intervalStartDate = new Date(startDate);
+      intervalStartDate.setDate(startDate.getDate() + (index * intervalDuration));
+      
+      return initializeIntervalDates(interval, intervalStartDate, intervalDuration);
+    });
+  }
+
+  /**
+   * Pauses the pathway, preserving completed task dates
+   */
+  pausePathway() {
+    this.data.isActive = false;
+    this.data.endDate = null;
+    
+    this.data.response.pathway = this.data.response.pathway.map(interval => ({
+      ...interval,
+      pathwayStartDate: null,
+      pathwayEndDate: null,
+      tasks: interval.tasks.map(task => ({
+        ...task,
+        scheduledDate: task.isDone ? task.scheduledDate : null
+      }))
+    }));
+  }
+
+  /**
+   * Marks a specific task as done
+   * @param {number} intervalNumber - Interval number
+   * @param {number} taskNumber - Task number
+   */
   markAsDone(intervalNumber, taskNumber) {
-    const task = this.data.response.pathway[intervalNumber].tasks.filter((task) => task.taskNumber === taskNumber)[0];
-    if (!task.isDone || !task.completedDate) {
+    const task = this.data.response.pathway[intervalNumber]?.tasks
+      .find(task => task.taskNumber === taskNumber);
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+
+    if (!task.isDone) {
       task.isDone = true;
       task.completedDate = new Date();
-      if (task.scheduledDate && task.scheduledDate < task.completedDate) {
-        task.lateMark = true;
-      }
+      task.lateMark = task.scheduledDate && task.scheduledDate < task.completedDate;
     }
-    this.data.response.pathway[intervalNumber].tasks.filter((task) => task.taskNumber === taskNumber)[0] = task;
   }
 
+  /**
+   * Converts pathway intervals into a flat task list
+   * @returns {Array} Flat array of all tasks
+   */
   toTaskList() {
-    const taskList = [];
     let taskNumber = 1;
-    this.data.response.pathway.forEach((interval) => {
-      interval.tasks.forEach((task) => {
-        task.taskNumber = taskNumber;
-        taskList.push(task);
-        taskNumber++;
-      })
-    })
-    return taskList;
+    return this.data.response.pathway.flatMap(interval => 
+      interval.tasks.map((task) => ({
+        ...task,
+        taskNumber: taskNumber++
+      }))
+    );
   }
 
-  populateWithDates(startDate) {
-    this.data._id = new Date(startDate);
+  /**
+   * Gets the data in database-ready format
+   * @returns {Object} Formatted pathway data
+   */
+  toDBFormat() {
+    return this.data;
   }
 }
 
-export { Pathway, PathwaySchema };
+export { 
+  Pathway, 
+  PathwaySchema,
+  convertGeminiPathwayToDBFormat,
+  validatePathway 
+};
+
+/* 
+// When user wants to start the pathway
+pathway.startPathway(new Date());
+
+// When user wants to pause
+pathway.pausePathway();
+
+// When user wants to resume
+pathway.startPathway(new Date());
+
+// Save to database
+await addPathway(userId, pathway.toDBFormat());
+*/
