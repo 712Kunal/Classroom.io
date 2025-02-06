@@ -61,7 +61,7 @@ const TimelineView = () => {
     <Timeline
       data={data}
       title={topic}
-      desciption={description}
+      description={description}
       duration={duration}
       startDate={startDate}
       endDate={endDate}

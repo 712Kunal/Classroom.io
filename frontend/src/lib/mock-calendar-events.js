@@ -3,8 +3,6 @@ import { addDays, startOfMonth } from 'date-fns';
 import { colorOptions } from '@/components/calender_jsx/calendar/calendar-tailwind-classes';
 import dummy from '../assets/data/dummy.json';
 
-console.log(dummy);
-
 const extract_tasks = (dummyData) => {
   const tasks = []; // empty array to store tasks
   const pathway = dummyData.response.pathway;
@@ -24,10 +22,8 @@ const extract_tasks = (dummyData) => {
 };
 
 const AllTasks = extract_tasks(dummy);
-console.log(AllTasks);
 
 const EVENT_TITLES = AllTasks.map((task) => task.taskTitle);
-console.log('All tasks:', EVENT_TITLES);
 
 // Extract color values from colorOptions
 const EVENT_COLORS = colorOptions.map((color) => color.value);

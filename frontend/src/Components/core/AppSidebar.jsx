@@ -24,10 +24,10 @@ import { Pathway } from '../models/Pathway.model.js';
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
-  const { pathwaysList } = useGlobal();
+  const { pathwaysList, isLoading } = useGlobal();
   let pathways = [];
 
-  if(pathwaysList.length > 0) {
+  if(!isLoading && pathwaysList && pathwaysList.length > 0) {
     pathways = pathwaysList.map((pathway) => (
       {
         id: pathway.data.id,
@@ -84,7 +84,7 @@ const AppSidebar = () => {
           <SidebarGroupLabel>Pathways</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {pathwaysList.length > 0 && pathways.map((pathway, index) => (
+              {pathways.map((pathway, index) => (
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton asChild>
                     <Link to={`/app/library/pathways/${pathway.id}/timeline`} className="flex items-center gap-2 text-base">

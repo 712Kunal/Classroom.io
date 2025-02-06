@@ -53,12 +53,14 @@ const CreatePathway = () => {
   const [isGenerating, setGenerating] = useState(false);
   const [pathwayReady, setPathwayReady] = useState(false);
   const [createdPathwayId, setCreatedPathwayId] = useState(null);
-  const { setPathwaysToRefresh, isPathwaysSetToRefresh } = useGlobal();
+  const { refetchPathways } = useGlobal();
   const { user } = useAuthListener();
 
   const handleCreatePathway = async (e) => {
     e.preventDefault();
     setGenerating(true);
+    setPathwayReady(false);
+    
     const userId = user?.uid || "9YwXaz34CtPK6g79Y1hWDF6s4GD3";
     const userDetails = {
       age: 21,
@@ -70,20 +72,20 @@ const CreatePathway = () => {
       occupation: "Student",
       languagesKnown: "English, Marathi",
     }
-
+  
     const additionalInfo = {
       skills: "JavaScript, React, Node.js, MongoDB, Express.js",
       hobbies: "Reading, Writing, Coding",
       interests: "Learning new technologies, Developing new skills, Exploring different fields of study",
     }
-
+  
     const pathwayRequirements = {
       topic: formData.topic,
       duration: formData.duration,
       intervalsType: formData.intervalType,
       preferredLearningMaterialType: formData.preferedResourceType,
     }
-
+  
     try {
       const { pathwayId } = await createPathwayFunc(
         userId,
@@ -92,28 +94,16 @@ const CreatePathway = () => {
         pathwayRequirements
       );
       setCreatedPathwayId(pathwayId);
+  
+      await refetchPathways();
+  
+      setPathwayReady(true);
     } catch (error) {
-      setGenerating(false);
       console.error(error);
+      setGenerating(false);
     }
-    setPathwaysToRefresh(true);
-    
-    function waitForPathwaysRefresh() {
-      return new Promise((resolve) => {
-        const checkState = () => {
-          if (!isPathwaysSetToRefresh) {
-            resolve();
-          } else {
-            setTimeout(checkState, 100); // Check again after 100ms
-          }
-        };
-        checkState(); // Start checking immediately
-      });
-    }
-    
-    await waitForPathwaysRefresh();
-    setPathwayReady(true);
   }
+  
 
   return isGenerating ? (
     <PathwayLoader topic={formData.topic} duration={formData.duration} intervalType={formData.intervalType} isPathwayReady={pathwayReady} createdPathwayId={createdPathwayId} />
@@ -230,7 +220,6 @@ const loadingStages = [
 const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady, createdPathwayId }) => {
   const [currentDoneStages, setDoneStages] = useState([]);
   const [isBackdropLoaded, setBackedAsLoaded] = useState(false);
-  const { setPathwaysToRefresh } = useGlobal();
   const navigate = useNavigate();
 
   useEffect(() => {

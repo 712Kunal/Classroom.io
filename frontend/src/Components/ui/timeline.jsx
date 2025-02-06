@@ -9,11 +9,12 @@ import {
   TooltipTrigger,
 } from "./tooltip.jsx"
 import { Button } from "./button.jsx";
+import StartPathwayModal from "@/components/pathway/StartPathwayModal.jsx";
 
 export const Timeline = ({
   data,
   title,
-  desciption,
+  description,
   duration,
   startDate,
   endDate,
@@ -45,7 +46,7 @@ export const Timeline = ({
           </h2>
           <p
             className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-lg">
-            {desciption}
+            {description}
           </p>
           <div className="flex gap-2 items-center justify-start">
             <Badge variant="outline" className="p-2">
@@ -73,7 +74,7 @@ export const Timeline = ({
             </>
           ) : (
             <div className="StartBox ml-auto">
-              <Button>Start Your Learning Journey now</Button>
+              <StartPathwayModal><Button>Start Your Learning Journey now</Button></StartPathwayModal>
             </div>
           )}
         </div>
