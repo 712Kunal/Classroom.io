@@ -103,7 +103,7 @@ public class UserService {
                         "Need help? Contact support. 🤝\n\n" +
                         "Happy learning! \n\n" +
                         "Best,\n" +
-                        "💖 Team Pathify",
+                        "Team Pathify",
                 userName
         );
 
