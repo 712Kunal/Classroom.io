@@ -8,12 +8,12 @@ function LandingPage() {
         <div className="hero-section relative h-screen overflow-hidden">
           <LandingNavbar />
           {/* Spline Background Container */}
-          <div className="absolute inset-0 w-full h-full">
+          {/* <div className="absolute inset-0 w-full h-full">
             <Spline
               className="w-full h-full"
               scene="https://prod.spline.design/0XkBsySMprkHqiga/scene.splinecode"
             />
-          </div>
+          </div> */}
 
           {/* Overlay to ensure text readability */}
           {/* <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-black/50" /> */}
