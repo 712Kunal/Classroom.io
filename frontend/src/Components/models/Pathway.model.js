@@ -11,8 +11,8 @@ const TaskSchema = z.object({
   taskNumber: z.number(),
   taskTitle: z.string(),
   description: z.string(),
-  scheduledDate: z.coerce.date().optional(),
-  completedDate: z.coerce.date().optional(),
+  scheduledDate: z.date().nullable(),
+  completedDate: z.date().nullable(),
   isDone: z.boolean().default(false),
   lateMark: z.boolean().default(false),
   resources: z.array(ResourceSchema),
@@ -24,8 +24,8 @@ const TaskSchema = z.object({
 const IntervalSchema = z.object({
   intervalNumber: z.number(),
   summary: z.string(),
-  pathwayStartDate: z.coerce.date().optional(),
-  pathwayEndDate: z.coerce.date().optional(),
+  pathwayStartDate: z.date().nullable(),
+  pathwayEndDate: z.date().nullable(),
   tasks: z.array(TaskSchema)
 });
 
@@ -42,8 +42,8 @@ const PathwaySchema = z.object({
   "topic": z.string(),
   "description": z.string(),
   "duration": z.number(),
-  "startDate": z.coerce.date().optional(),
-  "endDate": z.coerce.date().optional(),
+  "startDate": z.date().nullable(),
+  "endDate": z.date().nullable(),
   "isActive": z.boolean().default(false),
   "response": PathwayResponseSchema,
   createdAt: z.string(),
@@ -117,6 +117,7 @@ const initializeIntervalDates = (interval, startDate, intervalDuration) => {
  */
 const convertGeminiPathwayToDBFormat = (pathwayData, userId) => {
   const formattedPathway = {
+    id: crypto.randomUUID(),
     userId,
     topic: pathwayData.topic,
     description: pathwayData.description,
@@ -128,9 +129,9 @@ const convertGeminiPathwayToDBFormat = (pathwayData, userId) => {
     updatedAt: new Date().toISOString(),
     response: {
       topic: pathwayData.topic,
-      intervals: pathwayData.response.intervals,
-      intervalType: pathwayData.response.intervalType,
-      pathway: pathwayData.response.pathway.map(interval => ({
+      intervals: pathwayData.intervals,
+      intervalType: pathwayData.intervalType,
+      pathway: pathwayData.pathway.map(interval => ({
         ...interval,
         pathwayStartDate: null,
         pathwayEndDate: null,
@@ -174,8 +175,12 @@ const validatePathway = (data) => {
 };
 
 class Pathway {
-  constructor(geminiPathwayData, userId) {
-    this.data = convertGeminiPathwayToDBFormat(geminiPathwayData, userId);
+  constructor(geminiPathwayData, userId = null) {
+    if (userId) {
+      this.data = convertGeminiPathwayToDBFormat(geminiPathwayData, userId);
+    } else {
+      this.data = geminiPathwayData;
+    }
   }
 
   /**
@@ -241,10 +246,11 @@ class Pathway {
    * @returns {Array} Flat array of all tasks
    */
   toTaskList() {
+    let taskNumber = 1;
     return this.data.response.pathway.flatMap(interval => 
-      interval.tasks.map((task, index) => ({
+      interval.tasks.map((task) => ({
         ...task,
-        taskNumber: index + 1
+        taskNumber: taskNumber++
       }))
     );
   }

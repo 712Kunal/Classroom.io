@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { setDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 
 const pathwaysCollectionRef = collection(db, 'pathways');
 
@@ -9,8 +9,8 @@ export const addPathway = async (pathwayData) => {
     // add doc as pathway in pathways collection
     // returns id of the doc
 
-    const docRef = await addDoc(pathwaysCollectionRef, pathwayData);
-    return docRef.id;
+    console.log(pathwayData)
+    await setDoc(doc(pathwaysCollectionRef, pathwayData.id), pathwayData);
   } catch (error) {
     console.error('Error adding pathway:', error);
     throw error;

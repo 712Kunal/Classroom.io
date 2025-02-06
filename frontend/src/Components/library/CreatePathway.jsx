@@ -230,7 +230,7 @@ const loadingStages = [
 const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady, createdPathwayId }) => {
   const [currentDoneStages, setDoneStages] = useState([]);
   const [isBackdropLoaded, setBackedAsLoaded] = useState(false);
-  const { setPathwaysList } = useGlobal();
+  const { setPathwaysToRefresh } = useGlobal();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -258,18 +258,6 @@ const PathwayLoader = ({ topic, intervalCount, intervalType, isPathwayReady, cre
   }, []);
 
   const handleNewPathwayCreated = async () => {
-    const fetchPathways = async () => {
-      try {
-        const pathways = await getAllPathwaysOfUser(contextUser.uid);
-        const pathwaysList = pathways.map((pathway) => {
-          return new Pathway(pathway);
-        })
-        setPathwaysList(pathwaysList);
-      } catch (error) {
-        console.error("Error fetching pathways:", error);
-      }
-    };
-    await fetchPathways();
     navigate(`/app/library/pathways/${createdPathwayId}/timeline`);
   }
 

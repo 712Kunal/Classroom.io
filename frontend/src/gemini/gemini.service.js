@@ -179,9 +179,10 @@ async function generatePathway(userId, prompt) {
     const pathway = new Pathway(result, userId)
 
     // Save trip to database
-    const pathwayId = await addPathway(userId, pathway.toDBFormat());
+    const pathwayData = pathway.toDBFormat();
+    await addPathway(pathwayData);
 
-    return { pathwayId };
+    return { pathwayId: pathwayData.id };
   } catch (error) {
     console.error('Error generating pathway:', error);
     throw new Error('Pathway generation failed. Please try again.');
