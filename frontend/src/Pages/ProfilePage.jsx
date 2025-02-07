@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "@/Firebase/firebase"; 
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Loader1 from '@/Components/ui/Loader1';
 
 function ProfilePage() {
   const [userDetails, setUserDetails] = useState(null);
@@ -101,7 +102,7 @@ function ProfilePage() {
           <Navbar user={user} />
         </div>
       ) : (
-        <p className="text-center text-xl">Loading...</p>
+        <p className="text-center text-xl"><Loader1/></p>
       )}
     </>
   );
