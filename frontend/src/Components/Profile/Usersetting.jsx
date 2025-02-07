@@ -18,6 +18,7 @@ import { Input } from '@/Components/ui/input2';
 import { Label } from '@/Components/ui/label2';
 import Languages from '@/Components/originUi/languages-known';
 import { addProfile } from '@/Firebase/services/userDetails.servies';
+import { toast } from 'react-toastify';
 
 function Usersetting({ user }) {
   const navigate = useNavigate();
@@ -37,6 +38,14 @@ function Usersetting({ user }) {
         fetchUserDetails(authUser);
       } else {
         console.log('No user found, redirecting to signup...');
+        toast.error('No user found, redirecting to signup...',{
+          position: "top-right",
+          autoClose: 4000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
         navigate('/signup');
       }
     });
@@ -59,6 +68,14 @@ function Usersetting({ user }) {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
+      toast.error('Error fetching user',{
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+        });
     }
   };
 
@@ -67,11 +84,26 @@ function Usersetting({ user }) {
       const userId = auth.currentUser.uid;
       const addUserData = await addProfile(userDetails, userId);
       if (addUserData.success === true) {
-        console.log('User updated successfully');
+        toast.success('User updated successfully',{
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
         navigate('/app');
       }
     } catch (error) {
-      console.error('Error adding user details:', error);
+      console.error('Error user updating user details:', error);
+      toast.error('Error user updating',{
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+        });
     }
   };
 
