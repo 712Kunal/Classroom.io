@@ -49,13 +49,16 @@ function Signup() {
       });
   
       console.log('Done');
-      navigate('/detailsForm');
       const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
-  
+
       await axios.post(backendUrl, {
         email: user.email,
         username: username
       });
+      
+      navigate('/detailsForm');
+  
+      
   
       console.log('Notification and email request sent to backend.');
     } catch (error) {
