@@ -1,20 +1,19 @@
 package com.swapnil.Classroom.service;
 
 import com.google.api.core.ApiFuture;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
+import com.google.firebase.auth.FirebaseAuth;
 import com.swapnil.Classroom.entity.Notification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,8 @@ public class DeadlineScheduler {
 
 
 
-    @Scheduled(cron = "0 0 18 * * *")
+
+    @Scheduled(cron = "0 16 12 * * *")
     public void checkDeadlineAndSendEmail() {
 
         System.out.println("Scheduler started...");
@@ -71,17 +71,21 @@ public class DeadlineScheduler {
                                 @SuppressWarnings("unchecked")
                                 Map<String, Object> task = (Map<String, Object>) taskObj;
 
+                                System.out.println("Task from firebase: "+task);
+
                                 Object scheduledDateObj = task.get("scheduledDate");
-                                Date scheduledDate = parseScheduledDate(scheduledDateObj);
+                                System.out.println("Scheduled Obj: "+scheduledDateObj);
+                                Date scheduledDate = Date.from(parseScheduledDate(scheduledDateObj));
+                                System.out.println("Scheduled date: "+scheduledDate);
                                 if (scheduledDate == null) continue;
 
                                 if (scheduledDate == null) {
-                                    System.out.println("Skipping task due to missing scheduledDate: " + task.get("taskTitle"));
+//                                    System.out.println("Skipping task due to missing scheduledDate: " + task.get("taskTitle"));
                                     continue;
                                 }
 
                                 if (!isToday(scheduledDate)) {
-                                    System.out.println("Skipping task, not due today: " + task.get("taskTitle") + " | Scheduled Date: " + scheduledDate);
+//                                    System.out.println("Skipping task, not due today: " + task.get("taskTitle") + " | Scheduled Date: " + scheduledDate);
                                     continue;
                                 }
 
@@ -117,25 +121,36 @@ public class DeadlineScheduler {
 
 
 
-    private Date parseScheduledDate(Object scheduledDateObj) {
+    private Instant parseScheduledDate(Object scheduledDateObj) {
+        if (scheduledDateObj == null) {
+            System.err.println("⚠️ scheduledDateObj is null, skipping this task.");
+            return null; // Explicitly return null
+        }
+
         try {
             if (scheduledDateObj instanceof com.google.cloud.Timestamp) {
-                return ((com.google.cloud.Timestamp) scheduledDateObj).toDate();
+                return ((com.google.cloud.Timestamp) scheduledDateObj).toDate().toInstant();
             } else if (scheduledDateObj instanceof String) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-                return sdf.parse((String) scheduledDateObj);
-            }
-
-            else {
-                System.err.println("Unsupported scheduledDate type: " + scheduledDateObj);
-                return null;
+                try {
+                    return Instant.parse((String) scheduledDateObj); // Direct ISO 8601 parsing
+                } catch (Exception e) {
+                    // Fallback for alternative string formats
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    return sdf.parse((String) scheduledDateObj).toInstant();
+                }
+            } else {
+                System.err.println("❌ Unsupported scheduledDate type: " + scheduledDateObj);
             }
         } catch (Exception e) {
-            System.err.println("Error parsing scheduledDate: " + e.getMessage());
-            return null;
+            System.err.println("❌ Error parsing scheduledDate: " + scheduledDateObj);
+            e.printStackTrace();
         }
+
+        return null; // Explicitly return null if parsing fails
     }
+
+
 
     public void processTask(QueryDocumentSnapshot pathwayDoc, String userEmail, Map<String, Object> task) {
         try {

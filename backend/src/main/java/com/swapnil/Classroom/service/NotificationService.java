@@ -350,7 +350,7 @@ public class NotificationService {
         String description = String.format(
                 "⏳ Task Reminder! ⏳\n\n" +
                         "📌 Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
-                        "⚠️ ❗ If not completed by the deadline, it will be marked **Late** in your tracker. ⏰\n\n" +
+                        "⚠️ ❗ If not completed by the deadline, it will be marked **Late** in your tracker. ⏰\n\n",
                         taskTitle, pathwayTopic
         );
 
