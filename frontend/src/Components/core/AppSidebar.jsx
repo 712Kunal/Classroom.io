@@ -13,10 +13,10 @@ const AppSidebar = () => {
   const isMobile = useIsMobile();
 
   const { user: contextUser } = useGlobal();
-  const { pathwaysList, setPathwaysList, isLoading } = useGlobal(); // Combined hook here
+  const { pathwaysList, setPathwaysList } = useGlobal();
   
   useEffect(() => {
-    if (contextUser) {
+    if(contextUser) {
       const fetchPathways = async () => {
         try {
           const pathways = await getAllPathwaysOfUser(contextUser.uid);
@@ -29,7 +29,7 @@ const AppSidebar = () => {
         }
       };
       fetchPathways();
-    }
+    };
   }, [contextUser]);
     
   const user = contextUser ? {
@@ -38,6 +38,15 @@ const AppSidebar = () => {
     email: contextUser.email,
   } : null;  
   
+  const pathways = pathwaysList.map((pathway, index) => (
+    {
+      id: pathway.data._id,
+      name: pathway.data.topic,
+      pathwayId: pathway.data._id,
+    }
+  ));
+
+  const { pathwaysList, isLoading } = useGlobal();
   let pathways = [];
   if (!isLoading && pathwaysList && pathwaysList.length > 0) {
     pathways = pathwaysList.map((pathway) => (

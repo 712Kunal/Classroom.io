@@ -9,15 +9,22 @@ const addProfile = async (userDetails, userId) => {
     if (!user) {
       throw new Error('No user found');
     }
+
     const userProfileRef = doc(db, 'UserProfiles', userId); 
     await setDoc(userProfileRef, {
+
+    const docRef = await addDoc(collection(db, 'UserProfiles'), {
+
       userId: userId,
       ...userDetails,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
 
+
     return { success: true, docRef: userProfileRef };
+    return { success: true, docRef };
+
   } catch (error) {
     console.error('Error adding user details:', error);
     throw error;
