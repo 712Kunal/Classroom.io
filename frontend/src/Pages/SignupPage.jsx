@@ -6,6 +6,7 @@ import { auth, db } from '@/Firebase/firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Signup() {
   const navigate = useNavigate();
@@ -37,17 +38,25 @@ function Signup() {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-  
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       await updateProfile(user, { displayName: username });
       console.log('User registered successfully:', user);
+      toast.success('User registered successfully', user, {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+      });
       await setDoc(doc(db, 'Users', user.uid), {
         email: user.email,
         username: username
       });
-  
+
       console.log('Done');
       const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
 
@@ -55,18 +64,29 @@ function Signup() {
         email: user.email,
         username: username
       });
-      
-      navigate('/detailsForm');
-  
-      
-  
       console.log('Notification and email request sent to backend.');
+      toast.error('Notification and email request sent to backend.', {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+      });
+
     } catch (error) {
       console.error('Error during registration:', error.message);
+      toast.error('Registration failed. Please try again later.', {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+      });
       setErrorMessage(error.message);
     }
   };
-  
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -100,9 +120,8 @@ function Signup() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your username"
-            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
-              errors.username ? 'border-red-500' : ''
-            }`}
+            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${errors.username ? 'border-red-500' : ''
+              }`}
           />
           {errors.username && <p className="text-xs text-red-500">{errors.username}</p>}
         </div>
@@ -118,9 +137,8 @@ function Signup() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Ex-abc@mail.com"
-            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
-              errors.email ? 'border-red-500' : ''
-            }`}
+            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${errors.email ? 'border-red-500' : ''
+              }`}
           />
           {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
         </div>
@@ -137,9 +155,8 @@ function Signup() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="******AB"
-            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
-              errors.password ? 'border-red-500' : ''
-            }`}
+            className={`mt-2 w-full rounded-md border border-gray-700 bg-gray-800 p-2.5 text-gray-100 shadow-sm placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${errors.password ? 'border-red-500' : ''
+              }`}
           />
           {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
         </div>
