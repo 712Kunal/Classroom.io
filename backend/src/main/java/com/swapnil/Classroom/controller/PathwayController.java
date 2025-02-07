@@ -27,33 +27,6 @@ public class PathwayController {
     private static final Logger logger = LoggerFactory.getLogger(PathwayController.class);
 
 
-//    @PostMapping("/createPathway")
-//    public ResponseEntity<String> createPathway(@RequestBody Pathway pathway){
-//
-//        try{
-//            pathwayService.createPathway(pathway);
-//            return ResponseEntity.ok("Pathway created successfully");
-//        }
-//        catch (Exception e){
-//            return ResponseEntity.status(500).body("Error creating pathway: "+e.getMessage());
-//        }
-//
-//    }
-
-//    @GetMapping("/user/{userId}")
-//    public ResponseEntity<?> getPathwaysByUser(@PathVariable String userId) {
-//        try {
-//            List<Pathway> pathways = pathwayService.getPathwaysByUser(userId);
-//            if (pathways.isEmpty()) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No pathways found for user: " + userId);
-//            }
-//            return ResponseEntity.ok(pathways);
-//        } catch (ExecutionException | InterruptedException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving pathways: " + e.getMessage());
-//        }
-//    }
-
 
 
     @PostMapping("/user/{userId}/pathwayGeneration/{pathwayId}")

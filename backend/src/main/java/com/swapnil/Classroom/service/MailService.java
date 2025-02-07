@@ -131,7 +131,6 @@ public class MailService {
             String subject = "⏳ Task Reminder ⏳";
 
             String pathwayTopic = (String) pathwayDoc.get("topic");
-            System.out.println("Pathway Document Data: " + pathwayDoc.getData());
 
             String body = String.format(
                     "Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +

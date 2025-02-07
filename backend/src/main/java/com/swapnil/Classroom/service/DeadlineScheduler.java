@@ -25,7 +25,7 @@ public class DeadlineScheduler {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 3 14 * * *")
+    @Scheduled(cron = "0 0 18 * * *")
     public void checkDeadlineAndSendEmail() {
         System.out.println("Scheduler started...");
 
@@ -86,12 +86,9 @@ public class DeadlineScheduler {
                             @SuppressWarnings("unchecked")
                             Map<String, Object> task = (Map<String, Object>) taskObj;
 
-                            System.out.println("Task from Firebase: " + task);
 
                             Object scheduledDateObj = task.get("scheduledDate");
-                            System.out.println("Scheduled Obj: " + scheduledDateObj);
                             Date scheduledDate = Date.from(parseScheduledDate(scheduledDateObj));
-                            System.out.println("Scheduled date: " + scheduledDate);
 
                             if (scheduledDate == null || !isToday(scheduledDate)) {
                                 continue;
@@ -99,7 +96,6 @@ public class DeadlineScheduler {
 
                             Boolean taskStatus = (Boolean) task.get("isDone");
 
-                            // Skip already completed tasks
                             if (Boolean.TRUE.equals(taskStatus)) {
                                 continue;
                             }
@@ -157,8 +153,13 @@ public class DeadlineScheduler {
                 return;
             }
 
-            Boolean emailNotif = (Boolean) document.get("emailNotification");
-            Notification notification = new Notification();
+            Map<String, Object> preferences = (Map<String, Object>) document.get("preferences");
+
+            Boolean emailNotif = false;
+
+            if (preferences != null && preferences.containsKey("emailNotification")) {
+                emailNotif = (Boolean) preferences.get("emailNotification");
+            }            Notification notification = new Notification();
 
             if (Boolean.TRUE.equals(emailNotif)) {
                 System.out.println("Sending email + in-app notifications...");
@@ -184,37 +185,5 @@ public class DeadlineScheduler {
         mailService.sendTaskDeadlineEmail(taskTitle, userEmail, pathwayDoc);
     }
 
-    public void updateEmailSentInFirestore(QueryDocumentSnapshot pathwayDoc, Map<String, Object> task) {
-        try {
-            System.out.println("Updating Firebase for task deadline...");
-            List<Object> responsePathway = (List<Object>) pathwayDoc.get("response.pathway");
-
-            for (Object intervalObj : responsePathway) {
-                @SuppressWarnings("unchecked")
-                List<Map<String, Object>> tasks = (List<Map<String, Object>>) ((Map<String, Object>) intervalObj).get("tasks");
-
-                if (tasks != null) {
-                    for (Map<String, Object> taskObj : tasks) {
-                        Long taskId = (Long) taskObj.get("taskNumber");
-                        Long incomingTaskId = (Long) task.get("taskNumber");
-
-                        if (taskId != null && taskId.equals(incomingTaskId)) {
-                            taskObj.put("deadlineEmailSent", true);
-
-                            DocumentReference documentReference = pathwayDoc.getReference();
-                            ApiFuture<WriteResult> future = documentReference.update("response.pathway", responsePathway);
-                            WriteResult result = future.get();
-
-                            System.out.println("emailSent updated in Firestore: " + result.getUpdateTime());
-                            return;
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error updating emailSent in Firestore: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }
 

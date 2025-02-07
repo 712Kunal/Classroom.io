@@ -24,63 +24,6 @@ public class PathwayService {
         this.mailService = mailService;
     }
 
-//    public void createPathway(Pathway pathway) throws ExecutionException, InterruptedException {
-//
-//        System.out.println("Pathway Id: " + pathway.getPathwayId());
-//
-//
-//        if (pathway.getPathwayId() == null) {
-//            firestore.collection("Pathway").add(pathway).get();
-//        } else {
-//            firestore.collection("Pathway").document(pathway.getPathwayId()).set(pathway).get();
-//        }
-//    }
-
-//    public List<Pathway> getPathwaysByUser(String userId) throws ExecutionException, InterruptedException {
-//        CollectionReference collectionReference = firestore.collection("Pathway");
-//        QuerySnapshot querySnapshot = collectionReference.whereEqualTo("userId", userId).get().get();
-//
-//        List<Pathway> pathways = new ArrayList<>();
-//        querySnapshot.forEach(document -> {
-//            Pathway pathway = document.toObject(Pathway.class);
-//            pathways.add(pathway);
-//        });
-//
-//        return pathways;
-//    }
-
-
-    public void taskCompletionEmail(String pathwayId, Long taskId) {
-        try {
-            String userId = getUserIdFromPathwayId(pathwayId);
-
-            String userEmail = getUserEmailByUserId(userId);
-
-            Map<String, Object> taskDetails = getTaskFromPathway(pathwayId, taskId);
-
-
-
-            boolean emailSent = (boolean) taskDetails.get("completionEmailSent");
-            System.out.println("email status: "+ emailSent);
-            if (!emailSent) {
-                mailService.sendTaskCompletionEmail(taskDetails, userEmail, userId);
-
-                updateTaskEmailSent(pathwayId, taskId, true);
-
-                System.out.println("Task completion email sent and marked as sent in Firestore.");
-            } else {
-                System.out.println("Task completion email has already been sent.");
-            }
-        } catch (PathwayNotFoundException e) {
-            System.err.println("Error: Pathway not found for pathwayId: " + pathwayId);
-        } catch (ResourceAccessException e) {
-            System.err.println("Error: Task not found for taskId: " + taskId);
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred: " + e.getMessage());
-        }
-    }
-
-
 
 
     private Map<String , Object> getTaskFromPathway(String pathwayId, Long taskId) throws Exception {
@@ -261,6 +204,8 @@ public class PathwayService {
 
         DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
+
+
 
         String userEmail= (String) userDoc.get("email");
         String userName=(String) userDoc.get("username");
