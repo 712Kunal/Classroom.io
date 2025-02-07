@@ -12,26 +12,22 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
-import { Pathway } from "../models/Pathway.model";
 
-const StartPathwayModal = ({ children }) => {
-  // const { user } = useAuthListener();
+const RestartPathwayModal = ({ children }) => {
   const navigate = useNavigate();
   const { pathwayId } = useParams();
   const { pathwaysList, refetchPathways, activePathwayId } = useGlobal();
   const pathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
 
-  const handleStartPathway = async () => {
+  const handleRestartPathway = async () => {
     try {
+      if (activePathwayId === pathway.data.id) {
+        return;
+      }
+
       pathway.startPathway();
-
-      await axios.post(`http://localhost:8080/api/user/${userId}/pathwayActivate/${pathwayId}`);
-
       await refetchPathways();
-
-
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
-
     } catch (error) {
       console.error(error);
     }
@@ -44,11 +40,13 @@ const StartPathwayModal = ({ children }) => {
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-2xl">
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure you want to start this pathway?</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure you want to restart this pathway?</AlertDialogTitle>
           <AlertDialogDescription className="text-base">
-            - You <b>cannot pause</b> or stop the pathway at any time.<br />
-            - Once you start the pathway, it will be considered active and your stats will be affected accordingly.<br />
-            - If you want to pause the pathway, you can do so from the pathway timeline.<br />
+            - If you restart the pathway, unlike resume it will overrite your task completion history.<br/>  
+            - If you meant to resume the pathway, you can do so from the pathway timeline.<br/>
+            - Once you restart the pathway, it will be considered active and your stats will be affected accordingly.<br/>
+            - You can again pause or stop the pathway at any time.<br/> 
+            - If you want to pause the pathway, you can do so from the pathway timeline.<br/>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="content">
@@ -67,7 +65,7 @@ const StartPathwayModal = ({ children }) => {
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleStartPathway}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={handleRestartPathway}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -75,4 +73,4 @@ const StartPathwayModal = ({ children }) => {
   )
 }
 
-export default StartPathwayModal
+export default RestartPathwayModal
