@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { doc, addDoc, collection, where, updateDoc, getDocs, getDoc, query, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { auth } from '../firebase';
 
 const addProfile = async (userDetails, userId) => {
@@ -10,21 +10,27 @@ const addProfile = async (userDetails, userId) => {
       throw new Error('No user found');
     }
 
+    const userProfileRef = doc(db, 'UserProfiles', userId); 
+    await setDoc(userProfileRef, {
+
     const docRef = await addDoc(collection(db, 'UserProfiles'), {
+
       userId: userId,
       ...userDetails,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
 
+
+    return { success: true, docRef: userProfileRef };
     return { success: true, docRef };
+
   } catch (error) {
     console.error('Error adding user details:', error);
     throw error;
   }
 };
 
-/** get user profile of specified user (userId) */
 const getUserProfileByUserId = async (userId) => {
   try {
     const user = auth.currentUser;

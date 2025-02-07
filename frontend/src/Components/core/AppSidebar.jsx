@@ -1,33 +1,54 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarMenuItem,
-  SidebarTrigger,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  useSidebar,
-} from "@/components/ui/sidebar.jsx";
-import { NavUser } from '../ui/nav-user.jsx';
-import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenuItem, SidebarTrigger, SidebarMenu, SidebarMenuButton, SidebarGroupLabel, SidebarGroupContent, useSidebar } from "@/components/ui/sidebar.jsx";
+import { NavUser } from '@/Components/ui/nav-user.jsx';
+import MobileModeToggle from '@/Components/originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
-import { useGlobal } from '../context/GlobalContext.jsx';
-import { Pathway } from '../models/Pathway.model.js';
+import { useGlobal } from '@/Components/context/GlobalContext.jsx';
+import { Pathway } from '@/Components/models/Pathway.model.js';
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
+
+  const { user: contextUser } = useGlobal();
+  const { pathwaysList, setPathwaysList } = useGlobal();
+  
+  useEffect(() => {
+    if(contextUser) {
+      const fetchPathways = async () => {
+        try {
+          const pathways = await getAllPathwaysOfUser(contextUser.uid);
+          const pathwaysList = pathways.map((pathway) => {
+            return new Pathway(pathway);
+          })
+          setPathwaysList(pathwaysList);
+        } catch (error) {
+          console.error("Error fetching pathways:", error);
+        }
+      };
+      fetchPathways();
+    };
+  }, [contextUser]);
+    
+  const user = contextUser ? {
+    username: contextUser.displayName,
+    avatar: 'https://avatar.iran.liara.run/public/48',
+    email: contextUser.email,
+  } : null;  
+  
+  const pathways = pathwaysList.map((pathway, index) => (
+    {
+      id: pathway.data._id,
+      name: pathway.data.topic,
+      pathwayId: pathway.data._id,
+    }
+  ));
+
   const { pathwaysList, isLoading } = useGlobal();
   let pathways = [];
-
-  if(!isLoading && pathwaysList && pathwaysList.length > 0) {
+  if (!isLoading && pathwaysList && pathwaysList.length > 0) {
     pathways = pathwaysList.map((pathway) => (
       {
         id: pathway.data.id,
@@ -49,7 +70,6 @@ const AppSidebar = () => {
       icon: <Bell size={18} />,
     }
   ];
-
 
   return (
     <Sidebar side="left" variant="floating" collapsible="icon">
@@ -101,7 +121,7 @@ const AppSidebar = () => {
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center justify-start">
-          {!open && <MobileModeToggle/>}
+          {!open && <MobileModeToggle />}
         </div>
         <NavUser />
       </SidebarFooter>

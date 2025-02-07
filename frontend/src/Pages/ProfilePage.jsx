@@ -1,6 +1,6 @@
 import Navbar from '@/Components/Profile/Navbar.jsx';
 import React, { useEffect, useState } from "react";
-import { auth, db } from "@/Firebase/firebase"; // Assuming you have your firebase config
+import { auth, db } from "@/Firebase/firebase"; 
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
@@ -17,14 +17,14 @@ function ProfilePage() {
         if (user) {
           const userRef = doc(db, "Users", user.uid);
           const userSnap = await getDoc(userRef);
-  
-          const profileRef = doc(db, "UserProfiles", user.uid);
+          const profileRef = doc(db, "UserProfiles", user.uid); 
           const profileSnap = await getDoc(profileRef);
-  
+   
+
           if (userSnap.exists() && profileSnap.exists()) {
             const userData = userSnap.data(); 
             const profileData = profileSnap.data();
-  
+
       
             setUserDetails({
               username: userData.username,
@@ -45,9 +45,10 @@ function ProfilePage() {
         navigate('/login'); 
       }
     };
-  
+
     fetchUserData();
-  }, []); 
+  }, []);
+
   
 
   useEffect(() => {
@@ -80,14 +81,14 @@ function ProfilePage() {
           Hobbies: userDetails.background?.hobies || ['Coding', 'Reading', 'Gaming'],
           Interests: userDetails.background?.interest || ['AI', 'Blockchain', 'Web Development']
         },
-        pointsAwarded: 1500, // Placeholder for points, adjust accordingly
+        pointsAwarded: 1500, 
         badgesAwarded: [
-          'https://picsum.photos/200', // Placeholder for badges
+          'https://picsum.photos/200', 
           'https://picsum.photos/200',
           'https://picsum.photos/200',
           'https://picsum.photos/200',
         ],
-        badgesAwardedDates: ['2023-01-01', '2023-12-01'] // Placeholder for badge dates
+        badgesAwardedDates: ['2023-01-01', '2023-12-01'] 
       };
       setUser(user); 
     }
