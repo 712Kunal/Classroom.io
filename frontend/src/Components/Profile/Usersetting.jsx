@@ -4,8 +4,6 @@ import { motion } from 'framer-motion';
 import { auth } from '@/Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import addProfile from '@/Firebase/services/userDetails.servies.js';
-
 import {
   ReceiptText,
   FileUser,
@@ -16,11 +14,11 @@ import {
   Twitter,
   BriefcaseBusiness,
   GraduationCap,
-  ShipWheel
 } from 'lucide-react';
 import { Input } from '@/Components/ui/input2';
 import { Label } from '@/Components/ui/label2';
 import Languages from '@/Components/originUi/languages-known';
+import { addProfile } from '@/Firebase/services/userDetails.servies';
 
 function Usersetting({ user }) {
   const navigate = useNavigate();
