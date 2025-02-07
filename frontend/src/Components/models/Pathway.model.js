@@ -69,17 +69,34 @@ const checkProgressAndSendNotifs = async (pathway) => {
   const completedTaskList = taskList.filter((task) => task.isDone);
   const progressPercentage = Math.round((completedTaskList.length / taskList.length) * 100);
 
-  switch (progressPercentage) {
-    case 100:
-      await axios.post(`http://localhost:8080/api/user/${userId}/pathwayComplete/${pathwayId}`);
-      break;
-    case 75:
-    case 50:
-      await axios.post(`http://localhost:8080/api/user/${userId}/pathway/${pathwayId}?progress=${progressPercentage}`);
-      break;
-    default:
-      break;
+
+  try {
+    if (progressPercentage < 50) {
+      return;
+    }
+
+    let url = null;
+    let progress = null;
+
+    if (progressPercentage >= 50 && progressPercentage < 75) {
+      progress = 50; 
+    } else if (progressPercentage >= 75 && progressPercentage < 100) {
+      progress = 75; 
+    } else if (progressPercentage === 100) {
+      url = `http://localhost:8080/api/user/${userId}/pathwayComplete/${pathwayId}`;
+    }
+
+    if (progress !== null) {
+      url = `http://localhost:8080/api/user/${userId}/pathway/${pathwayId}?progress=${progress}`;
+    }
+
+    if (url) {
+      await axios.post(url);
+    }
+  } catch (error) {
+    console.error("Error updating pathway progress:", error);
   }
+  
 }
 
 /**

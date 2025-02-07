@@ -12,11 +12,10 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
-import axios from "axios";
-import { useAuthListener } from "@/hooks/use-auth";
+import { Pathway } from "../models/Pathway.model";
 
 const StartPathwayModal = ({ children }) => {
-  const { user } = useAuthListener();
+  // const { user } = useAuthListener();
   const navigate = useNavigate();
   const { pathwayId } = useParams();
   const { pathwaysList, refetchPathways, activePathwayId } = useGlobal();
@@ -24,18 +23,15 @@ const StartPathwayModal = ({ children }) => {
 
   const handleStartPathway = async () => {
     try {
-      if (activePathwayId === pathway.data.id) {
-        return;
-      }
-
-      const oldActivePathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
-
-      oldActivePathway.pausePathway();
       pathway.startPathway();
+
+      await axios.post(`http://localhost:8080/api/user/${userId}/pathwayActivate/${pathwayId}`);
+
       await refetchPathways();
+
+
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
 
-      await axios.post(`http://localhost:8080/api/user/${user.uid}/pathwayActivate/${pathwayId}`)
     } catch (error) {
       console.error(error);
     }
