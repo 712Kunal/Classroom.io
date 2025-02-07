@@ -123,8 +123,11 @@ public class DeadlineScheduler {
                 return ((com.google.cloud.Timestamp) scheduledDateObj).toDate();
             } else if (scheduledDateObj instanceof String) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
                 return sdf.parse((String) scheduledDateObj);
-            } else {
+            }
+
+            else {
                 System.err.println("Unsupported scheduledDate type: " + scheduledDateObj);
                 return null;
             }
