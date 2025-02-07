@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, getDoc, updateDoc, query, where, serverTimestamp } from 'firebase/firestore';
 import { auth } from '../firebase';
 
 const addProfile = async (userDetails, userId) => {
@@ -28,8 +28,6 @@ const addProfile = async (userDetails, userId) => {
   }
 };
 
-export default addProfile;
-
 const getUserProfileByUserId = async (userId) => {
   try {
     const user = auth.currentUser;
@@ -39,19 +37,12 @@ const getUserProfileByUserId = async (userId) => {
     }
 
     const userDetailsCollectionRef = collection(db, 'UserProfiles');
-    const q = query(userDetailsCollectionRef, where("userId", "==", userId));
-    const querySnapshot = await getDocs(q);
+    const userProfile = await getDoc(doc(userDetailsCollectionRef, userId));
 
-    if(querySnapshot.length === 0) {
-      throw new Error('No user details entity found');
-    } else if (querySnapshot.length > 1) {
-      throw new Error('Multiple user details entities found');
-    }
-
-    if (querySnapshot.length > 0) {
-      return { id: userDetails[0].data.id, ...userDetails[0].data() };
+    if (userProfile) {
+      return { id: userProfile.id, ...userProfile.data() };
     } else {
-      return null;
+      throw new Error('User details not found');
     }
   } catch (error) {
     console.error('Error getting user details:', error);

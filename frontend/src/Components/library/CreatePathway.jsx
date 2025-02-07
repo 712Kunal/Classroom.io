@@ -7,9 +7,6 @@ import InputDurationInDays from "../originUi/input-duration-in-days";
 import { Separator } from "react-aria-components";
 import { cn } from "@/lib/utils";
 import { createPathway as createPathwayFunc } from "@/gemini/pathway.utils.js";
-import { Pathway } from "../models/Pathway.model";
-import { getAllPathwaysOfUser } from "@/Firebase/services/pathway.service";
-
 import {
   LoaderCircle,
   ShipWheel,
@@ -35,6 +32,23 @@ import { Button } from "../ui/button";
 import { useGlobal } from "../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
 import { useAuthListener } from "@/hooks/use-auth";
+import { getUserProfileByUserId } from "@/Firebase/services/userDetails.servies";
+import { Timestamp } from "firebase/firestore";
+
+const calculateAge = (dob) => {
+  if(dob instanceof Timestamp) {
+    dob = dob.toDate();
+  }
+  const dobDate = new Date(dob);
+  const now = new Date();
+  
+  // Calculate the difference in milliseconds
+  const diff = now - dobDate;
+  
+  // Convert the difference to years
+  const ageDate = new Date(diff);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
 
 const durationLimit = {
   day: 10,
@@ -60,23 +74,26 @@ const CreatePathway = () => {
     e.preventDefault();
     setGenerating(true);
     setPathwayReady(false);
-    
-    const userId = user?.uid || "9YwXaz34CtPK6g79Y1hWDF6s4GD3";
+
+    const details = await getUserProfileByUserId(user.uid);
+    const age = calculateAge(details.personalInfo.dob);
+
+    const userId = user.uid;
     const userDetails = {
-      age: 21,
-      gender: "male",
-      fieldOfStudy: "Computer Science",
-      degree: "Bachelor of Science",
-      yearsOfExperience: 1,
-      location: "India",
-      occupation: "Student",
-      languagesKnown: "English, Marathi",
+      age: age,
+      gender: details.personalInfo.gender,
+      fieldOfStudy: details.background.study,
+      degree: details.background.degree,
+      yearsOfExperience: details.background.experience,
+      location: details.personalInfo.location,
+      occupation: details.background.occupation,
+      languagesKnown: details.background.languagesKnown.map((obj) => obj.text).join(", ") || "none",
     }
   
     const additionalInfo = {
-      skills: "JavaScript, React, Node.js, MongoDB, Express.js",
-      hobbies: "Reading, Writing, Coding",
-      interests: "Learning new technologies, Developing new skills, Exploring different fields of study",
+      skills: details.background.skills.map((obj) => obj.text).join(", "),
+      hobbies: details.background.hobies.map((obj) => obj.text).join(", "),
+      interests: details.background.interest.map((obj) => obj.text).join(", "),
     }
   
     const pathwayRequirements = {
@@ -85,6 +102,8 @@ const CreatePathway = () => {
       intervalsType: formData.intervalType,
       preferredLearningMaterialType: formData.preferedResourceType,
     }
+
+    console.log(userDetails);
   
     try {
       const { pathwayId } = await createPathwayFunc(

@@ -39,8 +39,7 @@ const StartPathwayModal = ({ children }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure you want to start this pathway?</AlertDialogTitle>
           <AlertDialogDescription className="text-base">
-            - You can always pause or stop the pathway at any time.<br/>
-            - You can resume the pathway after it has been paused.<br/>
+            - You <b>cannot pause</b> or stop the pathway at any time.<br/>
             - Once you start the pathway, it will be considered active and your stats will be affected accordingly.<br/>
             - If you want to pause the pathway, you can do so from the pathway timeline.<br/>
           </AlertDialogDescription>

@@ -72,7 +72,8 @@ const calculateTaskDates = (intervalStart, intervalEnd, taskCount) => {
   const segmentDuration = totalDuration / (taskCount + 1);
 
   for (let i = 1; i <= taskCount; i++) {
-    const taskDate = new Date(intervalStart.getTime() + (segmentDuration * i));
+    const taskDate = normalizeDate(new Date(intervalStart.getTime() + (segmentDuration * i)));
+    console.log(taskDate);
     dates.push(taskDate);
   }
 
@@ -93,8 +94,8 @@ function normalizeDate(date) {
  * @returns {Object} Interval with initialized dates
  */
 const initializeIntervalDates = (interval, startDate, intervalDuration) => {
-  const intervalStartDate = new Date(startDate.getTime());
-  const intervalEndDate = new Date(startDate.getTime());
+  const intervalStartDate = normalizeDate(new Date(startDate.getTime()));
+  const intervalEndDate = normalizeDate(new Date(startDate.getTime()));
   intervalEndDate.setDate(intervalStartDate.getDate() + intervalDuration);
 
   const taskDates = calculateTaskDates(
@@ -106,7 +107,7 @@ const initializeIntervalDates = (interval, startDate, intervalDuration) => {
   const updatedTasks = interval.tasks.map((task, index) => ({
     ...task,
     scheduledDate: taskDates[index],
-    completedDate: task.isDone ? task.completedDate : null
+    completedDate: task.isDone ? normalizeDate(task.completedDate) : null
   }));
 
   return {
