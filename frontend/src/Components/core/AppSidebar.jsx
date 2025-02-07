@@ -44,27 +44,7 @@ const AppSidebar = () => {
       fetchPathways();
     };
   }, [contextUser]);
-  
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     const user = auth.currentUser; 
-  //     if (user) {
-  //       const docRef = doc(db, "Users", user.uid);
-  //       const docSnap = await getDoc(docRef);
-  
-  //       if (docSnap.exists()) {
-  //         setUserDetails(docSnap.data());
-  //       } else {
-  //         console.log("No such document!");
-  //       }
-  //     } else {
-  //       console.log("No user is logged in");
-  //     }
-  //   };
-  
-  //   fetchUserData();
-  // }, []); 
-  
+    
   const user = contextUser ? {
     username: contextUser.displayName,
     avatar: 'https://avatar.iran.liara.run/public/48',
