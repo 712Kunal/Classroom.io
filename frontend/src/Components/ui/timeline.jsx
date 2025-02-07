@@ -10,6 +10,9 @@ import {
 } from "./tooltip.jsx"
 import { Button } from "./button.jsx";
 import StartPathwayModal from "@/components/pathway/StartPathwayModal.jsx";
+import PausePathwayModal from "../pathway/PausePathwayModal.jsx";
+import ResumePathwayModal from "../pathway/ResumePathway.jsx";
+import RestartPathwayModal from "../pathway/RestartPathwayModal.jsx";
 
 export const Timeline = ({
   data,
@@ -20,6 +23,7 @@ export const Timeline = ({
   endDate,
   percentageComplete,
   isActivePathway,
+  haveBeenPaused,
 }) => {
   const ref = useRef(null);
   const [height, setHeight] = useState(0);
@@ -36,6 +40,7 @@ export const Timeline = ({
     percentageComplete = 0;
   }
   const heightOfProgressTracer = `${isActivePathway ? parseInt(percentageComplete) : 0}%`;
+  const isPaused = haveBeenPaused && !isActivePathway;
 
   return (
     (<div className="w-full relative h-fit bg-white rounded-lg dark:bg-neutral-950 font-sans md:px-10" ref={containerRef}>
@@ -60,7 +65,12 @@ export const Timeline = ({
         <div className="progress flex flex-col gap-8 w-1/2">
           {isActivePathway ? (
             <>
-              <p className="text-xl">Your Progress Till Now: <span className="text-blue-500">{parseInt(percentageComplete) + "%"}</span></p>
+              <div className="flex items-center justify-between">
+                <p className="text-xl">Your Progress Till Now: <span className="text-blue-500">{parseInt(percentageComplete) + "%"}</span></p>
+                <div className="StartBox ml-auto">
+                  <PausePathwayModal><Button>Pause your learning journey for now</Button></PausePathwayModal>
+                </div>
+              </div>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
@@ -73,8 +83,21 @@ export const Timeline = ({
               </TooltipProvider>
             </>
           ) : (
-            <div className="StartBox ml-auto">
-              <StartPathwayModal><Button>Start Your Learning Journey now</Button></StartPathwayModal>
+            <div className="flex gap-2">
+              {isPaused ? (
+                <>
+                  <div className="StartBox ml-auto">
+                    <ResumePathwayModal><Button>Resume Your Learning Journey</Button></ResumePathwayModal>
+                  </div>
+                  <div className="StartBox ml-auto">
+                    <RestartPathwayModal><Button>Restart Your Learning Journey</Button></RestartPathwayModal>
+                  </div>
+                </>
+              ) : (
+                <div className="StartBox ml-auto">
+                  <StartPathwayModal><Button>Start Your Learning Journey now</Button></StartPathwayModal>
+                </div>
+              )}
             </div>
           )}
         </div>

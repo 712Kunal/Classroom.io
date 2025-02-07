@@ -47,6 +47,7 @@ const PathwaySchema = z.object({
   "startDate": z.date().nullable(),
   "endDate": z.date().nullable(),
   "isActive": z.boolean().default(false),
+  "haveBeenPaused": z.boolean().default(false),
   "response": PathwayResponseSchema,
   createdAt: z.string(),
   updatedAt: z.string()
@@ -106,6 +107,8 @@ const initializeIntervalDates = (interval, startDate, intervalDuration) => {
 
   const updatedTasks = interval.tasks.map((task, index) => ({
     ...task,
+    isDone: false,
+    lateMark: false,
     scheduledDate: taskDates[index],
     completedDate: task.isDone ? normalizeDate(task.completedDate) : null
   }));
@@ -134,6 +137,7 @@ const convertGeminiPathwayToDBFormat = (pathwayData, userId) => {
     startDate: null,
     endDate: null,
     isActive: false,
+    haveBeenPaused: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     response: {
@@ -230,9 +234,63 @@ class Pathway {
       pathwayEndDate: null,
       tasks: interval.tasks.map(task => ({
         ...task,
-        scheduledDate: task.isDone ? normalizeDate(task.scheduledDate) : null
+        scheduledDate: task.isDone ? task.scheduledDate : null
       }))
     }));
+
+    updatePathway(this.data.id, this.data)
+      .then((result) => {
+        this.data = result;
+      })
+      .catch((error) => console.error("Error starting pathway:", error));
+  }
+
+  /**
+   * Resumes the pathway, rescheduling only the tasks that are not done
+   * Preserves completed task dates and interval history
+   * @param {Date} resumeDate - Date to resume the pathway from
+   */
+  resumePathway(resumeDate = new Date()) {
+    resumeDate = normalizeDate(resumeDate);
+    const intervalDuration = Math.floor(this.data.duration / this.data.response.intervals);
+
+    // Ensure pathway remains active
+    this.data.isActive = true;
+
+    this.data.response.pathway = this.data.response.pathway.map((interval, index) => {
+      const newIntervalStartDate = normalizeDate(new Date(resumeDate.getTime() + (index * intervalDuration * 24 * 60 * 60 * 1000)));
+
+      // If all tasks in the interval are done, preserve interval dates
+      const allTasksDone = interval.tasks.every(task => task.isDone);
+      if (allTasksDone) {
+        return interval;
+      }
+
+      const intervalStartDate = interval.pathwayStartDate || newIntervalStartDate;
+      const intervalEndDate = interval.pathwayEndDate || normalizeDate(new Date(intervalStartDate.getTime() + intervalDuration * 24 * 60 * 60 * 1000));
+
+      const taskDates = calculateTaskDates(
+        intervalStartDate,
+        intervalEndDate,
+        interval.tasks.length
+      );
+
+      return {
+        ...interval,
+        pathwayStartDate: intervalStartDate, // Preserve if already set
+        pathwayEndDate: intervalEndDate,
+        tasks: interval.tasks.map((task, taskIndex) => ({
+          ...task,
+          scheduledDate: task.isDone ? task.scheduledDate : taskDates[taskIndex],
+        }))
+      }
+    })
+
+    updatePathway(this.data.id, this.data)
+      .then((result) => {
+        this.data = result;
+      })
+      .catch((error) => console.error("Error resuming pathway:", error));
   }
 
   /**
