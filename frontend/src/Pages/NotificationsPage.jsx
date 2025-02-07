@@ -7,6 +7,7 @@ import { Badge } from '@/Components/ui/badge';
 import { getNotifications } from '../Firebase/services/notifications.service';
 import { auth } from '@/Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { Timestamp } from 'firebase/firestore';
 
 function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -34,7 +35,10 @@ function NotificationsPage() {
   }, []);
 
   const relativeTimeFormat = (date) => {
-    const sendDate = new Date(date);
+    let sendDate = new Date(date);
+    if (date instanceof Timestamp) {
+      sendDate = date.toDate();
+    }
     const now = new Date();
     // The `Math.floor()` function in JavaScript is used to round down a number to the nearest integer
     const differenceInSeconds = Math.floor((now.getTime() - sendDate.getTime()) / 1000);
