@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { browserLocalPersistence, getAuth, sendPasswordResetEmail, setPersistence, signOut } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, doc, setDoc, updateDoc, getDocs, query, where, serverTimestamp } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -21,6 +21,5 @@ setPersistence(auth, browserLocalPersistence).catch((error) => {
   console.error('Failed to set persistence:', error);
 });
 
-export { sendPasswordResetEmail, signOut };
-
+export { sendPasswordResetEmail, signOut, collection, doc, setDoc, updateDoc, getDocs, query, where, serverTimestamp };
 export default app;
