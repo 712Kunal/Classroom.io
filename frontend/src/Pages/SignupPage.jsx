@@ -37,40 +37,33 @@ function Signup() {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+  
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const userNew = await updateProfile(auth.currentUser, { displayName: username }).catch(
-        (err) => console.log(err)
-      );
-      const user = userNew.user;
-
-      if (user) {
-        console.log('User registered successfully:', user);
-
-        await setDoc(doc(db, 'Users', user.uid), {
-          email: user.email,
-          username: username
-        });
-
-        console.log('Done');
-        navigate('/detailsForm');
-
-        // Send request to backend for email & notification
-        const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
-
-        await axios.post(backendUrl, {
-          email: user.email,
-          username: username
-        });
-
-        console.log('Notification and email request sent to backend.');
-      }
+      const user = userCredential.user;
+      await updateProfile(user, { displayName: username });
+      console.log('User registered successfully:', user);
+      await setDoc(doc(db, 'Users', user.uid), {
+        email: user.email,
+        username: username
+      });
+  
+      console.log('Done');
+      navigate('/detailsForm');
+      const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
+  
+      await axios.post(backendUrl, {
+        email: user.email,
+        username: username
+      });
+  
+      console.log('Notification and email request sent to backend.');
     } catch (error) {
       console.error('Error during registration:', error.message);
       setErrorMessage(error.message);
     }
   };
+  
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);

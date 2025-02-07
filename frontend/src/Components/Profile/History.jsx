@@ -37,7 +37,7 @@ export function Mycoursestaks() {
 }
 
 // Main component that combines SearchActivity and Mycoursestaks
-export default function Mycourses() {
+export default function History() {
     return (
         <div className="flex flex-col justif min-h-screen p-6">
             <SearchActivity />

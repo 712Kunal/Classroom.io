@@ -49,16 +49,26 @@ export function NavUser() {
   } : null;
 
   const handleLogout = () => {
+
+    navigate("/login");  
+    auth.signOut()
+
     signOut(auth)
+
       .then(() => {
         navigate("/");
         console.log("User logged out");
+
+        setUser(null);  
+
       })
       .catch((error) => {
         console.error("Error logging out: ", error.message);
       });
   };
-
+  
+  
+  
   return (
     <SidebarMenu>
       <SidebarMenuItem>

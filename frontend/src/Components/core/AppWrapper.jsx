@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar.jsx';
 import AppSidebar from './AppSidebar.jsx';
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
@@ -7,6 +7,15 @@ import { GlobalProvider } from '../context/GlobalContext.jsx';
 
 function AppWrapper() {
   const isMobile = useIsMobile();
+  const location = useLocation();
+
+  const isAppRoute = location.pathname === "/app";
+  const navigate = useNavigate();
+
+  if (isAppRoute) {
+    navigate('/app/library');
+  }
+
   return (
     <GlobalProvider>
       <div className="w-screen h-screen flex">

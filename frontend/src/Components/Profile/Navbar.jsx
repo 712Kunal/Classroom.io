@@ -1,10 +1,10 @@
-// Navbar.jsx
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { FaBars, FaBell, FaCog, FaTimes } from 'react-icons/fa'; // Imported from react-icons
 import { useState } from 'react';
 import Profile from '@/Components/Profile/Profile.jsx';
 import Dashboard from '@/Components/Profile/Dashboard.jsx';
-import Mycourses from './Mycourses';
+import History from './History';
+import Usersetting from './Usersetting';
 
 export default function Navbar({ user }) {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -17,7 +17,8 @@ export default function Navbar({ user }) {
     { name: 'Profile', href: '#', current: true },
     { name: 'Dashboard', href: '#', current: false },
     { name: 'History', href: '#', current: false },
-    { name: 'Reports', href: '#', current: false },
+    { name: 'Daily Log', href: '#', current: false },
+    // { name: 'Settings', href: '#', current: false }, 
   ];
 
   function classNames(...classes) {
@@ -56,13 +57,12 @@ export default function Navbar({ user }) {
                 </div>
               </div>
             </div>
-
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
-                {/* Settings Icon */}
                 <button
                   type="button"
                   className="relative rounded-full bg-transparent p-1 text-black-400 hover:text-gray-500 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  onClick={() => handleTabChange('settings')}  // Handle the settings tab click
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Settings</span>
@@ -118,8 +118,8 @@ export default function Navbar({ user }) {
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {activeTab === 'Profile' && <Profile user={user} />}
           {activeTab === 'Dashboard' && <Dashboard user={user} />}
-          {activeTab === 'History' && <Mycourses/>}
-
+          {activeTab === 'History' && <History />}
+          {activeTab === 'settings' && <Usersetting user={user}/>}  
         </div>
       </main>
     </div>

@@ -4,6 +4,7 @@ import * as Accordion from '@radix-ui/react-accordion';
 // import { AccordionItem, AccordionContent } from "@/components/ui/Accordion";
 
 // Profile Image and Basic Info
+
 export function ProfileImageAndInfo({ user }) {
   return (
     <div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300">
@@ -52,8 +53,10 @@ export function ProfileImageAndInfo({ user }) {
     </div>
   );
 }
-
 export function SocialLinks({ user }) {
+  // Check if user.SocialLinks exists to avoid errors
+  if (!user.SocialLinks) return null;
+
   return (
     <div className="p-4">
       <div className="flex flex-wrap gap-4">
@@ -90,7 +93,6 @@ export function SocialLinks({ user }) {
             <span className="hidden md:inline">Instagram</span>
           </a>
         )}
-
         {user.SocialLinks.Twitter && (
           <a
             href={user.SocialLinks.Twitter}
@@ -119,8 +121,9 @@ export function SocialLinks({ user }) {
 }
 
 
+
 // Background and Education
-export function BackgroundEducation({ user }) {
+function BackgroundEducation({ user }) {
   const [open, setOpen] = useState({
     "field-of-study": false,
     degree: false,
@@ -136,175 +139,99 @@ export function BackgroundEducation({ user }) {
     }));
   };
 
+  const renderAccordionItem = (label, valueKey, colorClass, labelText) => {
+    const value = user.Background[valueKey];
+    return value ? (
+      <Accordion.Item value={valueKey}>
+        <Accordion.Header>
+          <Accordion.Trigger
+            className={`flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-300 dark:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-${colorClass}/50 dark:hover:ring-${colorClass}-600/50 hover:ring-opacity-50`}
+            onClick={() => handleToggle(valueKey)}
+          >
+            {label}
+            <span className="ml-2">
+              {open[valueKey] ? (
+                <FaChevronUp size={20} />
+              ) : (
+                <FaChevronDown size={20} />
+              )}
+            </span>
+          </Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content>
+          <div className="flex rounded-lg justify-between items-center p-4 text-lg text-gray-700 dark:text-white">
+            <strong className="text-base font-medium text-gray-600 dark:text-gray-400">
+              {labelText}:
+            </strong>
+            <span className="text-base">{value}</span>
+          </div>
+        </Accordion.Content>
+      </Accordion.Item>
+    ) : null;
+  };
+
   return (
     <Accordion.Root collapsible>
-      <Accordion.Item value="field-of-study">
-        <Accordion.Header>
-          <Accordion.Trigger
-            className="flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-300 dark:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-blue-400/50 dark:hover:ring-blue-600/50 hover:ring-opacity-50"
-            onClick={() => handleToggle("field-of-study")}
-          >
-            Academic Background
-            <span className="ml-2">
-              {open["field-of-study"] ? (
-                <FaChevronUp size={20} />
-              ) : (
-                <FaChevronDown size={20} />
-              )}
-            </span>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content>
-          <div className="flex rounded-lg justify-between items-center p-4 text-lg text-gray-700 dark:text-white">
-            <strong className="text-base font-medium text-gray-600 dark:text-gray-400">
-              Field of Study:
-            </strong>
-            <span className="text-base">{user.Background.Field_Of_Study}</span>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
+      {renderAccordionItem(
+        "Academic Background",
+        "Field_Of_Study",
+        "indigo",
+        "Field of Study"
+      )}
 
-      {/* Degree Accordion */}
-      <Accordion.Item value="degree">
-        <Accordion.Header>
-          <Accordion.Trigger
-            className="flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-300 dark:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-green-400/50 dark:hover:ring-green-600/50 hover:ring-opacity-50"
-            onClick={() => handleToggle("degree")}
-          >
-            Qualifications
-            <span className="ml-2">
-              {open["degree"] ? (
-                <FaChevronUp size={20} />
-              ) : (
-                <FaChevronDown size={20} />
-              )}
-            </span>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content>
-          <div className="flex rounded-lg justify-between items-center p-4 text-lg text-gray-700 dark:text-white">
-            <strong className="text-base font-medium text-gray-600 dark:text-gray-400">
-              Degree:
-            </strong>
-            <span className="text-base">{user.Background.Degree}</span>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
+      {renderAccordionItem("Qualifications", "Degree", "green", "Degree")}
 
-      <Accordion.Item value="years-of-experience">
-        <Accordion.Header>
-          <Accordion.Trigger
-            className="flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-300 dark:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-red-400/50 dark:hover:ring-red-600/50 hover:ring-opacity-50"
-            onClick={() => handleToggle("years-of-experience")}
-          >
-            Experience Level
-            <span className="ml-2">
-              {open["years-of-experience"] ? (
-                <FaChevronUp size={20} />
-              ) : (
-                <FaChevronDown size={20} />
-              )}
-            </span>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content>
-          <div className="flex rounded-lg justify-between items-center p-4 text-lg text-gray-700 dark:text-white">
-            <strong className="text-base font-medium text-gray-600 dark:text-gray-400">
-              Years of Experience:
-            </strong>
-            <span className="text-base">{user.Background.Years_Experience}</span>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
+      {renderAccordionItem(
+        "Experience Level",
+        "Years_Experience",
+        "red",
+        "Years of Experience"
+      )}
 
-      {/* Location Accordion */}
-      <Accordion.Item value="location">
-        <Accordion.Header>
-          <Accordion.Trigger
-            className="flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-300 dark:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-purple-400/50 dark:hover:ring-purple-600/50 hover:ring-opacity-50"
-            onClick={() => handleToggle("location")}
-          >
-            Location
-            <span className="ml-2">
-              {open["location"] ? (
-                <FaChevronUp size={20} />
-              ) : (
-                <FaChevronDown size={20} />
-              )}
-            </span>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content>
-          <div className="flex rounded-lg justify-between items-center p-4 text-lg text-gray-700 dark:text-white">
-            <strong className="text-base font-medium text-gray-600 dark:text-gray-400">
-              Location:
-            </strong>
-            <span className="text-base">{user.Background.Location}</span>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
+      {renderAccordionItem("Location", "Location", "purple", "Location")}
 
-      {/* Occupation Accordion */}
-      <Accordion.Item value="occupation">
-        <Accordion.Header>
-          <Accordion.Trigger
-            className="flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-300 dark:border-gray-600 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-teal-400/50 dark:hover:ring-teal-600/50 hover:ring-opacity-50"
-            onClick={() => handleToggle("occupation")}
-          >
-            Occupation
-            <span className="ml-2">
-              {open["occupation"] ? (
-                <FaChevronUp size={20} />
-              ) : (
-                <FaChevronDown size={20} />
-              )}
-            </span>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content>
-          <div className="flex rounded-lg justify-between items-center p-4 text-lg text-gray-700 dark:text-white">
-            <strong className="text-base font-medium text-gray-600 dark:text-gray-400">
-              Occupation:
-            </strong>
-            <span className="text-base">{user.Background.Occupation}</span>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
+      {renderAccordionItem("Occupation", "Occupation", "teal", "Occupation")}
     </Accordion.Root>
   );
 }
-
 // Achievements
-
 export function Achievements({ user }) {
   return (
-<div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300 
-  lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.3)] lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.7)]">
-  <h3 className="text-xl font-semibold mb-6">Achievements</h3>
+    <div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300 
+    lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.3)] lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.7)]">
+      <h3 className="text-xl font-semibold mb-6">Achievements</h3>
       <div className="flex items-center space-x-4 mb-6">
         <p className="text-lg text-gray-600"><strong>Points:🪙</strong> {user.pointsAwarded}</p>
       </div>
 
       <div className="mb-6">
-        {/* <p className="text-3xl text-gray-600 mb-6 text-center"><strong>🏆</strong></p> */}
+        {/* Fallback if no badges are awarded */}
+        {user.badgesAwarded.length === 0 ? (
+          <p className="text-lg text-gray-600 text-center">No badges awarded yet. Keep up the good work!</p>
+        ) : (
+          <div className="flex justify-center space-x-6 flex-wrap">
+            {user.badgesAwarded.map((badge, index) => (
+              <div
+                key={badge}  // Better to use a unique identifier if available
+                className="w-16 h-16 sm:w-24 sm:h-24 md:w-21 md:h-21 lg:w-22 lg:h-22 xl:w-25 xl:h-25 relative overflow-hidden transform transition duration-300 ease-in-out hover:scale-110 hover:rotate-6 mb-4"
+                style={{
+                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                }}
+              >
+                <img
+                  src={badge}
+                  alt={`badge-${index}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"  // Lazy load images for better performance
+                />
 
-        <div className="flex justify-center space-x-6 flex-wrap">
-          {user.badgesAwarded.map((badge, index) => (
-            <div
-              key={index}
-              className="w-16 h-16 sm:w-24 sm:h-24 md:w-21 md:h-21 lg:w-22 lg:h-22 xl:w-25 xl:h-25 relative overflow-hidden transform transition duration-300 ease-in-out hover:scale-110 hover:rotate-6 mb-4"
-              style={{
-                clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-              }}
-            >
-              <img src={badge} alt={`badge-${index}`} className="w-full h-full object-cover" />
-
-              {/* Hover Glow Effect */}
-              <div className="absolute inset-0 bg-transparent transition-all duration-300 opacity-0 hover:opacity-100 hover:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] hover:shadow-indigo-500/50 dark:hover:shadow-[0_0_20px_5px_rgba(255,255,255,0.7)] dark:hover:shadow-purple-500/70">
+                {/* Hover Glow Effect */}
+                <div className="absolute inset-0 bg-transparent transition-all duration-300 opacity-0 hover:opacity-100 hover:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] hover:shadow-indigo-500/50 dark:hover:shadow-[0_0_20px_5px_rgba(255,255,255,0.7)] dark:hover:shadow-purple-500/70">
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -367,15 +294,15 @@ export function SkillsAndHobbies({ user }) {
       };
 
       user.Background.Skills.forEach(skill => {
-        newColors.skills[skill] = randomColor();
+        newColors.skills[skill.text] = randomColor();
       });
 
       user.Background.Hobbies.forEach(hobby => {
-        newColors.hobbies[hobby] = randomColor();
+        newColors.hobbies[hobby.text] = randomColor();
       });
 
       user.Background.Interests.forEach(interest => {
-        newColors.interests[interest] = randomColor();
+        newColors.interests[interest.text] = randomColor();
       });
 
       setItemColors(newColors);
@@ -411,30 +338,27 @@ export function SkillsAndHobbies({ user }) {
   };
 
   return (
-
     <div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300 
-  hover:shadow-none sm:hover:shadow-[0_4px_10px_0px_rgba(0,0,0,0.3)] sm:hover:shadow-[0_4px_10px_0px_rgba(0,0,0,0.5)]
-  dark:sm:hover:shadow-[0_4px_10px_0px_rgba(255,255,255,0.5)] dark:sm:hover:shadow-[0_4px_10px_0px_rgba(255,255,255,0.7)]">
-      {/* Your content goes here */}
+    hover:shadow-none sm:hover:shadow-[0_4px_10px_0px_rgba(0,0,0,0.3)] sm:hover:shadow-[0_4px_10px_0px_rgba(0,0,0,0.5)]
+    dark:sm:hover:shadow-[0_4px_10px_0px_rgba(255,255,255,0.5)] dark:sm:hover:shadow-[0_4px_10px_0px_rgba(255,255,255,0.7)]">
+      
       <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Skills & Hobbies</h3>
 
-      <div
-        className={`mb-6 p-4 rounded-lg ${randomGradient()}`}
-      >
+      <div className={`mb-6 p-4 rounded-lg ${randomGradient()}`}>
         <p className="text-lg text-gray-600 mb-4"><strong>Skills:</strong></p>
         <div className="flex gap-6 flex-wrap">
-          {user.Background.Skills.map((skill, index) => (
+          {user.Background.Skills.map((skill) => (
             <div
-              key={index}
+              key={skill.id}
               draggable="true"
               role="button"
               title="Hover chip"
-              className={`${getItemColor(skill, "skills")} h-8 px-3 w-max flex gap-2 items-center dark:text-black rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-indigo-500/50 dark:hover:shadow-purple-500/70`}
+              className={`${getItemColor(skill.text, "skills")} h-8 px-3 w-max flex gap-2 items-center dark:text-black rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-indigo-500/50 dark:hover:shadow-purple-500/70`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-circle" viewBox="0 0 16 16">
                 <path d="M12.293 4.293a1 1 0 0 1 1.414 1.414L7.707 11.707a1 1 0 0 1-1.414 0L3.293 8.707a1 1 0 0 1 1.414-1.414L7 9.586l5.293-5.293z" />
               </svg>
-              <span className="block text-sm font-medium">{skill}</span>
+              <span className="block text-sm font-medium">{skill.text}</span>
             </div>
           ))}
         </div>
@@ -442,21 +366,20 @@ export function SkillsAndHobbies({ user }) {
 
       {/* Hobbies Section */}
       <div className="mb-6">
-
         <p className="text-lg text-gray-600 mb-4"><strong>Hobbies:</strong></p>
         <div className="flex gap-4 flex-wrap">
-          {user.Background.Hobbies.map((hobby, index) => (
+          {user.Background.Hobbies.map((hobby) => (
             <div
-              key={index}
+              key={hobby.id}
               draggable="true"
               role="button"
               title="Hover chip"
-              className={`${getItemColor(hobby, "hobbies")} h-8 px-3 w-max flex gap-2 items-center dark:text-black rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-indigo-500/50 dark:hover:shadow-purple-500/70`}
+              className={`${getItemColor(hobby.text, "hobbies")} h-8 px-3 w-max flex gap-2 items-center dark:text-black rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-indigo-500/50 dark:hover:shadow-purple-500/70`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-heart" viewBox="0 0 16 16">
                 <path d="M8 12s3-2.27 5-4.428C14 5.657 11.623 4 8 4c-3.623 0-6 1.657-5 3.572C5 9.73 8 12 8 12z" />
               </svg>
-              <span className="block text-sm font-medium">{hobby}</span>
+              <span className="block text-sm font-medium">{hobby.text}</span>
             </div>
           ))}
         </div>
@@ -466,18 +389,18 @@ export function SkillsAndHobbies({ user }) {
       <div className="mb-6">
         <p className="text-lg text-gray-600 mb-4"><strong>Interests:</strong></p>
         <div className="flex gap-4 flex-wrap">
-          {user.Background.Interests.map((interest, index) => (
+          {user.Background.Interests.map((interest) => (
             <div
-              key={index}
+              key={interest.id}
               draggable="true"
               role="button"
               title="Hover chip"
-              className={`${getItemColor(interest, "interests")} h-8 px-3 w-max flex gap-2 items-center dark:text-black rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-indigo-500/50 dark:hover:shadow-purple-500/70`}
+              className={`${getItemColor(interest.text, "interests")} h-8 px-3 w-max flex gap-2 items-center dark:text-black rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-[0_0_15px_5px_rgba(0,0,0,0.2)] hover:shadow-indigo-500/50 dark:hover:shadow-purple-500/70`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-lightbulb" viewBox="0 0 16 16">
                 <path d="M8 1a3 3 0 0 0-3 3c0 1.602.747 3.3 2.052 4.579a4.495 4.495 0 0 1-2.275 2.38C3.036 11.963 2 13.457 2 14h12c0-.543-1.036-2.037-2.802-2.441a4.495 4.495 0 0 1-2.275-2.38C10.253 7.3 11 5.602 11 4a3 3 0 0 0-3-3zM8 5a2 2 0 1 1 2-2 2 2 0 0 1-2 2z" />
               </svg>
-              <span className="block text-sm font-medium">{interest}</span>
+              <span className="block text-sm font-medium">{interest.text}</span>
             </div>
           ))}
         </div>
@@ -492,6 +415,7 @@ export function SkillsAndHobbies({ user }) {
 export default function Profile({ user }) {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {console.log(user)}
       <div className=" mt-10 grid gap-6 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
         <ProfileImageAndInfo user={user} />
       </div>

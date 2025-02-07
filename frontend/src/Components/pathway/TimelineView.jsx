@@ -20,7 +20,7 @@ import {
   DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog.jsx"
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button } from "../ui/button.jsx";
 
 const taskStateToObject = {
@@ -129,14 +129,14 @@ const Interval = ({ data }) => {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-col gap-2 justify-center items-start md:justify-start md:items-center md:flex-row text-sm">
-                        <div className="flex gap-2 items-center">
+                        {task.scheduledDate &&<div className="flex gap-2 items-center">
                           <Calendar size={16} />
                           <span>{new Date(task.scheduledDate).toLocaleDateString()}</span>
-                        </div>
-                        <div className={`status flex gap-2 items-center ${taskStateToObject[taskState].color}`}>
+                        </div>}
+                        {task.scheduledDate && <div className={`status flex gap-2 items-center ${taskStateToObject[taskState].color}`}>
                           {taskStateToObject[taskState].icon}
                           {taskStateToObject[taskState].displayText}
-                        </div>
+                        </div>}
                       </div>
                     </CardContent>
                   </Card>
@@ -168,20 +168,20 @@ const Interval = ({ data }) => {
                         {task.expectedOutcome}
                       </div>
                     </div>
-                    <Separator orientation="vertical" className="bg-neutral-500 mx-2" />
+                    {task.scheduledDate && <Separator orientation="vertical" className="bg-neutral-500 mx-2" />}
                     <div className="right flex flex-col items-start justify-start gap-2">
-                      <div className="flex gap-2 items-center text-gray-800 dark:text-gray-400">
+                      {task.scheduledDate && <div className="flex gap-2 items-center text-gray-800 dark:text-gray-400">
                         <Calendar size={16} />
                         <span>{new Date(task.scheduledDate).toLocaleDateString()}</span>
-                      </div>
+                      </div>}
                       {task.completedDate && <div className="completedDate flex gap-2 items-center">
                         <CalendarCheck size={16} />
                         <span>{new Date(task.completedDate).toLocaleDateString()}</span>
                       </div>}
-                      <div className={`status flex gap-2 items-center ${taskStateToObject[taskState].color}`}>
+                      {task.scheduledDate && <div className={`status flex gap-2 items-center ${taskStateToObject[taskState].color}`}>
                         {taskStateToObject[taskState].icon}
                         {taskStateToObject[taskState].displayText}
-                      </div>
+                      </div>}
                       {(!task.isDone && task.scheduledDate === Date.now()) && <Button type="button" className="bg-green-600 dark:bg-green-500"><CheckCircle2 /> Mark As Done</Button>}
                     </div>
                   </div>

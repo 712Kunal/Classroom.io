@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Spline from '@splinetool/react-spline';
+
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/Firebase/firebase';
