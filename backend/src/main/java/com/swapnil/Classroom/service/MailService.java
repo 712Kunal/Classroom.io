@@ -26,7 +26,6 @@ public class MailService {
     @Async
     public void sendEmail(String to, String title, String body) throws MessagingException {
 
-        long startTime = System.currentTimeMillis();
 
         MimeMessage message=javaMailSender.createMimeMessage();
         MimeMessageHelper helper=new MimeMessageHelper(message, true);
@@ -38,7 +37,6 @@ public class MailService {
         javaMailSender.send(message);
         long endTime = System.currentTimeMillis();
 
-        System.out.println("📧 Email sent in " + (endTime - startTime) + " ms");
 
     }
 

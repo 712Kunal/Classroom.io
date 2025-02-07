@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/dialog.jsx"
 import { useParams } from "react-router-dom";
 import { Button } from "../ui/button.jsx";
-import { interval } from "date-fns";
 
 const taskStateToObject = {
   'completedOnTime': { icon: <BadgeCheck size={16} />, color: 'text-green-500', displayText: "Completed On Time" },
@@ -44,7 +43,7 @@ const TimelineView = () => {
   const { pathwaysList } = useGlobal();
   const pathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
 
-  const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
+  const { topic, description, duration, startDate, endDate, isActive, haveBeenPaused } = pathway.data;
   const { pathway: intervals, intervalType } = pathway.data.response;
 
   // console.log(pathway.data);
@@ -70,6 +69,7 @@ const TimelineView = () => {
       endDate={endDate}
       percentageComplete={getPercentageComplete()}
       isActivePathway={isActive}
+      haveBeenPaused={haveBeenPaused}
     />
   </div>;
 };
