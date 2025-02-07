@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { auth } from '../Firebase/firebase';
+import { auth, db } from '../Firebase/firebase';
+import { getDoc, doc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 
 import { addProfile } from '../Firebase/services/userDetails.servies.js';
@@ -39,21 +40,36 @@ function FormDetails() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('user', user);
+        // Check if the user's details exist in the "UserProfiles" collection
+        checkUserDetails(user.uid);
       } else {
         navigate('/signup');
-        console.log('no user');
       }
     });
 
     return () => unsubscribe();
   }, []);
 
+  const checkUserDetails = async (userId) => {
+    try {
+      const userProfileRef = doc(db, 'UserProfiles', userId); // Reference to the user's profile
+      const userProfileSnap = await getDoc(userProfileRef);
+
+      if (userProfileSnap.exists()) {
+        navigate('/app/profile');
+      } else {
+        console.log('No user details found. Please fill out your information.');
+      }
+    } catch (error) {
+      console.error('Error checking user details:', error);
+    }
+  };
+
   const handleUseraddDetails = async (userDetails) => {
     try {
       const userId = auth.currentUser.uid;
       const adduserData = await addProfile(userDetails, userId);
-      console.log(adduserData);
+
       if (adduserData.success === true) {
         console.log('User added successfully');
         navigate('/app/profile');
@@ -111,7 +127,7 @@ function FormDetails() {
         interest
       },
       preferences: {
-        emailNotification 
+        emailNotification
       }
     };
     handleUseraddDetails(userData);
@@ -289,18 +305,20 @@ function FormDetails() {
               </div>
 
               {/* Add the Email Notification Toggle */}
-              <div className="flex items-center gap-2 mt-4">
+              <div className="flex items-center space-x-3">
                 <input
                   type="checkbox"
                   checked={emailNotification}
                   onChange={() => setEmailNotification(!emailNotification)}
-                  className="h-5 w-5 text-indigo-600 border-gray-300 rounded"
+                  className="h-5 w-5 border-gray-300 rounded-sm focus:ring-2 focus:ring-indigo-500 text-indigo-600 transition duration-200 ease-in-out"
                 />
-                <Label htmlFor="emailNotification" className="text-sm text-gray-700">
+                <Label
+                  htmlFor="emailNotification"
+                  className="text-sm font-medium text-gray-800 dark:text-gray-300"
+                >
                   Email Notification
                 </Label>
               </div>
-
               <button
                 className="relative group/btn hover:shadow-md hover:shadow-blue-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium"
                 type="submit">
