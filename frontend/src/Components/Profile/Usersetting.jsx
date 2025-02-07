@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { auth } from '@/Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-
 import {
   ReceiptText,
   FileUser,
@@ -19,6 +18,7 @@ import { Input } from '@/Components/ui/input2';
 import { Label } from '@/Components/ui/label2';
 import Languages from '@/Components/originUi/languages-known';
 import { addProfile } from '@/Firebase/services/userDetails.servies';
+import { toast } from 'react-toastify';
 
 function Usersetting({ user }) {
   const navigate = useNavigate();
@@ -38,7 +38,15 @@ function Usersetting({ user }) {
         fetchUserDetails(authUser);
       } else {
         console.log('No user found, redirecting to signup...');
-        navigate('/signup'); 
+        toast.error('No user found, redirecting to signup...',{
+          position: "top-right",
+          autoClose: 4000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
+        navigate('/signup');
       }
     });
 
@@ -60,6 +68,14 @@ function Usersetting({ user }) {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
+      toast.error('Error fetching user',{
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+        });
     }
   };
 
@@ -68,11 +84,26 @@ function Usersetting({ user }) {
       const userId = auth.currentUser.uid;
       const addUserData = await addProfile(userDetails, userId);
       if (addUserData.success === true) {
-        console.log('User updated successfully');
+        toast.success('User updated successfully',{
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
         navigate('/app');
       }
     } catch (error) {
-      console.error('Error adding user details:', error);
+      console.error('Error user updating user details:', error);
+      toast.error('Error user updating',{
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+        });
     }
   };
 
@@ -133,10 +164,10 @@ function Usersetting({ user }) {
     <div className="w-full h-full py-4 px-4">
       <div className="header w-full flex flex-col gap-1">
         <h1 className="text-3xl font-bold flex items-center gap-1">
-          <ReceiptText className="text-3xl text-black dark:text-blue-500" /> User Details Form
+          <ReceiptText className="text-3xl text-black dark:text-blue-500" /> Update User Details
         </h1>
         <p className="text-sm text-slate-800 dark:text-gray-400">
-          Please provide your details to personalize your experience.
+          Please update your details to personalize your experience.
         </p>
         <p className="text-lg text-gray-500 font-medium mt-2 p-2 rounded-md text-center">
           Email: {auth.currentUser?.email}
@@ -302,17 +333,21 @@ function Usersetting({ user }) {
               </div>
 
               {/* Email Notification Toggle */}
-              <div className="flex items-center gap-2 mt-4">
+              <div className="flex items-center space-x-3">
                 <input
                   type="checkbox"
                   checked={emailNotification}
                   onChange={() => setEmailNotification(!emailNotification)}
-                  className="h-5 w-5 text-indigo-600 border-gray-300 rounded"
+                  className="h-5 w-5 border-gray-300 rounded-sm focus:ring-2 focus:ring-indigo-500 text-indigo-600 transition duration-200 ease-in-out"
                 />
-                <Label htmlFor="emailNotification" className="text-sm text-gray-700">
+                <Label
+                  htmlFor="emailNotification"
+                  className="text-sm font-medium text-gray-800 dark:text-gray-300"
+                >
                   Email Notification
                 </Label>
               </div>
+
 
               <button
                 className="text-xl relative group/btn hover:shadow-md hover:shadow-orange-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10"

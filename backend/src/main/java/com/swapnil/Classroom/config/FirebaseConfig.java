@@ -22,12 +22,9 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseApp initializeFirebaseApp() throws IOException {
-//        System.out.println("Firebase: " + privateKeyPath);
 
-        // Load the service account key from the classpath
         try (InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream(privateKeyPath)) {
             if (serviceAccount == null) {
-//                System.out.println("Service account: " + serviceAccount);
 
 
                 throw new IOException("Service account key not found in classpath");
@@ -43,7 +40,6 @@ public class FirebaseConfig {
 
     @Bean
     public Firestore firestore(FirebaseApp firebaseApp) {
-        // Return Firestore instance using the initialized FirebaseApp
         return FirestoreClient.getFirestore();
     }
 }

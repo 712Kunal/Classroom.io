@@ -11,6 +11,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -22,7 +23,10 @@ public class MailService {
     private final JavaMailSender javaMailSender;
     private final Firestore firestore;
 
+    @Async
     public void sendEmail(String to, String title, String body) throws MessagingException {
+
+        long startTime = System.currentTimeMillis();
 
         MimeMessage message=javaMailSender.createMimeMessage();
         MimeMessageHelper helper=new MimeMessageHelper(message, true);
@@ -32,6 +36,10 @@ public class MailService {
         helper.setText(body);
 
         javaMailSender.send(message);
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("📧 Email sent in " + (endTime - startTime) + " ms");
+
     }
 
     public void sendTaskCompletionEmail(Map<String, Object> task, String userEmail, String userId)  {
@@ -123,7 +131,6 @@ public class MailService {
             String subject = "⏳ Task Reminder ⏳";
 
             String pathwayTopic = (String) pathwayDoc.get("topic");
-            System.out.println("Pathway Document Data: " + pathwayDoc.getData());
 
             String body = String.format(
                     "Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
