@@ -13,6 +13,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
 import { Pathway } from "../models/Pathway.model";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../Firebase/firebase.js"; 
+import axios from "axios";
 
 const StartPathwayModal = ({ children }) => {
   const navigate = useNavigate();
@@ -22,8 +25,31 @@ const StartPathwayModal = ({ children }) => {
   
   const handleStartPathway = async () => {
     try {
+
+      if (!pathwayId) {
+        throw new Error("Pathway ID is missing");
+      }
+      const pathwayDocRef = doc(db, "pathways", pathwayId);
+      const pathwayDocSnap = await getDoc(pathwayDocRef);
+
+      if (!pathwayDocSnap.exists()) {
+        throw new Error("Pathway not found in Firestore");
+      }
+
+      const pathwayData = pathwayDocSnap.data();
+      const userId = pathwayData.userId; 
+
+      if (!userId) {
+        throw new Error("User ID is missing in Firestore");
+      }
+
       pathway.startPathway();
+
+      await axios.post(`http://localhost:8080/api/user/${userId}/pathwayActivate/${pathwayId}`);
+
       await refetchPathways();
+
+
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
     } catch (error) {
       console.error(error);
