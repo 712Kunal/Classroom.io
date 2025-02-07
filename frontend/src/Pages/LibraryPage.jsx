@@ -97,8 +97,8 @@ function LibraryPage() {
                   </CardHeader>
                   <CardContent className="flex-1">
                     <div className="flex flex-col justify-between gap-2">
-                      {pathway.data.startDate && <p className="text-sm text-neutral-500">{pathway.data.startDate}</p>}
-                      {pathway.data.endDate && <p className="text-sm text-neutral-500">{pathway.data.endDate}</p>}
+                      {pathway.data.startDate && <p className="text-sm text-neutral-500">{pathway.data.startDate.toLocaleDateString()}</p>}
+                      {pathway.data.endDate && <p className="text-sm text-neutral-500">{pathway.data.endDate.toLocaleDateString()}</p>}
                       <p className="text-sm text-neutral-300">Status: {pathway.data.isActive ? <span className="text-green-500">Active</span> : <span className="text-red-500">Inactive</span>}</p>
                       <p className="text-sm text-neutral-300">Duration: {pathway.data.duration} Days</p>
                     </div>

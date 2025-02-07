@@ -1,5 +1,6 @@
+import { updatePathway } from '@/Firebase/services/pathway.service';
+import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
-import { updatePathway } from "@/Firebase/services/pathway.service.js";
 
 // Zod Schemas
 const ResourceSchema = z.object({
@@ -67,11 +68,11 @@ const RESOURCE_TYPE_MAP = {
  */
 const calculateTaskDates = (intervalStart, intervalEnd, taskCount) => {
   const dates = [];
-  const totalDuration = (new Date(intervalEnd)).getTime() - (new Date(intervalStart)).getTime();
+  const totalDuration = intervalEnd.getTime() - intervalStart.getTime();
   const segmentDuration = totalDuration / (taskCount + 1);
 
   for (let i = 1; i <= taskCount; i++) {
-    const taskDate = (new Date((new Date(intervalStart)).getTime() + (segmentDuration * i)));
+    const taskDate = new Date(intervalStart.getTime() + (segmentDuration * i));
     dates.push(taskDate);
   }
 
@@ -86,8 +87,9 @@ const calculateTaskDates = (intervalStart, intervalEnd, taskCount) => {
  * @returns {Object} Interval with initialized dates
  */
 const initializeIntervalDates = (interval, startDate, intervalDuration) => {
-  const intervalStartDate = (new Date(startDate));
-  const intervalEndDate = (new Date((new Date(startDate)).getTime() + intervalDuration * 24 * 60 * 60 * 1000));
+  const intervalStartDate = new Date(startDate.getTime());
+  const intervalEndDate = new Date(startDate.getTime());
+  intervalEndDate.setDate(intervalStartDate.getDate() + intervalDuration);
 
   const taskDates = calculateTaskDates(
     intervalStartDate,
@@ -179,7 +181,8 @@ class Pathway {
     if (userId) {
       this.data = convertGeminiPathwayToDBFormat(geminiPathwayData, userId);
     } else {
-      this.data = geminiPathwayData;
+      this.data = convertTimestampsToDates(geminiPathwayData);
+      console.info(JSON.stringify(this.data, null, 2));
     }
   }
 
@@ -189,29 +192,25 @@ class Pathway {
    */
   startPathway(startDate = new Date()) {
     const intervalDuration = Math.floor(this.data.duration / this.data.response.intervals);
-
+    
     // Convert to Firestore Timestamps
-    this.data.startDate = (startDate);
-    this.data.endDate = (new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000));
+    this.data.startDate = startDate;
+    this.data.endDate = new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000);
     this.data.isActive = true;
 
     this.data.response.pathway = this.data.response.pathway.map((interval, index) => {
-      const intervalStartDate = (new Date((new Date(startDate)).getDate() + (index * intervalDuration)));
+      const intervalStartDate = new Date(startDate.getTime());
+      intervalStartDate.setDate(startDate.getDate() + (index * intervalDuration));
       return initializeIntervalDates(interval, intervalStartDate, intervalDuration);
     });
 
-    this.data = convertDatesToISO(this.data);
+    console.log("before: ", this.data);
 
-    // Log before updating to check data
-    console.log("Before sending to Firestore:", JSON.stringify(this.data));
-
-    // Update Firestore
     updatePathway(this.data.id, this.data)
-      .then((updatedPathway) => {
-        this.data = updatedPathway;
-        console.log("Pathway started successfully:", updatedPathway);
+      .then((result) => {
+        this.data = result;
       })
-      .catch((error) => console.error("Error starting pathway:", error));
+      .catch((error) => console.error("Error starting pathway:", error))
   }
 
   /**
@@ -220,7 +219,7 @@ class Pathway {
   pausePathway() {
     this.data.isActive = false;
     this.data.endDate = null;
-
+    
     this.data.response.pathway = this.data.response.pathway.map(interval => ({
       ...interval,
       pathwayStartDate: null,
@@ -258,7 +257,7 @@ class Pathway {
    */
   toTaskList() {
     let taskNumber = 1;
-    return this.data.response.pathway.flatMap(interval =>
+    return this.data.response.pathway.flatMap(interval => 
       interval.tasks.map((task) => ({
         ...task,
         taskNumber: taskNumber++
@@ -275,27 +274,11 @@ class Pathway {
   }
 }
 
-function convertDatesToISO(obj) {
-  if (obj !== null && typeof obj === 'object') {
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        if (obj[key] instanceof Date) {
-          obj[key] = obj[key].toISOString();
-        } else if (typeof obj[key] === 'object') {
-          // Recursively convert dates in nested objects
-          convertDatesToISO(obj[key]);
-        }
-      }
-    }
-  }
-  return obj;
-}
-
-export {
-  Pathway,
+export { 
+  Pathway, 
   PathwaySchema,
   convertGeminiPathwayToDBFormat,
-  validatePathway
+  validatePathway 
 };
 
 /* 
@@ -311,3 +294,19 @@ pathway.startPathway(new Date());
 // Save to database
 await addPathway(userId, pathway.toDBFormat());
 */
+
+function convertTimestampsToDates(obj) {
+  if (obj !== null && typeof obj === 'object') {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (obj[key] instanceof Timestamp) {
+          obj[key] = obj[key].toDate();
+        } else if (typeof obj[key] === 'object') {
+          // Recursively convert dates in nested objects
+          convertTimestampsToDates(obj[key]);
+        }
+      }
+    }
+  }
+  return obj;
+}
