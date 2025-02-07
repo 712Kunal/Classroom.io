@@ -17,7 +17,7 @@ export default function Navbar({ user }) {
     { name: 'Profile', href: '#', current: true },
     { name: 'Dashboard', href: '#', current: false },
     { name: 'History', href: '#', current: false },
-    { name: 'Daily Log', href: '#', current: false },
+    { name: 'Mindspace', href: '#', current: false },
     // { name: 'Settings', href: '#', current: false }, 
   ];
 
@@ -119,6 +119,7 @@ export default function Navbar({ user }) {
           {activeTab === 'Profile' && <Profile user={user} />}
           {activeTab === 'Dashboard' && <Dashboard user={user} />}
           {activeTab === 'History' && <History />}
+          {activeTab === 'Mindspace' && <History />}
           {activeTab === 'settings' && <Usersetting user={user}/>}  
         </div>
       </main>
