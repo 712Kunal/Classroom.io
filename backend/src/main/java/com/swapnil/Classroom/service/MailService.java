@@ -88,7 +88,7 @@ public class MailService {
 
         public String getUserIdFromFirebase(String userEmail) {
             try {
-                ApiFuture<QuerySnapshot> query = firestore.collection("UserRegistration")
+                ApiFuture<QuerySnapshot> query = firestore.collection("Users")
                         .whereEqualTo("email", userEmail)
                         .get();
 

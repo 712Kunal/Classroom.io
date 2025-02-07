@@ -82,7 +82,7 @@ public class NotificationService {
 
         try{
 
-            String notificationId="notif"+taskId+System.currentTimeMillis();
+            String notificationId="notif"+System.currentTimeMillis();
 
             Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
@@ -106,7 +106,7 @@ public class NotificationService {
 
     public String getTaskTitleByTaskNumber(String pathwayId, Long taskNumber) {
         try {
-            ApiFuture<DocumentSnapshot> future = firestore.collection("Pathway").document(pathwayId).get();
+            ApiFuture<DocumentSnapshot> future = firestore.collection("pathways").document(pathwayId).get();
             DocumentSnapshot document = future.get();
 
             if (document.exists()) {
@@ -155,7 +155,7 @@ public class NotificationService {
 
         try{
 
-            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+            String notificationId="notif"+System.currentTimeMillis();
 
             Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
@@ -189,18 +189,20 @@ public class NotificationService {
         }
 
 
-        System.out.println("Pathway Description: "+pathwayDescription);
+        System.out.println("Pathway Description: " + pathwayDescription);
         String description = String.format(
-                "Congratulations!\n You've successfully completed the pathway: " +
-                        "'%s'. Well done on finishing the journey!",
+                "🎉 Congratulations! 🎉\n" +
+                        "You've successfully completed the pathway: '%s'. 🎊\n" +
+                        "Well done on finishing the journey! 🚀",
                 pathwayDescription
         );
 
 
 
+
         try{
 
-            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+            String notificationId="notif"+System.currentTimeMillis();
 
             Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
@@ -233,19 +235,18 @@ public class NotificationService {
 
         System.out.println("Pathway Description: " + pathwayDescription);
         String description = String.format(
-                "Congratulations!\n\n" +
-                        "Your first personalized pathway '%s' has been successfully created.\n\n" +
-                        "We’re excited to have you start this journey toward achieving your goals. Dive in and make the most of it!\n\n" +
-                        "Best of luck,\n" +
-                        "Team Pathify",
+                "🎉 Congratulations! 🎉\n\n" +
+                        "Your first personalized pathway '%s' has been successfully created. 🚀\n\n" +
+                        "Best of luck! 🍀\n",
                 pathwayDescription
         );
 
 
 
+
         try{
 
-            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+            String notificationId="notif"+System.currentTimeMillis();
 
             Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
@@ -279,20 +280,18 @@ public class NotificationService {
 
         System.out.println("Pathway Description: " + pathwayDescription);
         String description = String.format(
-                "Great progress!\n\n" +
-                        "You’re currently at %d%% completion for your pathway: '%s'.\n\n" +
-                        "Keep it up! Every step brings you closer to your goals.\n\n" +
-                        "Cheers,\n" +
-                        "Team Pathify",
+                "🎉 Great progress! 🎉\n\n" +
+                        "%d%% done with your pathway: '%s'. Keep it up! 💪🚀\n\n" ,
                 progressPercentage, pathwayDescription
         );
 
 
 
 
+
         try{
 
-            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+            String notificationId="notif"+System.currentTimeMillis();
 
             Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
@@ -335,8 +334,6 @@ public class NotificationService {
                 "⏳ Task Reminder! ⏳\n\n" +
                         "Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
                         "❗ If not completed by the deadline, it will be marked **Late** in your tracker.\n\n" +
-                        "Stay on track and keep up the good work!\n\n" +
-                        "Team Pathify",
                 taskTitle, pathwayTopic
         );
 
@@ -345,7 +342,7 @@ public class NotificationService {
 
         try{
 
-            String notificationId="notif"+pathwayId+System.currentTimeMillis();
+            String notificationId="notif"+System.currentTimeMillis();
 
             Date notificationSendDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 

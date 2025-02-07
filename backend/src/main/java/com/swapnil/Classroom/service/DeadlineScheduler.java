@@ -32,7 +32,7 @@ public class DeadlineScheduler {
         System.out.println("Scheduler started...");
 
         try {
-            CollectionReference userCollection = firestore.collection("UserRegistration");
+            CollectionReference userCollection = firestore.collection("Users");
             ApiFuture<QuerySnapshot> userQueryFuture = userCollection.get();
             List<QueryDocumentSnapshot> userDocs = userQueryFuture.get().getDocuments();
 
@@ -50,7 +50,7 @@ public class DeadlineScheduler {
 
     public void fetchPathwaysAndProcessTasks(String userId, String userEmail) {
         try {
-            CollectionReference pathwayCollection = firestore.collection("Pathway");
+            CollectionReference pathwayCollection = firestore.collection("pathways");
             ApiFuture<QuerySnapshot> pathwayQueryFuture = pathwayCollection.whereEqualTo("userId", userId).get();
             List<QueryDocumentSnapshot> pathwayDocs = pathwayQueryFuture.get().getDocuments();
 
@@ -141,7 +141,7 @@ public class DeadlineScheduler {
             System.out.println("Sending deadline for the task: "+taskTitle);
             String userId = mailService.getUserIdFromFirebase(userEmail);
 
-            DocumentReference userDoc = firestore.collection("UserRegistration").document(userId);
+            DocumentReference userDoc = firestore.collection("Users").document(userId);
             ApiFuture<DocumentSnapshot> future = userDoc.get();
             DocumentSnapshot document = future.get();
 
