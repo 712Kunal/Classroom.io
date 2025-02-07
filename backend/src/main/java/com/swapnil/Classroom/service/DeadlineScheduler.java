@@ -25,12 +25,11 @@ public class DeadlineScheduler {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 3 14 * * *") // Runs at 12:16 PM daily
+    @Scheduled(cron = "0 3 14 * * *")
     public void checkDeadlineAndSendEmail() {
         System.out.println("Scheduler started...");
 
         try {
-            // 🔹 Fetch all pathways from Firestore
             CollectionReference pathwayCollection = firestore.collection("pathways");
             ApiFuture<QuerySnapshot> pathwayQueryFuture = pathwayCollection.get();
             List<QueryDocumentSnapshot> pathDocs = pathwayQueryFuture.get().getDocuments();
@@ -41,12 +40,26 @@ public class DeadlineScheduler {
                 if (Boolean.TRUE.equals(isActive)) {
                     System.out.println("Active Pathway Found! Processing...");
 
-                    String userEmail = (String) pathDoc.get("userEmail");
+                    String userId = (String) pathDoc.get("userId");
 
-                    if (userEmail != null) {
-                        fetchPathwaysAndProcessTasks(pathDoc, userEmail);
+                    if (userId != null) {
+                        DocumentReference userDocRef = firestore.collection("Users").document(userId);
+                        ApiFuture<DocumentSnapshot> userDocFuture = userDocRef.get();
+                        DocumentSnapshot userDoc = userDocFuture.get();
+
+                        if (userDoc.exists()) {
+                            String userEmail = (String) userDoc.get("email");
+
+                            if (userEmail != null) {
+                                fetchPathwaysAndProcessTasks(pathDoc, userEmail);
+                            } else {
+                                System.out.println("Skipping pathway due to missing userEmail.");
+                            }
+                        } else {
+                            System.out.println("User document not found for userId: " + userId);
+                        }
                     } else {
-                        System.out.println("Skipping pathway due to missing userEmail.");
+                        System.out.println("Skipping pathway due to missing userId.");
                     }
                 } else {
                     System.out.println("Skipping inactive pathway...");
@@ -57,6 +70,7 @@ public class DeadlineScheduler {
             e.printStackTrace();
         }
     }
+
 
     public void fetchPathwaysAndProcessTasks(QueryDocumentSnapshot pathwayDoc, String userEmail) {
         try {
@@ -80,7 +94,7 @@ public class DeadlineScheduler {
                             System.out.println("Scheduled date: " + scheduledDate);
 
                             if (scheduledDate == null || !isToday(scheduledDate)) {
-                                continue; // Skip tasks not due today
+                                continue;
                             }
 
                             Boolean taskStatus = (Boolean) task.get("isDone");
