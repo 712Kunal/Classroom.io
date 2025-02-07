@@ -10,6 +10,7 @@ const addProfile = async (userDetails, userId) => {
       throw new Error('No user found');
     }
     const userProfileRef = doc(db, 'UserProfiles', userId); 
+
     await setDoc(userProfileRef, {
       userId: userId,
       ...userDetails,

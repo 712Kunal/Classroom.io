@@ -19,7 +19,7 @@ const StartPathwayModal = ({ children }) => {
   const { pathwayId } = useParams();
   const { pathwaysList, refetchPathways } = useGlobal();
   const pathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
- 
+  
   const handleStartPathway = async () => {
     try {
       pathway.startPathway();

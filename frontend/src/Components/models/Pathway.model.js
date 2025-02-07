@@ -79,6 +79,12 @@ const calculateTaskDates = (intervalStart, intervalEnd, taskCount) => {
   return dates;
 };
 
+function normalizeDate(date) {
+  const normalized = new Date(date);
+  normalized.setHours(0, 0, 0, 0);
+  return normalized;
+}
+
 /**
  * Initializes dates for an interval and its tasks
  * @param {Object} interval - Interval to initialize dates for
@@ -182,7 +188,6 @@ class Pathway {
       this.data = convertGeminiPathwayToDBFormat(geminiPathwayData, userId);
     } else {
       this.data = convertTimestampsToDates(geminiPathwayData);
-      console.info(JSON.stringify(this.data, null, 2));
     }
   }
 
@@ -191,26 +196,24 @@ class Pathway {
    * @param {Date} startDate - Date to start/resume the pathway from
    */
   startPathway(startDate = new Date()) {
+    startDate = normalizeDate(startDate);
     const intervalDuration = Math.floor(this.data.duration / this.data.response.intervals);
-    
+
     // Convert to Firestore Timestamps
     this.data.startDate = startDate;
-    this.data.endDate = new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000);
+    this.data.endDate = normalizeDate(new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000));
     this.data.isActive = true;
 
     this.data.response.pathway = this.data.response.pathway.map((interval, index) => {
-      const intervalStartDate = new Date(startDate.getTime());
-      intervalStartDate.setDate(startDate.getDate() + (index * intervalDuration));
+      const intervalStartDate = normalizeDate(new Date(startDate.getTime() + (index * intervalDuration * 24 * 60 * 60 * 1000)));
       return initializeIntervalDates(interval, intervalStartDate, intervalDuration);
     });
-
-    console.log("before: ", this.data);
 
     updatePathway(this.data.id, this.data)
       .then((result) => {
         this.data = result;
       })
-      .catch((error) => console.error("Error starting pathway:", error))
+      .catch((error) => console.error("Error starting pathway:", error));
   }
 
   /**
@@ -219,14 +222,14 @@ class Pathway {
   pausePathway() {
     this.data.isActive = false;
     this.data.endDate = null;
-    
+
     this.data.response.pathway = this.data.response.pathway.map(interval => ({
       ...interval,
       pathwayStartDate: null,
       pathwayEndDate: null,
       tasks: interval.tasks.map(task => ({
         ...task,
-        scheduledDate: task.isDone ? task.scheduledDate : null
+        scheduledDate: task.isDone ? normalizeDate(task.scheduledDate) : null
       }))
     }));
   }
@@ -237,7 +240,7 @@ class Pathway {
    * @param {number} taskNumber - Task number
    */
   markAsDone(intervalNumber, taskNumber) {
-    const task = this.data.response.pathway[intervalNumber]?.tasks
+    const task = this.data.response.pathway[intervalNumber - 1]?.tasks
       .find(task => task.taskNumber === taskNumber);
 
     if (!task) {
@@ -246,10 +249,17 @@ class Pathway {
 
     if (!task.isDone) {
       task.isDone = true;
-      task.completedDate = new Date();
+      task.completedDate = normalizeDate(new Date());
       task.lateMark = task.scheduledDate && task.scheduledDate < task.completedDate;
     }
+
+    updatePathway(this.data.id, this.data)
+      .then((result) => {
+        this.data = result;
+      })
+      .catch((error) => console.error("Error updating pathway:", error));
   }
+
 
   /**
    * Converts pathway intervals into a flat task list
@@ -257,7 +267,7 @@ class Pathway {
    */
   toTaskList() {
     let taskNumber = 1;
-    return this.data.response.pathway.flatMap(interval => 
+    return this.data.response.pathway.flatMap(interval =>
       interval.tasks.map((task) => ({
         ...task,
         taskNumber: taskNumber++
@@ -274,11 +284,11 @@ class Pathway {
   }
 }
 
-export { 
-  Pathway, 
+export {
+  Pathway,
   PathwaySchema,
   convertGeminiPathwayToDBFormat,
-  validatePathway 
+  validatePathway
 };
 
 /* 

@@ -122,7 +122,7 @@ const TasksView = () => {
       <div className="max-w-7xl">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold mb-4">{topic}</h1>
-          {!isActive && <div className="StartBox ml-auto">
+          {isActive && <div className="StartBox ml-auto">
             <Button onClick={startPathway}>Start Your Learning Journey now</Button>
           </div>}
         </div>
@@ -132,9 +132,9 @@ const TasksView = () => {
             <Badge variant="outline" className="p-2">
               Duration: {duration} days
             </Badge>
-            <Badge variant="outline" className="p-2">
+            {isActive && <Badge variant="outline" className="p-2">
               {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
-            </Badge>
+            </Badge>}
           </div>
           <div className="options flex gap-2">
             <span>
@@ -166,20 +166,24 @@ const TasksView = () => {
                           <p className="text-gray-800 dark:text-gray-300 mb-2">{task.description}</p>
                         </div>
                         <div className="flex flex-col items-end gap-2 justify-center">
-                          <div className="flex items-center justify-between text-gray-800 dark:text-gray-300 gap-2">
+                          {isActive && <div className="flex items-center justify-between text-gray-800 dark:text-gray-300 gap-2">
                             <CalendarIcon className="w-4 h-4 mr-1" />
                             <span>{new Date(task.scheduledDate).toLocaleDateString()}</span>
-                          </div>
+                          </div>}
                           {task.completedDate && <div className={`flex items-center justify-between ${taskStateToTextColorMap[taskState]} gap-2`}>
                             <CalendarCheck className="w-4 h-4 mr-1" />
                             <span>{new Date(task.completedDate).toLocaleDateString()}</span>
                           </div>}
-                          <div className="flex items-center gap-1">
-                            {taskStateToIconMap[taskState]}
-                            <span>{taskStateToDisplayTextMap[taskState]}</span>
-                          </div>
-                          {(taskState === 'pending' || taskState === 'lateMark') && (
-                            <Button type="button" className="bg-neutral-200"><CheckCircle /> | Mark As Done</Button>
+                          {isActive && (
+                            <>
+                              <div className="flex items-center gap-1">
+                                {taskStateToIconMap[taskState]}
+                                <span>{taskStateToDisplayTextMap[taskState]}</span>
+                              </div>
+                              {(taskState === 'pending' || taskState === 'lateMark') && (
+                                <Button type="button" className="bg-neutral-200"><CheckCircle /> | Mark As Done</Button>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>
