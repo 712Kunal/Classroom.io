@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog.jsx"
 import { useParams } from "react-router-dom";
 import { Button } from "../ui/button.jsx";
+import { interval } from "date-fns";
 
 const taskStateToObject = {
   'completedOnTime': { icon: <BadgeCheck size={16} />, color: 'text-green-500', displayText: "Completed On Time" },
@@ -46,9 +47,11 @@ const TimelineView = () => {
   const { topic, description, duration, startDate, endDate, isActive } = pathway.data;
   const { pathway: intervals, intervalType } = pathway.data.response;
 
+  // console.log(pathway.data);
+
   const data = intervals.map((interval) => ({
     title: `${intervalType} ${interval.intervalNumber}: ${interval.summary}`,
-    content: <Interval data={interval} />,
+    content: <Interval data={interval} pathway={pathway} />,
   }))
 
   const getPercentageComplete = () => {
@@ -71,11 +74,16 @@ const TimelineView = () => {
   </div>;
 };
 
-const Interval = ({ data }) => {
-  const { summary: title, tasks, pathwayStartDate: startDate, pathwayEndDate: endDate } = data;
+const Interval = ({ data, pathway }) => {
+  const { summary: title, tasks, pathwayStartDate: startDate, pathwayEndDate: endDate, intervalNumber } = data;
+  const { refetchPathways } = useGlobal();
 
   const getTaskState = (scheduledDate, completedDate, isDone, lateMark) => {
     const today = new Date();
+
+    if(!scheduledDate) {
+      return;
+    }
 
     if (completedDate && completedDate < scheduledDate) {
       throw new Error('Completed date cannot be before scheduled date');
@@ -87,7 +95,7 @@ const Interval = ({ data }) => {
         : 'completedLate';
     }
 
-    if (scheduledDate > today) {
+    if (scheduledDate.getDate() > today.getDate()) {
       return 'scheduled';
     }
 
@@ -96,6 +104,12 @@ const Interval = ({ data }) => {
 
   const isIntervalComplete = () => {
     return tasks.every((task) => task.isDone);
+  }
+
+  const handleMarkAsDone = async (taskNumber) => {
+    console.log(intervalNumber, taskNumber);
+    await pathway.markAsDone(intervalNumber, taskNumber);
+    await refetchPathways();
   }
 
   return (
@@ -182,7 +196,9 @@ const Interval = ({ data }) => {
                         {taskStateToObject[taskState].icon}
                         {taskStateToObject[taskState].displayText}
                       </div>}
-                      {(!task.isDone && task.scheduledDate === Date.now()) && <Button type="button" className="bg-green-600 dark:bg-green-500"><CheckCircle2 /> Mark As Done</Button>}
+                      {(taskState === "pending" || taskState === "lateMark") && <Button type="button" className="bg-green-600 dark:bg-green-500" onClick={() => handleMarkAsDone(task.taskNumber)}>
+                        <CheckCircle2 /> Mark As Done
+                      </Button>}
                     </div>
                   </div>
                 </DialogHeader>

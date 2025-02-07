@@ -38,7 +38,7 @@ export const Timeline = ({
   const heightOfProgressTracer = `${isActivePathway ? parseInt(percentageComplete) : 0}%`;
 
   return (
-    (<div className="w-full relative bg-white rounded-lg dark:bg-neutral-950 font-sans md:px-10" ref={containerRef}>
+    (<div className="w-full relative h-fit bg-white rounded-lg dark:bg-neutral-950 font-sans md:px-10" ref={containerRef}>
       <div className="flex p-6">
         <div className="left w-1/2 flex flex-col gap-4">
           <h2 className="text-lg md:text-4xl text-black dark:text-white max-w-4xl">
@@ -81,7 +81,7 @@ export const Timeline = ({
       </div>
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
         {data.map((item, index) => (
-          <div key={index} className="flex justify-start pt-10 md:pt-40 md:gap-10">
+          <div key={index} className="flex justify-start pt-10 md:pt-60 md:gap-10">
             <div
               className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start lg:max-w-sm">
               <div
@@ -107,7 +107,7 @@ export const Timeline = ({
           style={{
             height: height + "px",
           }}
-          className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] flex flex-col items-start justify-start bg-neutral-600">
+          className="absolute md:left-8 left-8 max-h-full top-0 overflow-hidden w-[2px] flex flex-col items-start justify-start bg-neutral-600">
           <div className="bg-gradient-to-b from-purple-500 to-blue-500 w-full" style={{ height: `${heightOfProgressTracer}` }}></div>
         </div>
       </div>

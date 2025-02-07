@@ -43,7 +43,7 @@ function LibraryPage() {
       await deletePathwayOfUser(pathwayId);
   
       // Refresh pathways but let state update naturally
-      refetchPathways();
+      await refetchPathways();
     } catch (error) {
       console.error(error);
       // Revert local state if deletion fails
