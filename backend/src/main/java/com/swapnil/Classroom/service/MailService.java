@@ -24,6 +24,8 @@ public class MailService {
 
     public void sendEmail(String to, String title, String body) throws MessagingException {
 
+        long startTime = System.currentTimeMillis();
+
         MimeMessage message=javaMailSender.createMimeMessage();
         MimeMessageHelper helper=new MimeMessageHelper(message, true);
 
@@ -32,6 +34,10 @@ public class MailService {
         helper.setText(body);
 
         javaMailSender.send(message);
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("📧 Email sent in " + (endTime - startTime) + " ms");
+
     }
 
     public void sendTaskCompletionEmail(Map<String, Object> task, String userEmail, String userId)  {
