@@ -31,9 +31,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import ModeToggle from '../originUi/mode-toggle.jsx';
-import React, { useEffect, useState } from "react";
-import { auth, db } from "@/Firebase/firebase"; // Assuming you have your firebase config
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "@/Firebase/firebase"; 
 import { useNavigate } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext.jsx"
 
@@ -43,17 +41,19 @@ export function NavUser({user}) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    navigate("/login");  
     auth.signOut()
       .then(() => {
         console.log("User logged out");
-        setUser(null); // Clear user details
-        navigate("/"); // Navigate to the login page after logout
+        setUser(null);  
       })
       .catch((error) => {
         console.error("Error logging out: ", error.message);
       });
   };
-
+  
+  
+  
   return (
     <SidebarMenu>
       <SidebarMenuItem>
