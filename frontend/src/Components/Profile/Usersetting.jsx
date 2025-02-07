@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { auth } from '../Firebase/firebase';
+import { auth } from '@/Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import { addProfile } from '../Firebase/services/userDetails.servies.js';
+import addProfile from '@/Firebase/services/userDetails.servies.js';
 
 import {
   ReceiptText,
@@ -18,45 +18,60 @@ import {
   GraduationCap,
   ShipWheel
 } from 'lucide-react';
-import { Input } from '../Components/ui/input2';
-import { Label } from '../Components/ui/label2';
-import Languages from '../Components/originUi/languages-known';
+import { Input } from '@/Components/ui/input2';
+import { Label } from '@/Components/ui/label2';
+import Languages from '@/Components/originUi/languages-known';
 
-function FormDetails() {
+function Usersetting({ user }) {
   const navigate = useNavigate();
-
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
-
-  const [languagesKnown, setlanguagesKnown] = useState([]);
-  const [learningStyles, setlearningStyles] = useState([]);
-  const [skills, setskills] = useState([]);
-  const [hobies, setHobies] = useState([]);
-  const [interest, setinterest] = useState([]);
-
-  // Add state for the email notification toggle
+  const [languagesKnown, setLanguagesKnown] = useState([]);
+  const [learningStyles, setLearningStyles] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
+  const [interest, setInterest] = useState([]);
   const [emailNotification, setEmailNotification] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log('user', user);
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      if (authUser) {
+        setLoggedInUser(authUser);
+        fetchUserDetails(authUser);
       } else {
-        navigate('/signup');
-        console.log('no user');
+        console.log('No user found, redirecting to signup...');
+        navigate('/signup'); 
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
-  const handleUseraddDetails = async (userDetails) => {
+  const fetchUserDetails = async (authUser) => {
+    try {
+      if (authUser) {
+
+        const userData = await getUserData(authUser.uid);
+        setUserDetails(userData);
+        setLanguagesKnown(userData.background.languagesKnown || []);
+        setLearningStyles(userData.background.learningStyles || []);
+        setSkills(userData.background.skills || []);
+        setHobbies(userData.background.hobies || []);
+        setInterest(userData.background.interest || []);
+        setEmailNotification(userData.preferences.emailNotification);
+      }
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+    }
+  };
+
+  const handleUserAddDetails = async (userDetails) => {
     try {
       const userId = auth.currentUser.uid;
-      const adduserData = await addProfile(userDetails, userId);
-      console.log(adduserData);
-      if (adduserData.success === true) {
-        console.log('User added successfully');
-        navigate('/app/profile');
+      const addUserData = await addProfile(userDetails, userId);
+      if (addUserData.success === true) {
+        console.log('User updated successfully');
+        navigate('/app');
       }
     } catch (error) {
       console.error('Error adding user details:', error);
@@ -66,7 +81,6 @@ function FormDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-
     const fullName = formData.get('name');
     const contact = formData.get('contact');
     const location = formData.get('location');
@@ -90,14 +104,14 @@ function FormDetails() {
         location,
         bio,
         dob,
-        gender
+        gender,
       },
       socialLinks: {
         insta,
         git,
         linkedin,
         twitter,
-        portfolio
+        portfolio,
       },
       background: {
         study,
@@ -107,14 +121,14 @@ function FormDetails() {
         languagesKnown,
         learningStyles,
         skills,
-        hobies,
-        interest
+        hobbies,
+        interest,
       },
       preferences: {
-        emailNotification 
-      }
+        emailNotification,
+      },
     };
-    handleUseraddDetails(userData);
+    handleUserAddDetails(userData);
   };
 
   return (
@@ -126,139 +140,140 @@ function FormDetails() {
         <p className="text-sm text-slate-800 dark:text-gray-400">
           Please provide your details to personalize your experience.
         </p>
-        <p className="text-lg text-gray-500 font-medium mt-2 p-2 rounded-md  text-center">
+        <p className="text-lg text-gray-500 font-medium mt-2 p-2 rounded-md text-center">
           Email: {auth.currentUser?.email}
         </p>
       </div>
 
-      <div className="formContainder w-full p-2 mt-4">
+      <div className="formContainer w-full p-2 mt-4">
         <form className="flex gap-2" onSubmit={handleSubmit}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: 'easeInOut' }}
-            className="outer-container w-full flex flex-wrap">
-            {/* left Section */}
-            <div className="w-full lg:w-1/2 rounded-md  flex flex-col gap-4 ">
+            className="outer-container w-full flex flex-wrap"
+          >
+            {/* Left Section */}
+            <div className="w-full lg:w-1/2 rounded-md flex flex-col gap-4">
               <div className="Personal-details rounded-md p-4 flex flex-col gap-4 border">
                 <h2 className="text-xl dark:text-green-500 flex items-center">
                   <FileUser />
-                  Personal Details :
+                  Personal Details:
                 </h2>
                 <div>
                   <Label htmlFor="fullname">Enter your full name: </Label>
-                  <Input name="name" placeholder="Eg: John Doe" type="text" />
+                  <Input name="name" placeholder="Eg: John Doe" type="text" defaultValue={userDetails?.personalInfo?.fullName} />
                 </div>
                 <div>
                   <Label htmlFor="contact">Enter your contact number: </Label>
-                  <Input
-                    name="contact"
-                    placeholder="Eg: +91-1234567890"
-                    type="number"
-                    maxLength="12"
-                  />
+                  <Input name="contact" placeholder="Eg: +91-1234567890" type="number" maxLength="12" defaultValue={userDetails?.personalInfo?.contact} />
                 </div>
                 <div>
                   <Label htmlFor="location">Enter your location: </Label>
-                  <Input name="location" placeholder="Eg: Pune" type="text" />
+                  <Input name="location" placeholder="Eg: Pune" type="text" defaultValue={userDetails?.personalInfo?.location} />
                 </div>
                 <div>
-                  <Label htmlFor="bio" className="block">
-                    Enter your bio:
-                  </Label>
+                  <Label htmlFor="bio">Enter your bio: </Label>
                   <textarea
                     name="bio"
                     id="bio"
                     placeholder="Eg: I am a student"
                     cols="80"
                     rows="10"
-                    className="w-full text-white bg-gray-50 dark:bg-zinc-800 p-2 rounded-md mt-1"></textarea>
+                    className="w-full h-32 dark:bg-zinc-800 p-3 rounded-md border-2 border-gray-300 dark:border-gray-600 text-lg font-medium resize-none"
+                    defaultValue={userDetails?.personalInfo?.bio}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="dob">Enter your date of birth: </Label>
                   <input
                     type="date"
                     name="dob"
-                    className="w-full dark:bg-zinc-800 p-2 rounded-md border-none focus:border-none"
+                    className="w-full sm:w-auto dark:bg-zinc-800 dark:text-white bg-white text-gray-900 p-1.5 text-sm rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
                   />
+
                 </div>
                 <div>
                   <Label htmlFor="gender">Enter your gender: </Label>
                   <select
                     name="gender"
                     id="gender"
-                    className="w-full dark:bg-zinc-800 p-2 rounded-md border-none">
+                    className="w-full dark:bg-zinc-800 p-3 rounded-md border-2 border-gray-300 dark:border-gray-600 text-sm font-semibold"
+                    defaultValue={userDetails?.personalInfo?.gender}
+                  >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                   </select>
+
                 </div>
               </div>
 
               <div className="social-links rounded-md p-4 flex flex-col gap-4 border">
                 <h2 className="text-xl dark:text-pink-500 flex items-center">
                   <MessageCircleHeart />
-                  Social Links :
+                  Social Links:
                 </h2>
                 <div className="flex flex-wrap gap-2 justify-center items-center">
                   <div className="flex items-center gap-1">
                     <Instagram className="text-red-400" />
-                    <Input name="insta" placeholder="https://www.instagram.com/" type="url" />
+                    <Input name="insta" placeholder="https://www.instagram.com/" type="url" defaultValue={userDetails?.socialLinks?.insta} />
                   </div>
                   <div className="flex items-center gap-1">
                     <Github className="text-slate-400" />
-                    <Input name="git" placeholder="https://github.com/" type="url" />
+                    <Input name="git" placeholder="https://github.com/" type="url" defaultValue={userDetails?.socialLinks?.git} />
                   </div>
                   <div className="flex items-center gap-1">
                     <Linkedin className="text-blue-400" />
-                    <Input name="linkedin" placeholder="https://linkedin.com/" type="url" />
+                    <Input name="linkedin" placeholder="https://linkedin.com/" type="url" defaultValue={userDetails?.socialLinks?.linkedin} />
                   </div>
                   <div className="flex items-center gap-1">
                     <Twitter className="text-orange-400" />
-                    <Input name="twitter" placeholder="https://twitter.com/" type="url" />
+                    <Input name="twitter" placeholder="https://twitter.com/" type="url" defaultValue={userDetails?.socialLinks?.twitter} />
                   </div>
                   <div className="flex items-center gap-1">
                     <BriefcaseBusiness className="text-cyan-200" />
-                    <Input name="portfolio" placeholder="https://portfolio.com/" type="url" />
+                    <Input name="portfolio" placeholder="https://portfolio.com/" type="url" defaultValue={userDetails?.socialLinks?.portfolio} />
                   </div>
                 </div>
               </div>
             </div>
-            {/*  Right Section */}
+
+            {/* Right Section */}
             <div className="background w-full lg:w-1/2 rounded-md p-4 flex flex-col gap-4">
               <div className="background rounded-md p-4 flex flex-col gap-4 border">
                 <h2 className="text-xl dark:text-yellow-400 flex items-center">
-                  <GraduationCap /> Background :
+                  <GraduationCap /> Background:
                 </h2>
                 <div>
                   <Label htmlFor="study">Field of study: </Label>
-                  <Input name="study" placeholder="Eg: Computer Science" type="text" />
+                  <Input name="study" placeholder="Eg: Computer Science" type="text" defaultValue={userDetails?.background?.study} />
                 </div>
                 <div>
                   <Label htmlFor="degree">Degree: </Label>
-                  <Input name="degree" placeholder="Eg: B.tech" type="text" />
+                  <Input name="degree" placeholder="Eg: B.Tech" type="text" defaultValue={userDetails?.background?.degree} />
                 </div>
                 <div>
-                  <Label htmlFor="experience">Year's of experience: </Label>
-                  <Input name="experience" placeholder="Eg: 10" type="number" />
+                  <Label htmlFor="experience">Years of experience: </Label>
+                  <Input name="experience" placeholder="Eg: 10" type="number" defaultValue={userDetails?.background?.experience} />
                 </div>
                 <div>
                   <Label htmlFor="occupation">Occupation: </Label>
-                  <Input name="occupation" placeholder="Eg: Software Developer" type="text" />
+                  <Input name="occupation" placeholder="Eg: Software Developer" type="text" defaultValue={userDetails?.background?.occupation} />
                 </div>
                 <div>
-                  <Label htmlFor="languages">Language's known: </Label>
+                  <Label htmlFor="languages">Languages known: </Label>
                   <Languages
                     tags={languagesKnown}
-                    setTags={setlanguagesKnown}
+                    setTags={setLanguagesKnown}
                     placeholder="Eg: Hindi, English, Marathi"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="learningStyes">Preffered learning Styles: </Label>
+                  <Label htmlFor="learningStyles">Preferred learning styles: </Label>
                   <Languages
                     tags={learningStyles}
-                    setTags={setlearningStyles}
+                    setTags={setLearningStyles}
                     placeholder="Eg: Video Tutorials, Written Guides, Interactive Exercises"
                   />
                 </div>
@@ -266,29 +281,29 @@ function FormDetails() {
                   <Label htmlFor="skills">Technical Skills: </Label>
                   <Languages
                     tags={skills}
-                    setTags={setskills}
+                    setTags={setSkills}
                     placeholder="Eg: React, JavaScript, Node.js"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="hobies">Hobies: </Label>
+                  <Label htmlFor="hobies">Hobbies: </Label>
                   <Languages
-                    tags={hobies}
-                    setTags={setHobies}
-                    placeholder="Eg: Drawing, Gyming, Cooking"
+                    tags={hobbies}
+                    setTags={setHobbies}
+                    placeholder="Eg: Drawing, Gymming, Cooking"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="skills">Interest: </Label>
+                  <Label htmlFor="interest">Interests: </Label>
                   <Languages
                     tags={interest}
-                    setTags={setinterest}
-                    placeholder="Eg: Devops, Cloud computing, AI"
+                    setTags={setInterest}
+                    placeholder="Eg: Devops, Cloud Computing, AI"
                   />
                 </div>
               </div>
 
-              {/* Add the Email Notification Toggle */}
+              {/* Email Notification Toggle */}
               <div className="flex items-center gap-2 mt-4">
                 <input
                   type="checkbox"
@@ -302,15 +317,10 @@ function FormDetails() {
               </div>
 
               <button
-                className="relative group/btn hover:shadow-md hover:shadow-blue-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium"
-                type="submit">
-                Submit Details{' '}
-                <motion.span
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, ease: 'easeIn', repeat: Infinity }}>
-                  <ShipWheel />
-                </motion.span>
+                className="text-xl relative group/btn hover:shadow-md hover:shadow-orange-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10"
+                type="submit"
+              >
+                Submit Details
               </button>
             </div>
           </motion.div>
@@ -319,4 +329,5 @@ function FormDetails() {
     </div>
   );
 }
-export default FormDetails;
+
+export default Usersetting;
