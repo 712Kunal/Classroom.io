@@ -198,7 +198,7 @@ class Pathway {
   startPathway(startDate = new Date()) {
     startDate = normalizeDate(startDate);
     const intervalDuration = Math.floor(this.data.duration / this.data.response.intervals);
-    
+
     // Convert to Firestore Timestamps
     this.data.startDate = startDate;
     this.data.endDate = normalizeDate(new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000));
@@ -213,7 +213,7 @@ class Pathway {
       .then((result) => {
         this.data = result;
       })
-      .catch((error) => console.error("Error starting pathway:", error))
+      .catch((error) => console.error("Error starting pathway:", error));
   }
 
   /**
@@ -222,7 +222,7 @@ class Pathway {
   pausePathway() {
     this.data.isActive = false;
     this.data.endDate = null;
-    
+
     this.data.response.pathway = this.data.response.pathway.map(interval => ({
       ...interval,
       pathwayStartDate: null,
@@ -267,7 +267,7 @@ class Pathway {
    */
   toTaskList() {
     let taskNumber = 1;
-    return this.data.response.pathway.flatMap(interval => 
+    return this.data.response.pathway.flatMap(interval =>
       interval.tasks.map((task) => ({
         ...task,
         taskNumber: taskNumber++
@@ -288,7 +288,7 @@ export {
   Pathway,
   PathwaySchema,
   convertGeminiPathwayToDBFormat,
-  validatePathway 
+  validatePathway
 };
 
 /* 
