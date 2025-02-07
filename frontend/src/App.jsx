@@ -21,11 +21,14 @@ const CreatePathway = lazy(() => import('./components/library/CreatePathway.jsx'
 const TasksView = lazy(() => import('./components/pathway/TasksView.jsx'));
 
 import AppWrapper from './components/core/AppWrapper.jsx';
+import { Loader } from './Pages/LibraryPage';
+import Loader1 from './Components/ui/Loader1';
+
+
 
 const suspenseComponent = (component) => (
-  <Suspense fallback={<div>Loading...</div>}>{component}</Suspense>
+  <Suspense fallback={<div><Loader1/></div>}>{component}</Suspense>
 );
-
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
     return <Navigate to="/" />;
@@ -37,7 +40,7 @@ function App() {
   const { user, loading } = useAuthListener();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><Loader/> Loading...</div>;
   }
 
   return (

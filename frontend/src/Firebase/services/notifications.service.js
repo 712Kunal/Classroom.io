@@ -1,5 +1,5 @@
 import { db } from '../firebase.js';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
 
 export const getNotifications = async (userId) => {
   try {
@@ -17,5 +17,15 @@ export const getNotifications = async (userId) => {
   } catch (error) {
     console.error('Error fetching notifications:', error);
     throw error;
+  }
+};
+
+export const markNotificationAsRead = async (notifId) => {
+  try {
+    const notificationRef = doc(db, 'notifications', notifId);
+    await updateDoc(notificationRef, { isRead: true });
+    console.log('Notification marked as read');
+  } catch (error) {
+    console.error('Error updating notifications:', error);
   }
 };
