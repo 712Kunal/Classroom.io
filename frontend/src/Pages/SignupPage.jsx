@@ -58,14 +58,12 @@ function Signup() {
       });
 
       console.log('Done');
-      navigate('/detailsForm');
       const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
 
       await axios.post(backendUrl, {
         email: user.email,
         username: username
       });
-
       console.log('Notification and email request sent to backend.');
       toast.error('Notification and email request sent to backend.', {
         position: "top-right",

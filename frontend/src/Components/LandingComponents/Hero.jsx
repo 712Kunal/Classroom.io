@@ -36,7 +36,7 @@ function Hero() {
             variants={slideinfromleft(0.5)}
             className="flex flex-col mt-6 text-6xl font-bold max-w-[600px] w-auto h-auto">
             <span>
-              Learn <br />
+              Learn
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-500">
                 {' '}
                 Better with <br />

@@ -1,7 +1,6 @@
 import Hero from '../Components/LandingComponents/Hero.jsx';
 import LandingNavbar from '@/components/core/LandingNavbar.jsx';
 import { Lamp } from '@/Components/LandingComponents/Lamp.jsx';
-import Spline from '@splinetool/react-spline';
 
 function LandingPage() {
   return (

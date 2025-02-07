@@ -271,7 +271,7 @@ function FormDetails() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="hobies">Hobies: </Label>
+                  <Label htmlFor="hobies">Hobbies: </Label>
                   <Languages
                     tags={hobies}
                     setTags={setHobies}
