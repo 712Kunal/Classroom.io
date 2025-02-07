@@ -111,7 +111,7 @@ function FormDetails() {
         interest
       },
       preferences: {
-        emailNotification // Add the email notification preference
+        emailNotification 
       }
     };
     handleUseraddDetails(userData);
