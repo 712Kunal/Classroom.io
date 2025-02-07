@@ -35,10 +35,12 @@ function NotificationsPage() {
   }, []);
 
   const relativeTimeFormat = (date) => {
-    let sendDate = new Date(date);
-    if (date instanceof Timestamp) {
-      sendDate = date.toDate();
+    
+    let sendDate = date;
+    if (sendDate instanceof Timestamp) {
+      sendDate = sendDate.toDate();
     }
+
     const now = new Date();
     // The `Math.floor()` function in JavaScript is used to round down a number to the nearest integer
     const differenceInSeconds = Math.floor((now.getTime() - sendDate.getTime()) / 1000);
