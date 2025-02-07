@@ -17,6 +17,8 @@ public class Notification {
 //    private Date notificationReadDate;
     private String description;
 
+    private Boolean isRead=false;
+
 
     public enum NotificationType{
         IN_APP, BOTH

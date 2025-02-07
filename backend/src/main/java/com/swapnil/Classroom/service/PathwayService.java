@@ -2,7 +2,6 @@ package com.swapnil.Classroom.service;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.swapnil.Classroom.entity.Pathway;
 import com.swapnil.Classroom.exception.PathwayNotFoundException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -24,63 +23,6 @@ public class PathwayService {
         this.firestore = firestore;
         this.mailService = mailService;
     }
-
-    public void createPathway(Pathway pathway) throws ExecutionException, InterruptedException {
-
-        System.out.println("Pathway Id: " + pathway.getPathwayId());
-
-
-        if (pathway.getPathwayId() == null) {
-            firestore.collection("Pathway").add(pathway).get();
-        } else {
-            firestore.collection("Pathway").document(pathway.getPathwayId()).set(pathway).get();
-        }
-    }
-
-    public List<Pathway> getPathwaysByUser(String userId) throws ExecutionException, InterruptedException {
-        CollectionReference collectionReference = firestore.collection("Pathway");
-        QuerySnapshot querySnapshot = collectionReference.whereEqualTo("userId", userId).get().get();
-
-        List<Pathway> pathways = new ArrayList<>();
-        querySnapshot.forEach(document -> {
-            Pathway pathway = document.toObject(Pathway.class);
-            pathways.add(pathway);
-        });
-
-        return pathways;
-    }
-
-
-    public void taskCompletionEmail(String pathwayId, Long taskId) {
-        try {
-            String userId = getUserIdFromPathwayId(pathwayId);
-
-            String userEmail = getUserEmailByUserId(userId);
-
-            Map<String, Object> taskDetails = getTaskFromPathway(pathwayId, taskId);
-
-
-
-            boolean emailSent = (boolean) taskDetails.get("completionEmailSent");
-            System.out.println("email status: "+ emailSent);
-            if (!emailSent) {
-                mailService.sendTaskCompletionEmail(taskDetails, userEmail, userId);
-
-                updateTaskEmailSent(pathwayId, taskId, true);
-
-                System.out.println("Task completion email sent and marked as sent in Firestore.");
-            } else {
-                System.out.println("Task completion email has already been sent.");
-            }
-        } catch (PathwayNotFoundException e) {
-            System.err.println("Error: Pathway not found for pathwayId: " + pathwayId);
-        } catch (ResourceAccessException e) {
-            System.err.println("Error: Task not found for taskId: " + taskId);
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred: " + e.getMessage());
-        }
-    }
-
 
 
 
@@ -242,7 +184,7 @@ public class PathwayService {
                     "Hello %s,\n\n" +
                             "🎊 Congratulations on activating the '%s' pathway! 🎊\n\n" +
                             "✨ Best regards, ✨\n" +
-                            "💡 Team Pathify 💡",
+                            "Team Pathify",
                     userName, pathwayDescription
             );
 
@@ -262,6 +204,8 @@ public class PathwayService {
 
         DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
+
+
 
         String userEmail= (String) userDoc.get("email");
         String userName=(String) userDoc.get("username");
@@ -304,12 +248,14 @@ public class PathwayService {
         }
     }
 
-    public void sendFirstPathwayGenerationEmail(String userId, String pathwayId) throws ExecutionException, InterruptedException {
+    public void sendPathwayGenerationEmail(String userId, String pathwayId, DocumentSnapshot document) throws ExecutionException, InterruptedException {
 
         System.out.println("userId: "+userId);
 
         DocumentReference documentReference=firestore.collection("Users").document(userId);
         DocumentSnapshot userDoc= documentReference.get().get();
+
+        Long generatedPathwayCount= (Long) document.get("generatedPathwayCount");
 
         String userEmail= (String) userDoc.get("email");
         String userName=(String) userDoc.get("username");
@@ -318,6 +264,9 @@ public class PathwayService {
 
 
         String pathwayDescription="";
+        String subject="";
+        String body="";
+
         Map<String, Object> pathwayData = getPathwayById(pathwayId);
         if(pathwayData!=null){
             pathwayDescription = (String) pathwayData.get("topic");
@@ -330,17 +279,33 @@ public class PathwayService {
                 return;
             }
 
+            if(generatedPathwayCount==0){
 
-            String subject = "🎉 Welcome to Your First Pathway! 🚀";
-            String body = String.format(
+                subject = "🎉 Welcome to Your First Pathway! 🚀";
+                body = String.format(
+                        "Hello %s,\n\n" +
+                                "🎊 Congrats creating your first pathway: '%s'! 🎊\n\n" +
+                                "🚀 Dive in, explore, and take it step by step. Every effort brings you closer to success! 💡\n\n" +
+                                "🌟 Best of luck! 🌟\n\n" +
+                                "Warm regards,\n" +
+                                "Team Pathify",
+                        userName, pathwayDescription
+                );
+
+            }
+            else{
+
+            subject = "🎉 Welcome to Your New Pathway! 🚀";
+            body = String.format(
                     "Hello %s,\n\n" +
-                            "🎊 Congrats on activating your first pathway: '%s'! 🎊\n\n" +
+                            "🎊 Congrats creating your new pathway: '%s'! 🎊\n\n" +
                             "🚀 Dive in, explore, and take it step by step. Every effort brings you closer to success! 💡\n\n" +
                             "🌟 Best of luck! 🌟\n\n" +
                             "Warm regards,\n" +
                             "Team Pathify",
                     userName, pathwayDescription
             );
+            }
 
 
 
@@ -400,6 +365,27 @@ public class PathwayService {
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    public DocumentSnapshot getUserDocumentByUserId(String userId) {
+        CollectionReference userProfiles = firestore.collection("UserProfiles");
+
+        Query query = userProfiles.whereEqualTo("userId", userId);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        try {
+            List<QueryDocumentSnapshot> documents = querySnapshot.get().getDocuments();
+            if (!documents.isEmpty()) {
+                return documents.get(0);
+            } else {
+                System.out.println("No matching document found!");
+                return null;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

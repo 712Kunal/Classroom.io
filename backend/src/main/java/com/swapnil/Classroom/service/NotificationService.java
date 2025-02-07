@@ -8,7 +8,6 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.swapnil.Classroom.entity.Notification;
-import com.swapnil.Classroom.entity.Pathway;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +92,8 @@ public class NotificationService {
             notification.setRelatedEntity(String.valueOf(taskId));
             notification.setDescription(description);
 
+
+
             save(notification);
 
             logger.info("Notification send for taskId: "+taskId+" to userId: "+userId);
@@ -148,7 +149,7 @@ public class NotificationService {
 
         System.out.println("Pathway Description: "+pathwayDescription);
         String description = String.format(
-                "Welcome!\n You've activated the pathway: '%s'. Good luck on your journey!",
+                "🚀 Welcome! \n✨ You've activated the pathway: '%s'. \n🎯 Good luck on your journey! 💪",
                 pathwayDescription
         );
 
@@ -222,24 +223,40 @@ public class NotificationService {
         }
     }
 
-    public void sendFirstPathwayGenerationNotification(String userId, Notification notification, String pathwayId) {
+    public void sendPathwayGenerationNotification(String userId, Notification notification, String pathwayId, DocumentSnapshot document) {
 
         System.out.println("Sending notification");
         String pathwayDescription="";
+        String description="";
         Map<String, Object> pathwayData = pathwayService.getPathwayById(pathwayId);
         if(pathwayData!=null){
             pathwayDescription = (String) pathwayData.get("topic");
 
         }
 
+        Long generatedPathwayCount= (Long) document.get("generatedPathwayCount");
 
-        System.out.println("Pathway Description: " + pathwayDescription);
-        String description = String.format(
-                "🎉 Congratulations! 🎉\n\n" +
-                        "Your first personalized pathway '%s' has been successfully created. 🚀\n\n" +
-                        "Best of luck! 🍀\n",
-                pathwayDescription
-        );
+        if(generatedPathwayCount==0) {
+
+            System.out.println("Pathway Description: " + pathwayDescription);
+            description = String.format(
+                    "🎉 Congratulations! 🎉\n\n" +
+                            "Your first personalized pathway '%s' has been successfully created. 🚀\n\n" +
+                            "Best of luck! 🍀\n",
+                    pathwayDescription
+            );
+        }
+        else{
+
+            System.out.println("Pathway Description: " + pathwayDescription);
+            description = String.format(
+                    "🎉 Congratulations! 🎉\n\n" +
+                            "Your new personalized pathway '%s' has been successfully created. 🚀\n\n" +
+                            "Best of luck! 🍀\n",
+                    pathwayDescription
+            );
+
+        }
 
 
 
@@ -332,10 +349,11 @@ public class NotificationService {
 //        System.out.println("Pathway Description: " + pathwayDescription);
         String description = String.format(
                 "⏳ Task Reminder! ⏳\n\n" +
-                        "Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
-                        "❗ If not completed by the deadline, it will be marked **Late** in your tracker.\n\n" +
-                taskTitle, pathwayTopic
+                        "📌 Your task **'%s'** is due today as part of your pathway: **'%s'**.\n\n" +
+                        "⚠️ ❗ If not completed by the deadline, it will be marked **Late** in your tracker. ⏰\n\n",
+                        taskTitle, pathwayTopic
         );
+
 
 
 
