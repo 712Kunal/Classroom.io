@@ -60,6 +60,28 @@ const RESOURCE_TYPE_MAP = {
   "interactive exercise": "Interactive Exercise"
 };
 
+const checkProgressAndSendNotifs = async (pathway) => {
+  const { userId, id: pathwayId, isActive } = pathway.data;
+
+  if (!isActive) return;
+
+  const taskList = pathway.toTaskList();
+  const completedTaskList = taskList.filter((task) => task.isDone);
+  const progressPercentage = Math.round((completedTaskList.length / taskList.length) * 100);
+
+  switch (progressPercentage) {
+    case 100:
+      await axios.post(`http://localhost:8080/api/user/${userId}/pathwayComplete/${pathwayId}`);
+      break;
+    case 75:
+    case 50:
+      await axios.post(`http://localhost:8080/api/user/${userId}/pathway/${pathwayId}?progress=${progressPercentage}`);
+      break;
+    default:
+      break;
+  }
+}
+
 /**
  * Calculates evenly distributed dates for tasks within an interval
  * @param {Date} intervalStart - Start date of the interval
@@ -299,6 +321,8 @@ class Pathway {
    * @param {number} taskNumber - Task number
    */
   markAsDone(intervalNumber, taskNumber) {
+    if (!this.data.isActive) return;
+
     const task = this.data.response.pathway[intervalNumber - 1]?.tasks
       .find(task => task.taskNumber === taskNumber);
 
@@ -317,8 +341,11 @@ class Pathway {
         this.data = result;
       })
       .catch((error) => console.error("Error updating pathway:", error));
-  }
 
+    checkProgressAndSendNotifs(this)
+      .then(() => console.log('Notification sent'))
+      .catch((error) => console.error('Error sending notification:', error));
+  }
 
   /**
    * Converts pathway intervals into a flat task list

@@ -12,8 +12,11 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
+import axios from "axios";
+import { useAuthListener } from "@/hooks/use-auth";
 
 const StartPathwayModal = ({ children }) => {
+  const { user } = useAuthListener();
   const navigate = useNavigate();
   const { pathwayId } = useParams();
   const { pathwaysList, refetchPathways, activePathwayId } = useGlobal();
@@ -31,6 +34,8 @@ const StartPathwayModal = ({ children }) => {
       pathway.startPathway();
       await refetchPathways();
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
+
+      await axios.post(`http://localhost:8080/api/user/${user.uid}/pathwayActivate/${pathwayId}`)
     } catch (error) {
       console.error(error);
     }
@@ -45,9 +50,9 @@ const StartPathwayModal = ({ children }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure you want to start this pathway?</AlertDialogTitle>
           <AlertDialogDescription className="text-base">
-            - You <b>cannot pause</b> or stop the pathway at any time.<br/>
-            - Once you start the pathway, it will be considered active and your stats will be affected accordingly.<br/>
-            - If you want to pause the pathway, you can do so from the pathway timeline.<br/>
+            - You <b>cannot pause</b> or stop the pathway at any time.<br />
+            - Once you start the pathway, it will be considered active and your stats will be affected accordingly.<br />
+            - If you want to pause the pathway, you can do so from the pathway timeline.<br />
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="content">
