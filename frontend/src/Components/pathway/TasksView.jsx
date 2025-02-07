@@ -122,7 +122,7 @@ const TasksView = () => {
       <div className="max-w-7xl">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold mb-4">{topic}</h1>
-          {isActive && <div className="StartBox ml-auto">
+          {!isActive && <div className="StartBox ml-auto">
             <Button onClick={startPathway}>Start Your Learning Journey now</Button>
           </div>}
         </div>
