@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { doc, addDoc, collection } from 'firebase/firestore';
+import { doc, setDoc, collection } from 'firebase/firestore';
 import { auth } from '../firebase';
 
 /* 
@@ -11,25 +11,28 @@ hence addProfile, updateProfile, getProfile, etc
 const addProfile = async (userDetails, userId) => {
   try {
     const user = auth.currentUser;
-
     if (!user) {
       throw new Error('No user found');
     }
+    // Reference to the user profile document using userId
+    const userProfileRef = doc(db, 'UserProfiles', userId);
 
-    const userDetailsRef = doc(db, 'Users', user.uid);
-
-    const docRef = await addDoc(collection(db, 'UserProfiles'), {
+    // Save the user profile data, including nested personalInfo, socialLinks, and background
+    await setDoc(userProfileRef, {
       userId: userId,
-      ...userDetails,
+      personalInfo: userDetails.personalInfo,
+      socialLinks: userDetails.socialLinks,
+      background: userDetails.background,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
 
-    return { success: true, docRef };
+    return { success: true };
   } catch (error) {
     console.error('Error adding user details:', error);
     throw error;
   }
 };
+
 
 export default addProfile;

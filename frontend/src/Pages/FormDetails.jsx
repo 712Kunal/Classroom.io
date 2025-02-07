@@ -33,12 +33,15 @@ function FormDetails() {
   const [hobies, setHobies] = useState([]);
   const [interest, setinterest] = useState([]);
 
+  // Add state for the email notification toggle
+  const [emailNotification, setEmailNotification] = useState(false);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log('user', user);
       } else {
-        // navigate('/signup');
+        navigate('/signup');
         console.log('no user');
       }
     });
@@ -46,18 +49,14 @@ function FormDetails() {
     return () => unsubscribe();
   }, []);
 
-  const handleUseraddDetails = async () => {
+  const handleUseraddDetails = async (userDetails) => {
     try {
-      try {
-        const userId = auth.currentUser.uid;
-        const adduserData = await addProfile(userDetails, userId);
-        console.log(adduserData);
-        if (adduserData.success == true) {
-          console.log('User added successfully');
-          navigate('/app/profile');
-        }
-      } catch (error) {
-        console.error('Error adding user details:', error);
+      const userId = auth.currentUser.uid;
+      const adduserData = await addProfile(userDetails, userId);
+      console.log(adduserData);
+      if (adduserData.success === true) {
+        console.log('User added successfully');
+        navigate('/app/profile');
       }
     } catch (error) {
       console.error('Error adding user details:', error);
@@ -110,11 +109,12 @@ function FormDetails() {
         skills,
         hobies,
         interest
+      },
+      preferences: {
+        emailNotification // Add the email notification preference
       }
     };
-
-    setUserDetails(userData);
-    handleUseraddDetails();
+    handleUseraddDetails(userData);
   };
 
   return (
@@ -125,6 +125,9 @@ function FormDetails() {
         </h1>
         <p className="text-sm text-slate-800 dark:text-gray-400">
           Please provide your details to personalize your experience.
+        </p>
+        <p className="text-lg text-gray-500 font-medium mt-2 p-2 rounded-md  text-center">
+          Email: {auth.currentUser?.email}
         </p>
       </div>
 
@@ -284,6 +287,20 @@ function FormDetails() {
                   />
                 </div>
               </div>
+
+              {/* Add the Email Notification Toggle */}
+              <div className="flex items-center gap-2 mt-4">
+                <input
+                  type="checkbox"
+                  checked={emailNotification}
+                  onChange={() => setEmailNotification(!emailNotification)}
+                  className="h-5 w-5 text-indigo-600 border-gray-300 rounded"
+                />
+                <Label htmlFor="emailNotification" className="text-sm text-gray-700">
+                  Email Notification
+                </Label>
+              </div>
+
               <button
                 className="relative group/btn hover:shadow-md hover:shadow-blue-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium"
                 type="submit">
@@ -302,5 +319,4 @@ function FormDetails() {
     </div>
   );
 }
-
 export default FormDetails;
