@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { auth, db } from '../Firebase/firebase';
-import { getDoc, doc } from 'firebase/firestore';
+import { auth } from '../Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 import { addProfile } from '../Firebase/services/userDetails.servies.js';
@@ -22,7 +21,6 @@ import {
 import { Input } from '../Components/ui/input2';
 import { Label } from '../Components/ui/label2';
 import Languages from '../Components/originUi/languages-known';
-import { toast } from 'react-toastify';
 
 function FormDetails() {
   const navigate = useNavigate();
@@ -41,61 +39,23 @@ function FormDetails() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        checkUserDetails(user.uid);
+        console.log('user', user);
       } else {
-        toast.error('User not found', {
-        position: "top-right",
-        autoClose: 5000,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        theme: "dark",
-        });
         navigate('/signup');
+        console.log('no user');
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-  const checkUserDetails = async (userId) => {
-    try {
-      const userProfileRef = doc(db, 'UserProfiles', userId); // Reference to the user's profile
-      const userProfileSnap = await getDoc(userProfileRef);
-
-      if (userProfileSnap.exists()) {
-        navigate('/app/profile');
-      } else {
-        
-        toast.error('No user details found. Please fill out your information.', {
-          position: "top-right",
-          autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          theme: "dark",
-          });
-      }
-    } catch (error) {
-      console.error('Error checking user details:', error);
-    }
-  };
-
   const handleUseraddDetails = async (userDetails) => {
     try {
       const userId = auth.currentUser.uid;
       const adduserData = await addProfile(userDetails, userId);
-
+      console.log(adduserData);
       if (adduserData.success === true) {
         console.log('User added successfully');
-        toast.success('User added successfully', {
-          position: "top-right",
-          autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          theme: "dark",
-          });
         navigate('/app/profile');
       }
     } catch (error) {
