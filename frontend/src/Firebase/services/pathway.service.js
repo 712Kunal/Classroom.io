@@ -1,22 +1,16 @@
 import { db } from '../firebase';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { setDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 
 const pathwaysCollectionRef = collection(db, 'pathways');
 
-/** adds pathway to db (userId, pathwayData Obj) */
-export const addPathway = async (userId, pathwayData) => {
+/** adds pathway to db (pathwayData Obj) */
+export const addPathway = async (pathwayData) => {
   try {
     // add doc as pathway in pathways collection
-    // inject createdAt, modifiedAt
     // returns id of the doc
 
-    const docRef = await addDoc(pathwaysCollectionRef, {
-      ...pathwayData,
-      userId,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
-    return docRef.id;
+    console.log(pathwayData)
+    await setDoc(doc(pathwaysCollectionRef, pathwayData.id), pathwayData);
   } catch (error) {
     console.error('Error adding pathway:', error);
     throw error;
@@ -91,24 +85,9 @@ export const getNonActivePathwaysOnlyOfUser = async (userId) => {
   }
 };
 
-/** delete single specified user's pathway (userId, pathwayId) */
-export const deletePathwayOfUser = async (userId, pathwayId) => {
+/** delete single specified user's pathway (pathwayId) */
+export const deletePathwayOfUser = async (pathwayId) => {
   try {
-    const q = query(
-      pathwaysCollectionRef,
-      where("userId", "==", userId),
-      where("id", "==", pathwayId)
-    );
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.docs.length == 0) {
-      throw new Error("No pathway found");
-    }
-
-    if (querySnapshot.docs.length > 1) {
-      throw new Error("Multiple pathways found.");
-    }
-
     const docRef = doc(pathwaysCollectionRef, pathwayId);
 
     await deleteDoc(docRef);
@@ -123,18 +102,15 @@ export const deletePathwayOfUser = async (userId, pathwayId) => {
 export const updatePathway = async (pathwayId, updates) => {
   try {
     const docRef = doc(pathwaysCollectionRef, pathwayId);
-    const updatedPathway = await updateDoc(
+    await updateDoc(
       docRef,
       {
-        updates,
+        ...updates,
         modifiedAt: serverTimestamp()
       }
     );
-
-    return {
-      id: updatePathway.id,
-      ...updatedPathway.data()
-    };
+    const pathway = await getDoc(docRef);
+    return pathway.data();
   } catch (error) {
     console.error("Error updating pathway:", error);
     throw error;

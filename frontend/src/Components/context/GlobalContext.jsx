@@ -1,37 +1,81 @@
-import { useAuthListener } from '@/hooks/use-auth';
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { useAuthListener } from '@/hooks/use-auth.jsx';
+import { getUserProfileByUserId } from '@/Firebase/services/userDetails.servies';
+import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service';
+import { Pathway } from '../models/Pathway.model';
 
-// Create the context
 const GlobalContext = createContext(null);
 
-// Provider component
 export const GlobalProvider = ({ children }) => {
-  const [activePathwayId, setActivePathwayId] = useState("");
-  const { user, loading } = useAuthListener();
+  const { user, loading: authLoading } = useAuthListener();
+  
+  const [userDetails, setUserDetails] = useState(null);
   const [pathwaysList, setPathwaysList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch user details
+  const fetchUserDetails = useCallback(async () => {
+    if (!user?.uid) return;
+    
+    try {
+      setIsLoading(true);
+      const data = await getUserProfileByUserId(user.uid);
+      setUserDetails(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.uid]);
+
+  // Fetch pathways
+  const fetchPathways = useCallback(async () => {
+    if (!user?.uid) return;
+
+    try {
+      setIsLoading(true);
+      const data = await getAllPathwaysOfUser(user.uid);
+      setPathwaysList(data.map((pathway) => new Pathway(pathway, null)));
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.uid]);
+
+  // Perform fetch when user changes
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    fetchUserDetails();
+    fetchPathways();
+  }, [user?.uid, fetchUserDetails, fetchPathways]);
+
+  const refetchUserDetails = () => fetchUserDetails();
+  const refetchPathways = () => fetchPathways();
+
+  const contextValue = {
+    userDetails,
+    pathwaysList,
+    isLoading: authLoading || isLoading,
+    error,
+    refetchUserDetails,
+    refetchPathways,
+  };
 
   return (
-    <GlobalContext.Provider value={{ 
-      activePathwayId,
-      setActivePathwayId,
-      user,
-      loading,
-      pathwaysList,
-      setPathwaysList,
-    }}>
+    <GlobalContext.Provider value={contextValue}>
       {children}
     </GlobalContext.Provider>
   );
 };
 
-// Custom hook for using the context
 export const useGlobal = () => {
   const context = useContext(GlobalContext);
-
   if (!context) {
     throw new Error('useGlobal must be used within its provider');
   }
-
   return context;
 };
 

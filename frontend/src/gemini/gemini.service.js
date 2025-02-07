@@ -1,3 +1,4 @@
+import { Pathway } from "@/components/models/Pathway.model";
 import { addPathway } from "@/Firebase/services/pathway.service";
 import {
   GoogleGenerativeAI,
@@ -174,10 +175,14 @@ async function generatePathway(userId, prompt) {
     const response = await chatSession.sendMessage(prompt);
     const result = JSON.parse(response.response.text());
 
-    // Save trip to database
-    const pathwayId = await addPathway(userId, result);
+    // create new pathway instance
+    const pathway = new Pathway(result, userId)
 
-    return { result, pathwayId };
+    // Save trip to database
+    const pathwayData = pathway.toDBFormat();
+    await addPathway(pathwayData);
+
+    return { pathwayId: pathwayData.id };
   } catch (error) {
     console.error('Error generating pathway:', error);
     throw new Error('Pathway generation failed. Please try again.');

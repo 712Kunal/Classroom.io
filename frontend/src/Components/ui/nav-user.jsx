@@ -31,21 +31,36 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import ModeToggle from '../originUi/mode-toggle.jsx';
-import { auth } from "@/Firebase/firebase"; 
+import React from "react";
+import { auth, signOut} from "@/Firebase/firebase.js";
 import { useNavigate } from "react-router-dom";
-import { useGlobal } from "../context/GlobalContext.jsx"
+import { useAuthListener } from "@/hooks/use-auth.jsx"
 
-export function NavUser({user}) {
+export function NavUser() {
   const { isMobile } = useSidebar();
-  const { setUser } = useGlobal();
   const navigate = useNavigate();
 
+  const { user: authUser } = useAuthListener();
+
+  const user = authUser ? {
+    username: authUser.displayName,
+    avatar: 'https://avatar.iran.liara.run/public/48',
+    email: authUser.email,
+  } : null;
+
   const handleLogout = () => {
+
     navigate("/login");  
     auth.signOut()
+
+    signOut(auth)
+
       .then(() => {
+        navigate("/");
         console.log("User logged out");
+
         setUser(null);  
+
       })
       .catch((error) => {
         console.error("Error logging out: ", error.message);

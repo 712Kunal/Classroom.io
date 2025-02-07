@@ -9,7 +9,7 @@ export default function LandingNavbar() {
 
   return (
     <>
-      <nav className="navbar w-full backdrop-blur-md sticky top-0 left-0 p-4 border z-50">
+      <nav className="navbar w-full backdrop-blur-md fixed top-0 left-0 p-4 z-50">
         <div className="outer-container flex justify-between items-center gap-60">
           <div className="first-section flex-shrink-0">
             <a href="/" className="logo block w-24">
@@ -68,7 +68,7 @@ export default function LandingNavbar() {
             </span>
             <button
               onClick={() => navigate('/signup')}
-              className="bg-slate-700 px-3 py-1 rounded-md">
+              className="bg-gradient-to-br from-purple-800 to-black/50 px-3 py-1 rounded-md">
               Signup
             </button>
           </div>

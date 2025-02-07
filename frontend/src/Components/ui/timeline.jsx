@@ -9,11 +9,12 @@ import {
   TooltipTrigger,
 } from "./tooltip.jsx"
 import { Button } from "./button.jsx";
+import StartPathwayModal from "@/components/pathway/StartPathwayModal.jsx";
 
 export const Timeline = ({
   data,
   title,
-  desciption,
+  description,
   duration,
   startDate,
   endDate,
@@ -31,7 +32,7 @@ export const Timeline = ({
     }
   }, [ref]);
 
-  if(!isActivePathway) {
+  if (!isActivePathway) {
     percentageComplete = 0;
   }
   const heightOfProgressTracer = `${isActivePathway ? parseInt(percentageComplete) : 0}%`;
@@ -45,15 +46,15 @@ export const Timeline = ({
           </h2>
           <p
             className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-lg">
-            {desciption}
+            {description}
           </p>
           <div className="flex gap-2 items-center justify-start">
             <Badge variant="outline" className="p-2">
               Duration: {duration} days
             </Badge>
-            <Badge variant="outline" className="p-2">
-              {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
-            </Badge>
+            {(startDate || endDate) && <Badge variant="outline" className="p-2">
+              {startDate ? new Date(startDate).toLocaleDateString() : "No Start Date"} - {endDate ? new Date(endDate).toLocaleDateString() : "No End Date"}
+            </Badge>}
           </div>
         </div>
         <div className="progress flex flex-col gap-8 w-1/2">
@@ -73,7 +74,7 @@ export const Timeline = ({
             </>
           ) : (
             <div className="StartBox ml-auto">
-              <Button>Start Your Learning Journey now</Button>
+              <StartPathwayModal><Button>Start Your Learning Journey now</Button></StartPathwayModal>
             </div>
           )}
         </div>

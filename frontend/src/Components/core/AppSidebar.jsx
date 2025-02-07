@@ -19,12 +19,12 @@ import MobileModeToggle from '../originUi/mobile-mode-toggle.jsx';
 import { Bell, Library, RouteIcon } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile.jsx';
 import { useGlobal } from '../context/GlobalContext.jsx';
-import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service.js';
 import { Pathway } from '../models/Pathway.model.js';
 
 const AppSidebar = () => {
   const { open } = useSidebar();
   const isMobile = useIsMobile();
+
   const { user: contextUser } = useGlobal();
   const { pathwaysList, setPathwaysList } = useGlobal();
   
@@ -58,6 +58,19 @@ const AppSidebar = () => {
       pathwayId: pathway.data._id,
     }
   ));
+
+  const { pathwaysList, isLoading } = useGlobal();
+  let pathways = [];
+
+  if(!isLoading && pathwaysList && pathwaysList.length > 0) {
+    pathways = pathwaysList.map((pathway) => (
+      {
+        id: pathway.data.id,
+        name: pathway.data.topic,
+        pathwayId: pathway.data.id,
+      }
+    ));
+  }
 
   const routes = [
     {
@@ -125,7 +138,7 @@ const AppSidebar = () => {
         <div className="flex items-center justify-start">
           {!open && <MobileModeToggle/>}
         </div>
-        <NavUser user={user}/>
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
