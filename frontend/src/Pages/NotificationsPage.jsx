@@ -4,7 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Route, LayoutList, Coins, Award } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card';
 import { Badge } from '@/Components/ui/badge';
-import { getNotifications } from '../Firebase/services/notifications.service';
+import {
+  getNotifications,
+  markNotificationAsRead
+} from '../Firebase/services/notifications.service';
 import { auth } from '@/Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Timestamp } from 'firebase/firestore';
@@ -34,8 +37,25 @@ function NotificationsPage() {
     });
   }, []);
 
+  useEffect(() => {
+    // Find out all the unread notifications
+    const unreadNotifications = notifications.filter((notification) => !notification.isRead);
+
+    const timeOutId = setTimeout(() => {
+      unreadNotifications.forEach(async (notification) => {
+        await markNotificationAsRead(notification.id);
+        setNotifications((prev) =>
+          prev.map((notification) =>
+            notification.id === notification.id ? { ...notification, isRead: true } : notification
+          )
+        );
+      });
+    }, 2000);
+
+    return () => clearTimeout(timeOutId);
+  }, [notifications]);
+
   const relativeTimeFormat = (date) => {
-    
     let sendDate = date;
     if (sendDate instanceof Timestamp) {
       sendDate = sendDate.toDate();
@@ -122,7 +142,7 @@ function NotificationsPage() {
                   className="animated-div">
                   <Card
                     className={`mb-4 relative overflow-hidden ${
-                      notification.isDone ? null : 'bg-slate-200 dark:bg-slate-900'
+                      notification.isRead ? null : 'bg-slate-200 dark:bg-slate-900'
                     } rounded-lg shadow-sm border-slate-600 border-[1px] hover:cursor-pointer hover:border-blue-500 dark:hover:border-blue-300 hover:shadow-blue-200 transition-all duration-500`}>
                     <CardContent className="p-4 pr-12">
                       <div className="flex flex-start gap-4">
