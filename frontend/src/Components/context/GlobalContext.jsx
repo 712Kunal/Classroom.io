@@ -55,6 +55,16 @@ export const GlobalProvider = ({ children }) => {
   const refetchUserDetails = () => fetchUserDetails();
   const refetchPathways = () => fetchPathways();
 
+  const [activePathwayId, setActivePathwayId] = useState(null);
+  useEffect(() => {
+    const currentActivePathwayIndex = pathwaysList.findIndex((pathway) => pathway.data.isActive);
+    if (currentActivePathwayIndex === -1) {
+      setActivePathwayId(null);
+    } else {
+      setActivePathwayId(pathwaysList[currentActivePathwayIndex].data.id);
+    }
+  }, [pathwaysList]);
+
   const contextValue = {
     userDetails,
     pathwaysList,
@@ -62,6 +72,7 @@ export const GlobalProvider = ({ children }) => {
     error,
     refetchUserDetails,
     refetchPathways,
+    activePathwayId,
   };
 
   return (

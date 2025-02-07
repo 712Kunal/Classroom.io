@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
@@ -44,7 +45,8 @@ public class PathwayController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Notification not found for the user");
         }
 
-        Boolean emailNotif= (Boolean) document.get("emailNotification");
+        Map<String, Object> preferences = (Map<String, Object>) document.get("preferences");
+        Boolean emailNotif = preferences != null ? (Boolean) preferences.get("emailNotification") : false;
         try {
             if (Boolean.TRUE.equals(emailNotif)) {
 
@@ -94,7 +96,8 @@ public class PathwayController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Notification not found for the user");
         }
 
-        Boolean emailNotif= (Boolean) document.get("emailNotification");
+        Map<String, Object> preferences = (Map<String, Object>) document.get("preferences");
+        Boolean emailNotif = preferences != null ? (Boolean) preferences.get("emailNotification") : false;
         try {
             if (Boolean.TRUE.equals(emailNotif)) {
 
@@ -147,7 +150,8 @@ public class PathwayController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Notification not found for the user");
         }
 
-        Boolean emailNotif= (Boolean) document.get("emailNotification");
+        Map<String, Object> preferences = (Map<String, Object>) document.get("preferences");
+        Boolean emailNotif = preferences != null ? (Boolean) preferences.get("emailNotification") : false;
         try {
             if (Boolean.TRUE.equals(emailNotif)) {
 
@@ -208,7 +212,8 @@ public class PathwayController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Notification not found for the user");
         }
 
-        Boolean emailNotif= (Boolean) document.get("emailNotification");
+        Map<String, Object> preferences = (Map<String, Object>) document.get("preferences");
+        Boolean emailNotif = preferences != null ? (Boolean) preferences.get("emailNotification") : false;
         try {
             if (Boolean.TRUE.equals(emailNotif)) {
 

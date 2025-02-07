@@ -5,6 +5,7 @@ import Profile from '@/Components/Profile/Profile.jsx';
 import Dashboard from '@/Components/Profile/Dashboard.jsx';
 import History from './History';
 import Usersetting from './Usersetting';
+import Mindspace from './Mindspace';
 
 export default function Navbar({ user }) {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -45,7 +46,7 @@ export default function Navbar({ user }) {
                         aria-current={activeTab === item.name ? 'page' : undefined}
                         className={classNames(
                           activeTab === item.name
-                            ? 'bg-gray-900 rounded-full text-white transform scale-105 transition-all duration-300'
+                            ? 'bg-gray-700 rounded-full text-white transform scale-105 transition-all duration-300'
                             : 'text-gray-600 rounded-full hover:bg-gray-500 hover:text-gray-900',
                           'rounded-full px-3 py-2 text-sm font-medium'
                         )}
@@ -96,7 +97,7 @@ export default function Navbar({ user }) {
                 }}
                 aria-current={activeTab === item.name ? 'page' : undefined}
                 className={classNames(
-                  activeTab === item.name ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  activeTab === item.name ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'block rounded-md px-3 py-2 text-base font-medium'
                 )}
               >
@@ -119,7 +120,7 @@ export default function Navbar({ user }) {
           {activeTab === 'Profile' && <Profile user={user} />}
           {activeTab === 'Dashboard' && <Dashboard user={user} />}
           {activeTab === 'History' && <History />}
-          {activeTab === 'Mindspace' && <History />}
+          {activeTab === 'Mindspace' && <Mindspace user={user} />}
           {activeTab === 'settings' && <Usersetting user={user}/>}  
         </div>
       </main>

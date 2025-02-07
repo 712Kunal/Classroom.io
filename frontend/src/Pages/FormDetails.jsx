@@ -21,6 +21,7 @@ import {
 import { Input } from '../Components/ui/input2';
 import { Label } from '../Components/ui/label2';
 import Languages from '../Components/originUi/languages-known';
+import { toast } from 'react-toastify';
 
 function FormDetails() {
   const navigate = useNavigate();
@@ -41,6 +42,14 @@ function FormDetails() {
       if (user) {
         console.log('user', user);
       } else {
+        toast.success('User Not found ',{
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
         navigate('/signup');
         console.log('no user');
       }
@@ -56,10 +65,26 @@ function FormDetails() {
       console.log(adduserData);
       if (adduserData.success === true) {
         console.log('User added successfully');
+        toast.success('User registered successfully',{
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
         navigate('/app/profile');
       }
     } catch (error) {
       console.error('Error adding user details:', error);
+      toast.success('Error User not Added',{
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+        });
     }
   };
 
