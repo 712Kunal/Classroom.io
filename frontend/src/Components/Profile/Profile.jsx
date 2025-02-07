@@ -121,8 +121,6 @@ export function SocialLinks({ user }) {
 }
 
 
-
-// Background and Education
 function BackgroundEducation({ user }) {
   const [open, setOpen] = useState({
     "field-of-study": false,
@@ -205,14 +203,13 @@ export function Achievements({ user }) {
       </div>
 
       <div className="mb-6">
-        {/* Fallback if no badges are awarded */}
         {user.badgesAwarded.length === 0 ? (
           <p className="text-lg text-gray-600 text-center">No badges awarded yet. Keep up the good work!</p>
         ) : (
           <div className="flex justify-center space-x-6 flex-wrap">
             {user.badgesAwarded.map((badge, index) => (
               <div
-                key={badge}  // Better to use a unique identifier if available
+                key={badge}  
                 className="w-16 h-16 sm:w-24 sm:h-24 md:w-21 md:h-21 lg:w-22 lg:h-22 xl:w-25 xl:h-25 relative overflow-hidden transform transition duration-300 ease-in-out hover:scale-110 hover:rotate-6 mb-4"
                 style={{
                   clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
@@ -222,10 +219,8 @@ export function Achievements({ user }) {
                   src={badge}
                   alt={`badge-${index}`}
                   className="w-full h-full object-cover"
-                  loading="lazy"  // Lazy load images for better performance
+                  loading="lazy"
                 />
-
-                {/* Hover Glow Effect */}
                 <div className="absolute inset-0 bg-transparent transition-all duration-300 opacity-0 hover:opacity-100 hover:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] hover:shadow-indigo-500/50 dark:hover:shadow-[0_0_20px_5px_rgba(255,255,255,0.7)] dark:hover:shadow-purple-500/70">
                 </div>
               </div>

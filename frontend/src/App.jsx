@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthListener } from './hooks/use-auth';
+import { ToastContainer } from 'react-toastify';
 
 const LandingPage = lazy(() => import('./Pages/LandingPage.jsx'));
 const LoginPage = lazy(() => import('./Pages/LoginPage.jsx'));
@@ -61,7 +62,16 @@ function App() {
           </Route>
           <Route path="*" element={suspenseComponent(<NotFoundPage />)} />
         </Routes>
+        <ToastContainer
+          position="top-right"
+          autoClose={4000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeButton={true} 
+          className="toast-container-dark" 
+        />
       </BrowserRouter>
+
     </div>
   );
 }

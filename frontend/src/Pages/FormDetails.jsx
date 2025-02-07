@@ -22,6 +22,7 @@ import {
 import { Input } from '../Components/ui/input2';
 import { Label } from '../Components/ui/label2';
 import Languages from '../Components/originUi/languages-known';
+import { toast } from 'react-toastify';
 
 function FormDetails() {
   const navigate = useNavigate();
@@ -40,9 +41,16 @@ function FormDetails() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Check if the user's details exist in the "UserProfiles" collection
         checkUserDetails(user.uid);
       } else {
+        toast.error('User not found', {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "dark",
+        });
         navigate('/signup');
       }
     });
@@ -58,7 +66,15 @@ function FormDetails() {
       if (userProfileSnap.exists()) {
         navigate('/app/profile');
       } else {
-        console.log('No user details found. Please fill out your information.');
+        
+        toast.error('No user details found. Please fill out your information.', {
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
       }
     } catch (error) {
       console.error('Error checking user details:', error);
@@ -72,6 +88,14 @@ function FormDetails() {
 
       if (adduserData.success === true) {
         console.log('User added successfully');
+        toast.success('User added successfully', {
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          });
         navigate('/app/profile');
       }
     } catch (error) {
