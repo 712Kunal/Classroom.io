@@ -312,9 +312,7 @@ function FormDetails() {
                   />
                 </div>
               </div>
-
-              {/* Add the Email Notification Toggle */}
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center justify-center border-gray-300 space-x-3">
                 <input
                   type="checkbox"
                   checked={emailNotification}
