@@ -1,16 +1,15 @@
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { Link } from 'react-router-dom';
-import Spline from '@splinetool/react-spline';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { auth, db } from '@/Firebase/firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Spline from '@splinetool/react-spline';
+
 
 function Signup() {
   const navigate = useNavigate();
-
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +17,6 @@ function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
   const [errors, setErrors] = useState({});
 
-  // Form validation function
   const validateForm = () => {
     const errors = {};
     if (!username) errors.username = 'Username is required.';
@@ -43,32 +41,63 @@ function Signup() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       await updateProfile(user, { displayName: username });
-      console.log('User registered successfully:', user);
-      toast.success('User registered successfully', user, {
-        position: "top-right",
+
+      toast.success('User registered successfully', {
+        position: 'top-right',
         autoClose: 5000,
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
-        theme: "dark",
+        theme: 'dark',
       });
+
       await setDoc(doc(db, 'Users', user.uid), {
         email: user.email,
-        username: username
+        username: username,
       });
 
-      console.log('Done');
+      console.log('User registration completed.');
 
-      
-      
+      const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
 
+      try {
+        await axios.post(backendUrl, {
+          email: user.email,
+          username: username,
+        });
+        console.log('Notification and email request sent to backend.');
+        toast.success('Notification and email request sent successfully.', {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: 'dark',
+        });
+      } catch (axiosError) {
+        console.error('Error sending notification:', axiosError.message);
+        toast.error('Failed to send notification.', {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: 'dark',
+        });
+      }
     } catch (error) {
       console.error('Error during registration:', error.message);
-    
+      toast.error('Registration failed. Please try again later.', {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        theme: 'dark',
+      });
       setErrorMessage(error.message);
     }
   };
-
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
