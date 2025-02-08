@@ -2,7 +2,7 @@
 
 import { BadgeCheck, ChevronsUpDown, LogOut, ChartSpline, Settings as CogIcon } from 'lucide-react';
 
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -23,7 +23,6 @@ import {
 import ModeToggle from '../originUi/mode-toggle.jsx';
 import React from 'react';
 import { auth, signOut } from '@/Firebase/firebase.js';
-import { useNavigate } from 'react-router-dom';
 import { useAuthListener } from '@/hooks/use-auth.jsx';
 
 export function NavUser() {

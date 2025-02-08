@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile , GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { auth, db } from '@/Firebase/firebase';
@@ -6,7 +6,6 @@ import { setDoc, doc } from 'firebase/firestore';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import GoogleButton from 'react-google-button';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 import { FaAdjust } from 'react-icons/fa';
 import { AlignCenter, AlignCenterVertical } from 'lucide-react';

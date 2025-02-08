@@ -1,4 +1,4 @@
-import { db } from '../firebase';
+import { db , auth } from '../firebase';
 import {
   doc,
   setDoc,
@@ -9,7 +9,6 @@ import {
   where,
   serverTimestamp
 } from 'firebase/firestore';
-import { auth } from '../firebase';
 
 const addProfile = async (userDetails, userId) => {
   try {

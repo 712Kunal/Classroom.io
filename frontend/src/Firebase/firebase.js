@@ -5,7 +5,7 @@ import {
   sendPasswordResetEmail,
   setPersistence,
   signOut
-} from 'firebase/auth';
+, deleteUser } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import {
   getFirestore,
@@ -18,7 +18,6 @@ import {
   where,
   serverTimestamp
 } from 'firebase/firestore';
-import { deleteUser } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
