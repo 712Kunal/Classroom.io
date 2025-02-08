@@ -13,6 +13,7 @@ import StartPathwayModal from "@/components/pathway/StartPathwayModal.jsx";
 import PausePathwayModal from "../pathway/PausePathwayModal.jsx";
 import ResumePathwayModal from "../pathway/ResumePathway.jsx";
 import RestartPathwayModal from "../pathway/RestartPathwayModal.jsx";
+import ChatDrawer from "@/components/pathway/ChatDrawer.jsx";
 
 export const Timeline = ({
   data,
@@ -100,6 +101,9 @@ export const Timeline = ({
               )}
             </div>
           )}
+          <ChatDrawer>
+            <Button>Talk with an AI Assistant</Button>
+          </ChatDrawer>
         </div>
       </div>
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
