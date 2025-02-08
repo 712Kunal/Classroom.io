@@ -74,5 +74,31 @@ public class UserController {
 
     }
 
+    @PostMapping("/user/{userId}/codeVerification")
+    public ResponseEntity<String> sendCodeForEmailVerification(
+            @PathVariable String userId
+    ) throws ExecutionException, InterruptedException {
+        if(userId==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Id not found with: "+userId);
+        }
+
+        DocumentSnapshot document = firestore.collection("Users").document(userId).get().get();
+
+        String userEmail= (String) document.get("email");
+
+        if(userEmail==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User email not found with: "+userEmail);
+        }
+
+        try{
+            System.out.println("Sending email for code verification");
+            userService.sendCodeForVerification(userId, userEmail);
+            return ResponseEntity.ok("Email sent successfully");
+        } catch (Exception e) {
+            logger.error("Error sending email", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending the email");
+        }
+    }
+
 
 }

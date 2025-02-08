@@ -127,10 +127,6 @@ export function NavUser() {
                 <BadgeCheck />
                 <Link to="/app/profile">Account</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CogIcon />
-                Settings
-              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
