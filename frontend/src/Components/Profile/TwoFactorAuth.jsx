@@ -84,7 +84,7 @@ function TwoFactorAuth() {
       <CardHeader>
         <span className="flex items-center gap-2">
           <MdOutlineSecurity className="text-5xl text-green-400" />
-          <CardTitle className="font-sans text-5xl">Two-Factor Authentication</CardTitle>
+          <CardTitle className="font-sans text-5xl">Email Verification</CardTitle>
         </span>
         <CardDescription className="font-exo tracking-wide text-xl font-extralight mt-10">
           We've sent a 4-digit code to your email. Please enter it below to verify your identity.

@@ -15,12 +15,13 @@ import axios from "axios";
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGlobal } from '../context/GlobalContext';
+import { awardBadge } from "@/Firebase/services/badge.service";
 
 const StartPathwayModal = ({ children }) => {
   const { user } = useAuthListener();
   const navigate = useNavigate();
   const { pathwayId } = useParams();
-  const { pathwaysList, refetchPathways, activePathwayId } = useGlobal();
+  const { pathwaysList, refetchPathways, activePathwayId, badges } = useGlobal();
   const pathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
 
   const handleStartPathway = async () => {
@@ -38,6 +39,10 @@ const StartPathwayModal = ({ children }) => {
 
       await axios.post(`http://localhost:8080/api/user/${user.uid}/pathwayActivate/${pathwayId}`);
 
+      if(Boolean(badges.some((badge) => badge.badgeType === "first_pathway"))) {
+        await awardBadge(user.uid, "first_pathway");
+        await refetchPathways();
+      }
     } catch (error) {
       console.error(error);
     }

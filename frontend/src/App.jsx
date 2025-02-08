@@ -61,7 +61,10 @@ function App() {
             path="/"
             element={user ? <Navigate to="/app/profile" /> : suspenseComponent(<LandingPage />)}
           />
-          <Route path="/login" element={suspenseComponent(<LoginPage />)} />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/app/profile" /> : suspenseComponent(<LoginPage />)}
+          />
           <Route path="/forgot-password" element={suspenseComponent(<ForgotPassword />)} />
           <Route
             path="/signup"
