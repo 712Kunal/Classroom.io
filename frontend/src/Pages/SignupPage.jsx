@@ -203,6 +203,7 @@ function Signup() {
 
       <div className="flex justify-center w-full">
   <GoogleButton
+    className="transform scale-75" // Reduces size to 75% of original
     onClick={async () => {
       try {
         const provider = new GoogleAuthProvider();
@@ -210,7 +211,7 @@ function Signup() {
         const user = result.user;
 
         if (user) {
-          const username = user.email.split('@')[0]; // Extract username from email
+          const username = user.email.split('@')[0];
 
           await setDoc(doc(db, 'Users', user.uid), {
             email: user.email,
@@ -218,22 +219,20 @@ function Signup() {
           });
 
           console.log('Google sign-in successful:', user);
-          window.location.href = "/app/profile"; // Redirect to app after login
+          window.location.href = "/app/profile";
         }
       } catch (error) {
         console.error('Google Sign-In Error:', error);
         toast.error('Google Sign-In failed. Please try again.', {
           position: "top-right",
           autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
           theme: "dark",
         });
       }
     }}
   />
 </div>
+
 
 
 
