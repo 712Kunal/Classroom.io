@@ -1,4 +1,6 @@
 package com.swapnil.Classroom.service;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
@@ -8,12 +10,17 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -78,6 +85,40 @@ public class UserService {
     }
 
 
+    public void sendCodeForVerification(String userId, String userEmail)
+            throws MessagingException, ExecutionException, InterruptedException {
 
+        SecureRandom random = new SecureRandom();
+        int code = 1000 + random.nextInt(9000);
+
+        System.out.println("Code: " + code);
+
+        String hashedCode = BCrypt.hashpw(String.valueOf(code), BCrypt.gensalt());
+
+        long expirationInSeconds = (System.currentTimeMillis() / 1000) + (10 * 60);
+        Timestamp expirationTime = Timestamp.ofTimeSecondsAndNanos(expirationInSeconds, 0);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("userId", userId);
+        data.put("verificationCode", hashedCode);
+        data.put("expirationTime", expirationTime);
+        data.put("attempts", 0);
+
+        DocumentReference userRef = firestore.collection("userEmailVerification").add(data).get();
+
+        String subject = "Email Verification Code";
+        String body = String.format(
+                "Your email verification code is: %d\n\n" +
+                        "This code will expire in 10 minutes.\n" +
+                        "If you did not request this verification, please ignore this email.",
+                code
+        );
+
+        try {
+            mailService.sendEmail(userEmail, subject, body);
+        } catch (MessagingException e) {
+            throw e;
+        }
+    }
 
 }
