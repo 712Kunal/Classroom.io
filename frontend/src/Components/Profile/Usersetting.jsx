@@ -12,7 +12,7 @@ import {
   Linkedin,
   Twitter,
   BriefcaseBusiness,
-  GraduationCap,
+  GraduationCap
 } from 'lucide-react';
 import { Input } from '@/Components/ui/input2';
 import { Label } from '@/Components/ui/label2';
@@ -23,7 +23,6 @@ import * as Accordion from '@radix-ui/react-accordion';
 import DeleteUser from './DeleteUser';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import ResetPass from './ResetPass';
-
 
 export function UpdateuserInfo({ user }) {
   const navigate = useNavigate();
@@ -44,12 +43,12 @@ export function UpdateuserInfo({ user }) {
       } else {
         console.log('No user found, redirecting to signup...');
         toast.error('No user found, redirecting to signup...', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 4000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: "dark",
+          theme: 'dark'
         });
         navigate('/signup');
       }
@@ -61,7 +60,6 @@ export function UpdateuserInfo({ user }) {
   const fetchUserDetails = async (authUser) => {
     try {
       if (authUser) {
-
         const userData = await getUserData(authUser.uid);
         setUserDetails(userData);
         setLanguagesKnown(userData.background.languagesKnown || []);
@@ -73,7 +71,6 @@ export function UpdateuserInfo({ user }) {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
-
     }
   };
 
@@ -83,24 +80,24 @@ export function UpdateuserInfo({ user }) {
       const addUserData = await addProfile(userDetails, userId);
       if (addUserData.success === true) {
         toast.success('User updated successfully', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: "dark",
+          theme: 'dark'
         });
         navigate('/app');
       }
     } catch (error) {
       console.error('Error user updating user details:', error);
       toast.error('Error user updating', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 5000,
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
-        theme: "dark",
+        theme: 'dark'
       });
     }
   };
@@ -131,14 +128,14 @@ export function UpdateuserInfo({ user }) {
         location,
         bio,
         dob,
-        gender,
+        gender
       },
       socialLinks: {
         insta,
         git,
         linkedin,
         twitter,
-        portfolio,
+        portfolio
       },
       background: {
         study,
@@ -149,11 +146,11 @@ export function UpdateuserInfo({ user }) {
         learningStyles,
         skills,
         hobbies,
-        interest,
+        interest
       },
       preferences: {
-        emailNotification,
-      },
+        emailNotification
+      }
     };
     handleUserAddDetails(userData);
   };
@@ -189,15 +186,31 @@ export function UpdateuserInfo({ user }) {
                 </h2>
                 <div>
                   <Label htmlFor="fullname">Enter your full name: </Label>
-                  <Input name="name" placeholder="Eg: John Doe" type="text" defaultValue={userDetails?.personalInfo?.fullName} />
+                  <Input
+                    name="name"
+                    placeholder="Eg: John Doe"
+                    type="text"
+                    defaultValue={userDetails?.personalInfo?.fullName}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="contact">Enter your contact number: </Label>
-                  <Input name="contact" placeholder="Eg: +91-1234567890" type="number" maxLength="12" defaultValue={userDetails?.personalInfo?.contact} />
+                  <Input
+                    name="contact"
+                    placeholder="Eg: +91-1234567890"
+                    type="number"
+                    maxLength="12"
+                    defaultValue={userDetails?.personalInfo?.contact}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="location">Enter your location: </Label>
-                  <Input name="location" placeholder="Eg: Pune" type="text" defaultValue={userDetails?.personalInfo?.location} />
+                  <Input
+                    name="location"
+                    placeholder="Eg: Pune"
+                    type="text"
+                    defaultValue={userDetails?.personalInfo?.location}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="bio">Enter your bio: </Label>
@@ -218,7 +231,6 @@ export function UpdateuserInfo({ user }) {
                     name="dob"
                     className="w-full sm:w-auto dark:bg-zinc-800 dark:text-white bg-white text-gray-900 p-1.5 text-sm rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
                   />
-
                 </div>
                 <div>
                   <Label htmlFor="gender">Enter your gender: </Label>
@@ -232,7 +244,6 @@ export function UpdateuserInfo({ user }) {
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                   </select>
-
                 </div>
               </div>
 
@@ -244,23 +255,48 @@ export function UpdateuserInfo({ user }) {
                 <div className="flex flex-wrap gap-2 justify-center items-center">
                   <div className="flex items-center gap-1">
                     <Instagram className="text-red-400" />
-                    <Input name="insta" placeholder="https://www.instagram.com/" type="url" defaultValue={userDetails?.socialLinks?.insta} />
+                    <Input
+                      name="insta"
+                      placeholder="https://www.instagram.com/"
+                      type="url"
+                      defaultValue={userDetails?.socialLinks?.insta}
+                    />
                   </div>
                   <div className="flex items-center gap-1">
                     <Github className="text-slate-400" />
-                    <Input name="git" placeholder="https://github.com/" type="url" defaultValue={userDetails?.socialLinks?.git} />
+                    <Input
+                      name="git"
+                      placeholder="https://github.com/"
+                      type="url"
+                      defaultValue={userDetails?.socialLinks?.git}
+                    />
                   </div>
                   <div className="flex items-center gap-1">
                     <Linkedin className="text-blue-400" />
-                    <Input name="linkedin" placeholder="https://linkedin.com/" type="url" defaultValue={userDetails?.socialLinks?.linkedin} />
+                    <Input
+                      name="linkedin"
+                      placeholder="https://linkedin.com/"
+                      type="url"
+                      defaultValue={userDetails?.socialLinks?.linkedin}
+                    />
                   </div>
                   <div className="flex items-center gap-1">
                     <Twitter className="text-orange-400" />
-                    <Input name="twitter" placeholder="https://twitter.com/" type="url" defaultValue={userDetails?.socialLinks?.twitter} />
+                    <Input
+                      name="twitter"
+                      placeholder="https://twitter.com/"
+                      type="url"
+                      defaultValue={userDetails?.socialLinks?.twitter}
+                    />
                   </div>
                   <div className="flex items-center gap-1">
                     <BriefcaseBusiness className="text-cyan-200" />
-                    <Input name="portfolio" placeholder="https://portfolio.com/" type="url" defaultValue={userDetails?.socialLinks?.portfolio} />
+                    <Input
+                      name="portfolio"
+                      placeholder="https://portfolio.com/"
+                      type="url"
+                      defaultValue={userDetails?.socialLinks?.portfolio}
+                    />
                   </div>
                 </div>
               </div>
@@ -274,19 +310,39 @@ export function UpdateuserInfo({ user }) {
                 </h2>
                 <div>
                   <Label htmlFor="study">Field of study: </Label>
-                  <Input name="study" placeholder="Eg: Computer Science" type="text" defaultValue={userDetails?.background?.study} />
+                  <Input
+                    name="study"
+                    placeholder="Eg: Computer Science"
+                    type="text"
+                    defaultValue={userDetails?.background?.study}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="degree">Degree: </Label>
-                  <Input name="degree" placeholder="Eg: B.Tech" type="text" defaultValue={userDetails?.background?.degree} />
+                  <Input
+                    name="degree"
+                    placeholder="Eg: B.Tech"
+                    type="text"
+                    defaultValue={userDetails?.background?.degree}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="experience">Years of experience: </Label>
-                  <Input name="experience" placeholder="Eg: 10" type="number" defaultValue={userDetails?.background?.experience} />
+                  <Input
+                    name="experience"
+                    placeholder="Eg: 10"
+                    type="number"
+                    defaultValue={userDetails?.background?.experience}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="occupation">Occupation: </Label>
-                  <Input name="occupation" placeholder="Eg: Software Developer" type="text" defaultValue={userDetails?.background?.occupation} />
+                  <Input
+                    name="occupation"
+                    placeholder="Eg: Software Developer"
+                    type="text"
+                    defaultValue={userDetails?.background?.occupation}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="languages">Languages known: </Label>
@@ -346,7 +402,6 @@ export function UpdateuserInfo({ user }) {
                 </Label>
               </div>
 
-
               <button
                 className="text-xl relative group/btn hover:shadow-md hover:shadow-orange-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10"
                 type="submit"
@@ -361,14 +416,18 @@ export function UpdateuserInfo({ user }) {
   );
 }
 
-const Usersetting = ({user}) => {
+const Usersetting = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <Accordion.Root type="single" collapsible className="w-full shadow-lg transition-shadow duration-300 hover:shadow-xl">
+    <Accordion.Root
+      type="single"
+      collapsible
+      className="w-full shadow-lg transition-shadow duration-300 hover:shadow-xl"
+    >
       <Accordion.Item value="update-user">
         <Accordion.Trigger
           className="flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-400 dark:border-gray-400 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-red-500/50 dark:hover:ring-yellow-100/50 hover:ring-opacity-50"
@@ -399,7 +458,7 @@ const Usersetting = ({user}) => {
           )}
         </Accordion.Trigger>
         <Accordion.Content className="px-4 py-2">
-          <ResetPass user={user}/>
+          <ResetPass user={user} />
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item value="delete-user">
@@ -415,13 +474,11 @@ const Usersetting = ({user}) => {
           )}
         </Accordion.Trigger>
         <Accordion.Content className="px-4 py-2">
-          <DeleteUser user={user}/>
+          <DeleteUser user={user} />
         </Accordion.Content>
       </Accordion.Item>
     </Accordion.Root>
   );
-}
+};
 
-export default Usersetting
-
-
+export default Usersetting;

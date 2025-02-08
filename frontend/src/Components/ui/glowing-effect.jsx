@@ -144,7 +144,8 @@ const GlowingEffect = memo(
             blur > 0 && 'blur-[var(--blur)] ',
             className,
             disabled && '!hidden'
-          )}>
+          )}
+        >
           <div
             className={cn(
               'glow',

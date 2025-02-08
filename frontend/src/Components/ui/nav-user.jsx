@@ -1,20 +1,10 @@
-"use client"
+'use client';
 
-import {
-  BadgeCheck,
-  ChevronsUpDown,
-  LogOut,
-  ChartSpline,
-  Settings as CogIcon
-} from "lucide-react"
+import { BadgeCheck, ChevronsUpDown, LogOut, ChartSpline, Settings as CogIcon } from 'lucide-react';
 
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,19 +12,19 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
+  useSidebar
+} from '@/components/ui/sidebar';
 import ModeToggle from '../originUi/mode-toggle.jsx';
-import React from "react";
-import { auth, signOut} from "@/Firebase/firebase.js";
-import { useNavigate } from "react-router-dom";
-import { useAuthListener } from "@/hooks/use-auth.jsx"
+import React from 'react';
+import { auth, signOut } from '@/Firebase/firebase.js';
+import { useNavigate } from 'react-router-dom';
+import { useAuthListener } from '@/hooks/use-auth.jsx';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -42,33 +32,30 @@ export function NavUser() {
 
   const { user: authUser } = useAuthListener();
 
-  const user = authUser ? {
-    username: authUser.displayName,
-    avatar: 'https://avatar.iran.liara.run/public/48',
-    email: authUser.email,
-  } : null;
+  const user = authUser
+    ? {
+        username: authUser.displayName,
+        avatar: 'https://avatar.iran.liara.run/public/48',
+        email: authUser.email
+      }
+    : null;
 
   const handleLogout = () => {
-
-    navigate("/login");  
-    auth.signOut()
+    navigate('/login');
+    auth.signOut();
 
     signOut(auth)
-
       .then(() => {
-        navigate("/");
-        console.log("User logged out");
+        navigate('/');
+        console.log('User logged out');
 
-        setUser(null);  
-
+        setUser(null);
       })
       .catch((error) => {
-        console.error("Error logging out: ", error.message);
+        console.error('Error logging out: ', error.message);
       });
   };
-  
-  
-  
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -90,14 +77,14 @@ export function NavUser() {
                   </div>
                 </>
               ) : (
-                <div>Loading...</div>  // Show loading or fallback message
+                <div>Loading...</div> // Show loading or fallback message
               )}
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             align="end"
             sideOffset={4}
           >
@@ -114,7 +101,7 @@ export function NavUser() {
                   </div>
                 </div>
               ) : (
-                <div>Loading...</div>  // Show loading or fallback message
+                <div>Loading...</div> // Show loading or fallback message
               )}
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -132,7 +119,6 @@ export function NavUser() {
             <DropdownMenuItem>
               <LogOut />
               <a onClick={handleLogout}>Log out</a>
-              
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { FaPaperPlane, FaCalendarAlt } from 'react-icons/fa'; 
-import { auth, db } from "@/Firebase/firebase"; 
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; 
+import { FaPaperPlane, FaCalendarAlt } from 'react-icons/fa';
+import { auth, db } from '@/Firebase/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const WriteBlog = ({ user }) => {
   const [dateTime, setDateTime] = useState('');
@@ -10,12 +10,12 @@ const WriteBlog = ({ user }) => {
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    const currentUser = auth.currentUser; 
-    console.log("Auth user: ", currentUser);
+    const currentUser = auth.currentUser;
+    console.log('Auth user: ', currentUser);
     if (user && user.id) {
-      setUserId(user.id); 
+      setUserId(user.id);
     } else if (currentUser && currentUser.uid) {
-      setUserId(currentUser.uid); 
+      setUserId(currentUser.uid);
     }
 
     const interval = setInterval(() => {
@@ -24,50 +24,52 @@ const WriteBlog = ({ user }) => {
       setDateTime(formattedDate);
     }, 1000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [user]);
   const handleBlogSubmit = async (e) => {
-    e.preventDefault(); 
-    
-    console.log("Submitting blog...", topic, description, userid);
-  
+    e.preventDefault();
+
+    console.log('Submitting blog...', topic, description, userid);
+
     if (!topic || !description || !userid) {
-      console.error("Missing required fields");
+      console.error('Missing required fields');
       return;
     }
-  
+
     try {
-      const blogsRef = collection(db, 'Users', userid, 'Blogs'); 
-      
+      const blogsRef = collection(db, 'Users', userid, 'Blogs');
+
       const newBlog = await addDoc(blogsRef, {
         topic,
         description,
         createdAt: serverTimestamp(),
-        userId: userid,
+        userId: userid
       });
-  
+
       console.log('Blog submitted successfully with ID: ', newBlog.id);
-  
+
       setTopic('');
       setDescription('');
-  
     } catch (error) {
       console.error('Error submitting blog:', error);
     }
   };
-  
+
   return (
     <div>
       {/* Display the date */}
       <div className="text-right text-gray-600 dark:text-gray-300 mb-4 flex justify-end items-center">
-        <FaCalendarAlt className="mr-2 text-sm sm:text-sm md:text-Base lg:text-lg text-gray-600 dark:text-gray-300" /> 
+        <FaCalendarAlt className="mr-2 text-sm sm:text-sm md:text-Base lg:text-lg text-gray-600 dark:text-gray-300" />
         <span className="text-sm sm:text-sm md:text-Base lg:text-lg">{dateTime}</span>
       </div>
 
       <form className="space-y-6 max-w-full sm:max-w-2xl mx-auto" onSubmit={handleBlogSubmit}>
         {/* Topic Input */}
         <div>
-          <label htmlFor="topic" className="block text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800 dark:text-gray-100">
+          <label
+            htmlFor="topic"
+            className="block text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800 dark:text-gray-100"
+          >
             Topic
           </label>
           <input
@@ -84,7 +86,10 @@ const WriteBlog = ({ user }) => {
 
         {/* Description Textarea */}
         <div>
-          <label htmlFor="description" className="block text-xs sm:text-sm md:text-lg lg:text-xl font-semibold text-gray-800 dark:text-gray-100">
+          <label
+            htmlFor="description"
+            className="block text-xs sm:text-sm md:text-lg lg:text-xl font-semibold text-gray-800 dark:text-gray-100"
+          >
             Description
           </label>
           <textarea

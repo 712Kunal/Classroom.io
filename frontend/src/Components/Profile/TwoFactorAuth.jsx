@@ -109,7 +109,8 @@ function TwoFactorAuth() {
         <Button
           type="submit"
           className="w-full mt-5 tracking-wide font-sans text-xl text-white p-2 rounded-lg bg-blue-700 hover:bg-blue-900"
-          onClick={handleVerify}>
+          onClick={handleVerify}
+        >
           Verify
         </Button>
         {error && (

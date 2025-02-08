@@ -12,13 +12,7 @@ import {
   CircleX
 } from 'lucide-react';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/Components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
 
 import { Label } from '@/Components/ui/label';
 
@@ -78,12 +72,14 @@ function TaskMoodle({ event, setIsTaskMoodleOpen }) {
                 {event.resources.map((resource, index) => (
                   <div
                     key={index}
-                    className="flex gap-5 items-center px-2 rounded-md border-[1px] dark:bg-black border-[#333] hover:shadow-sm dark:hover:shadow-blue-500">
+                    className="flex gap-5 items-center px-2 rounded-md border-[1px] dark:bg-black border-[#333] hover:shadow-sm dark:hover:shadow-blue-500"
+                  >
                     <a
                       href={resource.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xl">
+                      className="text-xl"
+                    >
                       {resource.title}
                     </a>
                     <a href={resource.link} target="_blank" rel="noopener noreferrer">

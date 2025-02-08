@@ -207,22 +207,28 @@
 }
 
 @keyframes l7-1 {
-  0%, 55%, 100% {
+  0%,
+  55%,
+  100% {
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
   }
-  20%, 30% {
+  20%,
+  30% {
     border-top-left-radius: 50%;
     border-bottom-right-radius: 50%;
   }
 }
 
 @keyframes l7-2 {
-  0%, 55%, 100% {
+  0%,
+  55%,
+  100% {
     border-bottom-left-radius: 0;
     border-top-right-radius: 0;
   }
-  20%, 30% {
+  20%,
+  30% {
     border-bottom-left-radius: 50%;
     border-top-right-radius: 50%;
   }
@@ -241,7 +247,7 @@
 
 .loader:before,
 .loader:after {
-  content: "";
+  content: '';
   position: absolute;
   left: calc(100% + 5px);
   animation-delay: 1s, 0s;

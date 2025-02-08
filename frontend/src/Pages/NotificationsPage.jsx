@@ -110,13 +110,15 @@ function NotificationsPage() {
             <motion.div
               initial={{ rotate: 0, scale: 1 }}
               animate={{ rotate: [0, 10, -10, 10, -10, 0], scale: [1, 0.8, 1, 0.8, 1, 1] }}
-              transition={{ duration: 1, ease: 'easeInOut' }}>
+              transition={{ duration: 1, ease: 'easeInOut' }}
+            >
               <Bell size={34} className="text-black dark:text-blue-500" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: 'easeInOut' }}>
+              transition={{ duration: 1, ease: 'easeInOut' }}
+            >
               Notifications
             </motion.div>
           </CardTitle>
@@ -124,7 +126,8 @@ function NotificationsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: 'easeInOut' }}
-            className="text-xl ml-5 text-gray-600 dark:text-gray-400">
+            className="text-xl ml-5 text-gray-600 dark:text-gray-400"
+          >
             Stay updated with your latest notifications and reminders.
           </motion.div>
         </CardHeader>
@@ -139,11 +142,13 @@ function NotificationsPage() {
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.8 }}
                   key={notification.id}
-                  className="animated-div">
+                  className="animated-div"
+                >
                   <Card
                     className={`mb-4 relative overflow-hidden ${
                       notification.isRead ? null : 'bg-slate-200 dark:bg-slate-900'
-                    } rounded-lg shadow-sm border-slate-600 border-[1px] hover:cursor-pointer hover:border-blue-500 dark:hover:border-blue-300 hover:shadow-blue-200 transition-all duration-500`}>
+                    } rounded-lg shadow-sm border-slate-600 border-[1px] hover:cursor-pointer hover:border-blue-500 dark:hover:border-blue-300 hover:shadow-blue-200 transition-all duration-500`}
+                  >
                     <CardContent className="p-4 pr-12">
                       <div className="flex flex-start gap-4">
                         {getIcon(notification.notificationReason)}

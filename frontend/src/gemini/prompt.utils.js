@@ -41,11 +41,9 @@ const promptRequirementsKeys = [
   'skills',
   'hobbies',
   'interests'
-]
+];
 
-export const formulatePrompt = (
-  promptRequirements
-) => {
+export const formulatePrompt = (promptRequirements) => {
   const {
     topic,
     duration,
@@ -63,9 +61,9 @@ export const formulatePrompt = (
     hobbies,
     interests
   } = promptRequirements;
-  
-  for(let key of promptRequirementsKeys) {
-    if(!promptRequirements[key]) {
+
+  for (let key of promptRequirementsKeys) {
+    if (!promptRequirements[key]) {
       throw new Error(`Prompt requirement ${key} is missing`);
     }
   }
@@ -96,4 +94,4 @@ export const formulatePrompt = (
   `;
 
   return prompt;
-}
+};

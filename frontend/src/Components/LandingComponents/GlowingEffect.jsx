@@ -59,7 +59,8 @@ const GridItem = ({ area, icon, title, description }) => {
               </h3>
               <h2
                 className="[&_b]:md:font-semibold [&_strong]:md:font-semibold font-sans text-sm/[1.125rem] 
-              md:text-base/[1.375rem]  text-black dark:text-neutral-400">
+              md:text-base/[1.375rem]  text-black dark:text-neutral-400"
+              >
                 {description}
               </h2>
             </div>

@@ -71,15 +71,15 @@ const CreatePathway = () => {
   const { user } = useAuthListener();
 
   const awardBelieverBadge = async (userId) => {
-    const badgeType = "believer";
+    const badgeType = 'believer';
     const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
-    console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+    console.log('Is batch already awarded:', isBatchAlreadyAwarded);
     if (!isBatchAlreadyAwarded) {
-      console.log("Badge award called");
+      console.log('Badge award called');
       await awardBadge(userId, badgeType);
-      console.log("Badge awarded successfully");
+      console.log('Badge awarded successfully');
     }
-  }
+  };
 
   const handleCreatePathway = async (e) => {
     e.preventDefault();
@@ -204,7 +204,8 @@ const CreatePathway = () => {
               <button
                 className="relative group/btn bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                 type="submit"
-                onClick={handleCreatePathway}>
+                onClick={handleCreatePathway}
+              >
                 Generate a pathway for me <ShipWheel />
                 <BottomGradient />
               </button>
@@ -339,7 +340,8 @@ const PathwayLoader = ({
                     <div
                       className={`mx-auto line w-[1px] h-4 ${
                         isDone ? 'bg-neutral-100' : 'bg-neutral-600'
-                      }`}></div>
+                      }`}
+                    ></div>
                   )}
                   <div className="stageRow flex gap-2 justify-start items-center text-sm">
                     <span
@@ -347,9 +349,10 @@ const PathwayLoader = ({
                         isActive
                           ? 'border-blue-500 text-blue-500'
                           : isDone
-                          ? 'text-neutral-50 border-neutral-50'
-                          : 'text-neutral-50'
-                      } ${isFirst ? 'border-neutral-50' : ''}`}>
+                            ? 'text-neutral-50 border-neutral-50'
+                            : 'text-neutral-50'
+                      } ${isFirst ? 'border-neutral-50' : ''}`}
+                    >
                       {isActive ? (
                         <LoaderCircle className="animate-spin" size={iconSize} />
                       ) : (
@@ -366,7 +369,8 @@ const PathwayLoader = ({
             <Button
               className="w-full flex items-center gap-2"
               disabled={!isPathwayReady}
-              onClick={handleNewPathwayCreated}>
+              onClick={handleNewPathwayCreated}
+            >
               <Compass />
               Explore your pathway
             </Button>

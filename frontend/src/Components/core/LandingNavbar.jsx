@@ -68,7 +68,8 @@ export default function LandingNavbar() {
             </span>
             <button
               onClick={() => navigate('/signup')}
-              className="bg-gradient-to-br from-purple-800 to-black/50 px-3 py-1 rounded-md">
+              className="bg-gradient-to-br from-purple-800 to-black/50 px-3 py-1 rounded-md"
+            >
               Signup
             </button>
           </div>

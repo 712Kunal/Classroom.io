@@ -9,20 +9,19 @@ const getRandomColor = () => {
   }
   return color;
 };
-import UserActivityChart from "./UserActivityChart";
+import UserActivityChart from './UserActivityChart';
 
 // UserCard Component
 export function UserCard({ user }) {
   return (
     <div className="grid gap-4 lg:gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-8 pt-20">
-
       {/* Revenue Card with Glowing Shadow */}
       <div className="relative p-6 rounded-2xl bg-blue-50 text-gray-800 shadow-lg hover:shadow-xl hover:shadow-blue-400 hover:scale-105 transition-all duration-300">
         <div className="flex flex-row items-center justify-start space-x-4">
           {/* Avatar Section */}
           <div className="w-auto sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full sm:border-2 sm:border-gray-200 overflow-hidden flex justify-center items-center">
             <img
-              src={user.avatar || 'https://via.placeholder.com/150'}  // Fallback image URL
+              src={user.avatar || 'https://via.placeholder.com/150'} // Fallback image URL
               alt={user.username}
               className="w-full h-full object-cover"
             />
@@ -35,7 +34,6 @@ export function UserCard({ user }) {
           </div>
         </div>
       </div>
-
 
       {/* New Customers Card with Glowing Shadow */}
       <div className="relative p-6 rounded-2xl bg-yellow-50 text-gray-800 shadow-lg hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 transition-all duration-300">
@@ -108,20 +106,20 @@ export function UserCard({ user }) {
 // weekly tasks
 export function WeekTask() {
   const [daysData, setDaysData] = useState([
-    { day: "M", height: 4 },
-    { day: "T", height: 60 },
-    { day: "W", height: 24 },
-    { day: "T", height: 45 },
-    { day: "F", height: 20 },
-    { day: "S", height: 60 },
-    { day: "S", height: 55 },
+    { day: 'M', height: 4 },
+    { day: 'T', height: 60 },
+    { day: 'W', height: 24 },
+    { day: 'T', height: 45 },
+    { day: 'F', height: 20 },
+    { day: 'S', height: 60 },
+    { day: 'S', height: 55 }
   ]);
 
   const updateDayColors = () => {
-    setDaysData(prevData =>
-      prevData.map(day => ({
+    setDaysData((prevData) =>
+      prevData.map((day) => ({
         ...day,
-        color: getRandomColor(),
+        color: getRandomColor()
       }))
     );
   };
@@ -142,14 +140,12 @@ export function WeekTask() {
             <div
               className="mx-auto rounded-full transition-all duration-300 ease-in-out"
               style={{
-                width: "16px",
+                width: '16px',
                 height: `${day.height}px`,
-                backgroundColor: day.color,
+                backgroundColor: day.color
               }}
             ></div>
-            <div className="text-center text-xs text-gray-400 font-semibold mt-2">
-              {day.day} 
-            </div>
+            <div className="text-center text-xs text-gray-400 font-semibold mt-2">{day.day}</div>
           </div>
         ))}
       </div>
@@ -162,13 +158,17 @@ export function RecentTask() {
     <div className="w-full px-4 py-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="p-6 rounded-lg shadow-md shadow-gray-700 dark:shadow-gray-700 transition-all shadow-md  hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
-          <h2 className="text-center text-xl font-semibold text-gray-800 dark:text-gray-100">Task</h2>
+          <h2 className="text-center text-xl font-semibold text-gray-800 dark:text-gray-100">
+            Task
+          </h2>
           <div className="flex-grow"></div>
         </div>
 
         {/* Column 2 */}
         <div className=" p-6 rounded-lg shadow-md shadow-gray-700  dark:shadow-gray-700 transition-all shadow-md hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
-          <h2 className="text-xl text-center font-semibold text-gray-800 dark:text-gray-100">Weekly Report</h2>
+          <h2 className="text-xl text-center font-semibold text-gray-800 dark:text-gray-100">
+            Weekly Report
+          </h2>
           <div className="pb-8 flex-grow"></div>
           <WeekTask />
         </div>

@@ -1,8 +1,8 @@
 import Navbar from '@/Components/Profile/Navbar.jsx';
-import React, { useEffect, useState } from "react";
-import { auth, db } from "@/Firebase/firebase"; 
-import { doc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { auth, db } from '@/Firebase/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 import Loader1 from '@/Components/ui/Loader1';
 
 function ProfilePage() {
@@ -14,43 +14,38 @@ function ProfilePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const user = auth.currentUser; 
+        const user = auth.currentUser;
         if (user) {
-          const userRef = doc(db, "Users", user.uid);
+          const userRef = doc(db, 'Users', user.uid);
           const userSnap = await getDoc(userRef);
-          const profileRef = doc(db, "UserProfiles", user.uid); 
+          const profileRef = doc(db, 'UserProfiles', user.uid);
           const profileSnap = await getDoc(profileRef);
-   
 
           if (userSnap.exists() && profileSnap.exists()) {
-            const userData = userSnap.data(); 
+            const userData = userSnap.data();
             const profileData = profileSnap.data();
 
-      
             setUserDetails({
               username: userData.username,
               email: userData.email,
-              ...profileData,
+              ...profileData
             });
-
           } else {
-            console.log("No such document!");
+            console.log('No such document!');
             navigate('/detailsForm');
           }
         } else {
-          console.log("No user is logged in");
-          navigate('/login'); 
+          console.log('No user is logged in');
+          navigate('/login');
         }
       } catch (error) {
-        console.error("Error fetching user data: ", error);
-        navigate('/login'); 
+        console.error('Error fetching user data: ', error);
+        navigate('/login');
       }
     };
 
     fetchUserData();
   }, []);
-
-  
 
   useEffect(() => {
     if (userDetails) {
@@ -58,9 +53,11 @@ function ProfilePage() {
         username: userDetails.username,
         avatar: 'https://avatar.iran.liara.run/public/48',
         email: userDetails.email,
-        FullName: userDetails.personalInfo?.fullName || 'John Doe',  
+        FullName: userDetails.personalInfo?.fullName || 'John Doe',
         Contact_No: userDetails.personalInfo?.contact || '+1234567890',
-        Bio: userDetails.personalInfo?.bio || 'A passionate developer who loves coding and learning new technologies.',
+        Bio:
+          userDetails.personalInfo?.bio ||
+          'A passionate developer who loves coding and learning new technologies.',
         DOB: userDetails.personalInfo?.dob || '1990-01-01',
         Gender: userDetails.personalInfo?.gender || 'M',
         SocialLinks: {
@@ -77,23 +74,33 @@ function ProfilePage() {
           Location: userDetails.personalInfo?.location || 'New York, USA',
           Occupation: userDetails.background?.occupation || 'Software Engineer',
           LanguagesKnown: userDetails.background?.languagesKnown || ['English', 'Spanish'],
-          preferredLearningStyle: userDetails.background?.learningStyles || ['Interactive Exercises', 'Video Tutorials'],
-          Skills: userDetails.background?.skills || ['JavaScript', 'React', 'Node.js', 'Express.js', 'HTML', 'Java'],
+          preferredLearningStyle: userDetails.background?.learningStyles || [
+            'Interactive Exercises',
+            'Video Tutorials'
+          ],
+          Skills: userDetails.background?.skills || [
+            'JavaScript',
+            'React',
+            'Node.js',
+            'Express.js',
+            'HTML',
+            'Java'
+          ],
           Hobbies: userDetails.background?.hobies || ['Coding', 'Reading', 'Gaming'],
           Interests: userDetails.background?.interest || ['AI', 'Blockchain', 'Web Development']
         },
-        pointsAwarded: 1500, 
+        pointsAwarded: 1500,
         badgesAwarded: [
-          'https://picsum.photos/200', 
           'https://picsum.photos/200',
           'https://picsum.photos/200',
           'https://picsum.photos/200',
+          'https://picsum.photos/200'
         ],
-        badgesAwardedDates: ['2023-01-01', '2023-12-01'] 
+        badgesAwardedDates: ['2023-01-01', '2023-12-01']
       };
-      setUser(user); 
+      setUser(user);
     }
-  }, [userDetails]); 
+  }, [userDetails]);
 
   return (
     <>
@@ -102,7 +109,9 @@ function ProfilePage() {
           <Navbar user={user} />
         </div>
       ) : (
-        <div className="text-center text-xl w-full h-full grid place-items-center"><Loader1/></div>
+        <div className="text-center text-xl w-full h-full grid place-items-center">
+          <Loader1 />
+        </div>
       )}
     </>
   );

@@ -9,7 +9,7 @@ function AppWrapper() {
   const isMobile = useIsMobile();
   const location = useLocation();
 
-  const isAppRoute = location.pathname === "/app";
+  const isAppRoute = location.pathname === '/app';
   const navigate = useNavigate();
 
   if (isAppRoute) {

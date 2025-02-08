@@ -31,7 +31,8 @@ const suspenseComponent = (component) => (
       <div className="w-full h-full grid place-items-center">
         <Loader1 />
       </div>
-    }>
+    }
+  >
     {component}
   </Suspense>
 );
@@ -74,7 +75,8 @@ function App() {
           <Route path="/twofactorauth" element={suspenseComponent(<TwoFactorAuthPage />)} />
           <Route
             path="/app"
-            element={<ProtectedRoute user={user} children={suspenseComponent(<AppWrapper />)} />}>
+            element={<ProtectedRoute user={user} children={suspenseComponent(<AppWrapper />)} />}
+          >
             <Route path="profile" element={suspenseComponent(<ProfilePage />)} />
             <Route path="library" element={suspenseComponent(<LibraryPage />)} />
             <Route path="library/new" element={suspenseComponent(<CreatePathway />)} />

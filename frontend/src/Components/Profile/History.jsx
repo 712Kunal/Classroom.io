@@ -1,23 +1,17 @@
-import { useGlobal } from "@/Components/context/GlobalContext";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Taskprogress from "./Taskprogress";
+import { useGlobal } from '@/Components/context/GlobalContext';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Taskprogress from './Taskprogress';
 
 export function Mycoursestaks() {
   const { pathwaysList, isLoading } = useGlobal();
   const navigate = useNavigate();
   const [localPathways, setLocalPathways] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPathway, setSelectedPathway] = useState(null); 
+  const [selectedPathway, setSelectedPathway] = useState(null);
 
   useEffect(() => {
     setLocalPathways(pathwaysList);
@@ -28,13 +22,13 @@ export function Mycoursestaks() {
   };
 
   const handleProgressClick = (pathway) => {
-    setSelectedPathway(pathway); 
-    setIsModalOpen(true); 
+    setSelectedPathway(pathway);
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); 
-    setSelectedPathway(null); 
+    setIsModalOpen(false);
+    setSelectedPathway(null);
   };
 
   if (isLoading) {
@@ -66,7 +60,7 @@ export function Mycoursestaks() {
                   transition={{
                     opacity: { duration: 0.2 },
                     scale: { duration: 0.2 },
-                    layout: { duration: 0.3 },
+                    layout: { duration: 0.3 }
                   }}
                 >
                   <Card
@@ -96,17 +90,10 @@ export function Mycoursestaks() {
                       </div>
                     </CardContent>
                     <CardFooter className="grid grid-cols-2 gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => handlePathwayClick(pathway.data.id)}
-                      >
+                      <Button variant="outline" onClick={() => handlePathwayClick(pathway.data.id)}>
                         Explore
                       </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => handleProgressClick(pathway)} 
-
-                      >
+                      <Button variant="outline" onClick={() => handleProgressClick(pathway)}>
                         Progress
                       </Button>
                     </CardFooter>
@@ -117,9 +104,7 @@ export function Mycoursestaks() {
           </motion.div>
         ) : (
           <div className="flex w-full items-center gap-2 p-2">
-            <p className="text-neutral-500 text-xs sm:text-sm ">
-              No active pathways found.
-            </p>
+            <p className="text-neutral-500 text-xs sm:text-sm ">No active pathways found.</p>
           </div>
         )}
       </div>
@@ -127,11 +112,11 @@ export function Mycoursestaks() {
       {isModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={handleCloseModal} 
+          onClick={handleCloseModal}
         >
           <div
             className="bg-gray-900 rounded-lg p-4 max-w-lg w-full"
-            onClick={(e) => e.stopPropagation()} 
+            onClick={(e) => e.stopPropagation()}
           >
             <Taskprogress pathway={selectedPathway} />
             <Button onClick={handleCloseModal}>Close</Button>

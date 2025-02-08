@@ -42,72 +42,66 @@ const PathwayResponseSchema = z.object({
 });
 
 const PathwaySchema = z.object({
-  "id": z.string().default(""),
-  "userId": z.string(),
-  "topic": z.string(),
-  "description": z.string(),
-  "duration": z.number(),
-  "startDate": z.date().nullable(),
-  "endDate": z.date().nullable(),
-  "isActive": z.boolean().default(false),
-  "haveBeenPaused": z.boolean().default(false),
-  "response": PathwayResponseSchema,
+  id: z.string().default(''),
+  userId: z.string(),
+  topic: z.string(),
+  description: z.string(),
+  duration: z.number(),
+  startDate: z.date().nullable(),
+  endDate: z.date().nullable(),
+  isActive: z.boolean().default(false),
+  haveBeenPaused: z.boolean().default(false),
+  response: PathwayResponseSchema,
   createdAt: z.string(),
   updatedAt: z.string()
-})
+});
 
 const RESOURCE_TYPE_MAP = {
-  "documentation": "Documentation",
-  "video": "Video",
-  "video tutorial": "Video Tutorial",
-  "interactive exercise": "Interactive Exercise"
+  documentation: 'Documentation',
+  video: 'Video',
+  'video tutorial': 'Video Tutorial',
+  'interactive exercise': 'Interactive Exercise'
 };
 
 const checkForPossibleBadgeAwards = async (pathway) => {
   const { userId } = pathway.data;
 
-  const possibleBadges = [
-    "one_task",
-    "ten_tasks",
-    "fifteen_tasks",
-    "one_pathway",
-  ];
+  const possibleBadges = ['one_task', 'ten_tasks', 'fifteen_tasks', 'one_pathway'];
 
   for (const badgeType of possibleBadges) {
     const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
-    console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+    console.log('Is batch already awarded:', isBatchAlreadyAwarded);
     if (!isBatchAlreadyAwarded) {
-      switch(badgeType) {
-        case "one_task": {
-          if(pathway.toTaskList().findIndex((task) => task.isDone) !== -1) {
-            await awardBadge(userId, "one_task");
+      switch (badgeType) {
+        case 'one_task': {
+          if (pathway.toTaskList().findIndex((task) => task.isDone) !== -1) {
+            await awardBadge(userId, 'one_task');
           }
           break;
         }
-        case "ten_tasks": {
-          if(pathway.toTaskList().filter((task) => task.isDone).length >= 10) {
-            await awardBadge(userId, "ten_tasks");
+        case 'ten_tasks': {
+          if (pathway.toTaskList().filter((task) => task.isDone).length >= 10) {
+            await awardBadge(userId, 'ten_tasks');
           }
           break;
         }
-        case "fifteen_tasks": {
-          if(pathway.toTaskList().filter((task) => task.isDone).length >= 15) {
-            await awardBadge(userId, "fifteen_tasks");
+        case 'fifteen_tasks': {
+          if (pathway.toTaskList().filter((task) => task.isDone).length >= 15) {
+            await awardBadge(userId, 'fifteen_tasks');
           }
           break;
         }
-        case "one_pathway": {
-          if(pathway.toTaskList().every((task) => task.isDone)) {
-            await awardBadge(userId, "one_pathway");
+        case 'one_pathway': {
+          if (pathway.toTaskList().every((task) => task.isDone)) {
+            await awardBadge(userId, 'one_pathway');
           }
           break;
         }
       }
-      console.log("Badge awarded successfully");
+      console.log('Badge awarded successfully');
     }
   }
-}
-
+};
 
 const checkProgressAndSendNotifs = async (pathway) => {
   const { userId, id: pathwayId, isActive } = pathway.data;
@@ -123,20 +117,19 @@ const checkProgressAndSendNotifs = async (pathway) => {
       return;
     }
 
-    console.log("User ID:", userId, "Pathway ID:", pathwayId, "Progress:", progressPercentage);
+    console.log('User ID:', userId, 'Pathway ID:', pathwayId, 'Progress:', progressPercentage);
 
     const url = `${BACKEND_URL}/user/${userId}/pathway/${pathwayId}`;
 
     await axios.post(url, null, {
-      params: { progress: progressPercentage },
+      params: { progress: progressPercentage }
     });
 
-    console.log("Progress notification sent successfully.");
+    console.log('Progress notification sent successfully.');
   } catch (error) {
-    console.error("Error updating pathway progress:", error.message);
+    console.error('Error updating pathway progress:', error.message);
   }
 };
-
 
 /**
  * Calculates evenly distributed dates for tasks within an interval
@@ -151,7 +144,7 @@ const calculateTaskDates = (intervalStart, intervalEnd, taskCount) => {
   const segmentDuration = totalDuration / (taskCount + 1);
 
   for (let i = 1; i <= taskCount; i++) {
-    const taskDate = normalizeDate(new Date(intervalStart.getTime() + (segmentDuration * i)));
+    const taskDate = normalizeDate(new Date(intervalStart.getTime() + segmentDuration * i));
     console.log(taskDate);
     dates.push(taskDate);
   }
@@ -177,11 +170,7 @@ const initializeIntervalDates = (interval, startDate, intervalDuration) => {
   const intervalEndDate = normalizeDate(new Date(startDate.getTime()));
   intervalEndDate.setDate(intervalStartDate.getDate() + intervalDuration);
 
-  const taskDates = calculateTaskDates(
-    intervalStartDate,
-    intervalEndDate,
-    interval.tasks.length
-  );
+  const taskDates = calculateTaskDates(intervalStartDate, intervalEndDate, interval.tasks.length);
 
   const updatedTasks = interval.tasks.map((task, index) => ({
     ...task,
@@ -222,11 +211,11 @@ const convertGeminiPathwayToDBFormat = (pathwayData, userId) => {
       topic: pathwayData.topic,
       intervals: pathwayData.intervals,
       intervalType: pathwayData.intervalType,
-      pathway: pathwayData.pathway.map(interval => ({
+      pathway: pathwayData.pathway.map((interval) => ({
         ...interval,
         pathwayStartDate: null,
         pathwayEndDate: null,
-        tasks: interval.tasks.map(task => ({
+        tasks: interval.tasks.map((task) => ({
           ...task,
           scheduledDate: null,
           completedDate: null,
@@ -234,7 +223,7 @@ const convertGeminiPathwayToDBFormat = (pathwayData, userId) => {
           lateMark: false,
           completionEmailSent: false,
           deadlineEmailSent: false,
-          resources: task.resources.map(resource => ({
+          resources: task.resources.map((resource) => ({
             ...resource,
             type: RESOURCE_TYPE_MAP[resource.type.toLowerCase()]
           }))
@@ -284,11 +273,15 @@ class Pathway {
 
     // Convert to Firestore Timestamps
     this.data.startDate = startDate;
-    this.data.endDate = normalizeDate(new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000));
+    this.data.endDate = normalizeDate(
+      new Date(startDate.getTime() + this.data.duration * 24 * 60 * 60 * 1000)
+    );
     this.data.isActive = true;
 
     this.data.response.pathway = this.data.response.pathway.map((interval, index) => {
-      const intervalStartDate = normalizeDate(new Date(startDate.getTime() + (index * intervalDuration * 24 * 60 * 60 * 1000)));
+      const intervalStartDate = normalizeDate(
+        new Date(startDate.getTime() + index * intervalDuration * 24 * 60 * 60 * 1000)
+      );
       return initializeIntervalDates(interval, intervalStartDate, intervalDuration);
     });
 
@@ -296,7 +289,7 @@ class Pathway {
       .then((result) => {
         this.data = result;
       })
-      .catch((error) => console.error("Error starting pathway:", error));
+      .catch((error) => console.error('Error starting pathway:', error));
   }
 
   /**
@@ -307,11 +300,11 @@ class Pathway {
     this.data.endDate = null;
     this.data.haveBeenPaused = true;
 
-    this.data.response.pathway = this.data.response.pathway.map(interval => ({
+    this.data.response.pathway = this.data.response.pathway.map((interval) => ({
       ...interval,
       pathwayStartDate: null,
       pathwayEndDate: null,
-      tasks: interval.tasks.map(task => ({
+      tasks: interval.tasks.map((task) => ({
         ...task,
         scheduledDate: task.isDone ? task.scheduledDate : null
       }))
@@ -321,7 +314,7 @@ class Pathway {
       .then((result) => {
         this.data = result;
       })
-      .catch((error) => console.error("Error starting pathway:", error));
+      .catch((error) => console.error('Error starting pathway:', error));
   }
 
   /**
@@ -337,16 +330,22 @@ class Pathway {
     this.data.isActive = true;
 
     this.data.response.pathway = this.data.response.pathway.map((interval, index) => {
-      const newIntervalStartDate = normalizeDate(new Date(resumeDate.getTime() + (index * intervalDuration * 24 * 60 * 60 * 1000)));
+      const newIntervalStartDate = normalizeDate(
+        new Date(resumeDate.getTime() + index * intervalDuration * 24 * 60 * 60 * 1000)
+      );
 
       // If all tasks in the interval are done, preserve interval dates
-      const allTasksDone = interval.tasks.every(task => task.isDone);
+      const allTasksDone = interval.tasks.every((task) => task.isDone);
       if (allTasksDone) {
         return interval;
       }
 
       const intervalStartDate = interval.pathwayStartDate || newIntervalStartDate;
-      const intervalEndDate = interval.pathwayEndDate || normalizeDate(new Date(intervalStartDate.getTime() + intervalDuration * 24 * 60 * 60 * 1000));
+      const intervalEndDate =
+        interval.pathwayEndDate ||
+        normalizeDate(
+          new Date(intervalStartDate.getTime() + intervalDuration * 24 * 60 * 60 * 1000)
+        );
 
       const taskDates = calculateTaskDates(
         intervalStartDate,
@@ -360,16 +359,16 @@ class Pathway {
         pathwayEndDate: intervalEndDate,
         tasks: interval.tasks.map((task, taskIndex) => ({
           ...task,
-          scheduledDate: task.isDone ? task.scheduledDate : taskDates[taskIndex],
+          scheduledDate: task.isDone ? task.scheduledDate : taskDates[taskIndex]
         }))
-      }
-    })
+      };
+    });
 
     updatePathway(this.data.id, this.data)
       .then((result) => {
         this.data = result;
       })
-      .catch((error) => console.error("Error resuming pathway:", error));
+      .catch((error) => console.error('Error resuming pathway:', error));
   }
 
   /**
@@ -380,8 +379,9 @@ class Pathway {
   markAsDone(intervalNumber, taskNumber) {
     if (!this.data.isActive) return;
 
-    const task = this.data.response.pathway[intervalNumber - 1]?.tasks
-      .find(task => task.taskNumber === taskNumber);
+    const task = this.data.response.pathway[intervalNumber - 1]?.tasks.find(
+      (task) => task.taskNumber === taskNumber
+    );
 
     if (!task) {
       throw new Error('Task not found');
@@ -397,7 +397,7 @@ class Pathway {
       .then((result) => {
         this.data = result;
       })
-      .catch((error) => console.error("Error updating pathway:", error));
+      .catch((error) => console.error('Error updating pathway:', error));
 
     checkProgressAndSendNotifs(this)
       .then(() => console.log('Notification sent'))
@@ -414,7 +414,7 @@ class Pathway {
    */
   toTaskList() {
     let taskNumber = 1;
-    return this.data.response.pathway.flatMap(interval =>
+    return this.data.response.pathway.flatMap((interval) =>
       interval.tasks.map((task) => ({
         ...task,
         taskNumber: taskNumber++
@@ -431,12 +431,7 @@ class Pathway {
   }
 }
 
-export {
-  Pathway,
-  PathwaySchema,
-  convertGeminiPathwayToDBFormat,
-  validatePathway
-};
+export { Pathway, PathwaySchema, convertGeminiPathwayToDBFormat, validatePathway };
 
 /* 
 // When user wants to start the pathway

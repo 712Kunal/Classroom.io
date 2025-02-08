@@ -1,5 +1,5 @@
-import { generatePathway } from "./gemini.service";
-import { formulatePrompt } from "./prompt.utils";
+import { generatePathway } from './gemini.service';
+import { formulatePrompt } from './prompt.utils';
 
 const createPathway = async (userId, userDetails, additionalInfo, pathwayRequirements) => {
   const promptRequirements = {
@@ -17,11 +17,11 @@ const createPathway = async (userId, userDetails, additionalInfo, pathwayRequire
     languagesKnown: userDetails.languagesKnown,
     skills: additionalInfo.skills,
     hobbies: additionalInfo.hobbies,
-    interests: additionalInfo.interests,
+    interests: additionalInfo.interests
   };
   const prompt = formulatePrompt(promptRequirements);
   const { pathwayId } = await generatePathway(userId, prompt);
   return { pathwayId };
-}
+};
 
 export { createPathway };

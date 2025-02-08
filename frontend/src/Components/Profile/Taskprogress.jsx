@@ -1,12 +1,11 @@
 const Taskprogress = ({ pathway }) => {
-    console.log(pathway.data);
+  console.log(pathway.data);
 
-    return (
-      <div>
-        <p>Progress</p>
-      </div>
-    );
-  };
-  
-  export default Taskprogress;
-  
+  return (
+    <div>
+      <p>Progress</p>
+    </div>
+  );
+};
+
+export default Taskprogress;

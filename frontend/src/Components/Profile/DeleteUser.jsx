@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from "@/Firebase/firebase";
-import { deleteUser } from "firebase/auth"; 
-import { doc, deleteDoc } from "firebase/firestore"; 
+import { auth, db } from '@/Firebase/firebase';
+import { deleteUser } from 'firebase/auth';
+import { doc, deleteDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
 const DeleteUser = ({ user }) => {
   const [userid, setUserId] = useState(null);
   const [useremail, setEmail] = useState(null);
 
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -23,18 +23,18 @@ const DeleteUser = ({ user }) => {
   }, [user]);
 
   const handleDelete = async () => {
-    if (!userid) return; 
+    if (!userid) return;
 
     setLoading(true);
     setError(null);
 
     try {
       await deleteDoc(doc(db, 'Users', userid));
-      await deleteDoc(doc(db, 'UserProfiles', userid)); 
+      await deleteDoc(doc(db, 'UserProfiles', userid));
 
       const userToDelete = auth.currentUser;
       if (userToDelete && userToDelete.uid === userid) {
-        await deleteUser(userToDelete); 
+        await deleteUser(userToDelete);
       }
 
       setLoading(false);
@@ -48,9 +48,7 @@ const DeleteUser = ({ user }) => {
 
   return (
     <div>
-      <p className='text-sm'>
-        Are you sure you want to delete user Account : {useremail}?
-      </p>
+      <p className="text-sm">Are you sure you want to delete user Account : {useremail}?</p>
       <button
         className="px-4 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 disabled:bg-gray-400"
         onClick={handleDelete}

@@ -52,7 +52,7 @@ export function generateMockEvents() {
       ? new Date(AllTasks[i].scheduledDate)
       : getRandomTime(eventDate);
     const durationMinutes = generateEventDuration();
-    const endTime =  new Date(startTime.getTime() + durationMinutes * 60000);
+    const endTime = new Date(startTime.getTime() + durationMinutes * 60000);
 
     events.push({
       id: `event-${i + 1}`,

@@ -13,7 +13,6 @@ import { AlignCenter, AlignCenterVertical } from 'lucide-react';
 import Spline from '@splinetool/react-spline';
 import { BACKEND_URL } from '@/components/core/Constants';
 
-
 function Signup() {
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -59,7 +58,7 @@ function Signup() {
 
       await setDoc(doc(db, 'Users', user.uid), {
         email: user.email,
-        username: username,
+        username: username
       });
 
       console.log('User registration completed.');
@@ -69,7 +68,7 @@ function Signup() {
       try {
         await axios.post(backendUrl, {
           email: user.email,
-          username: username,
+          username: username
         });
         console.log('Notification and email request sent to backend.');
       } catch (axiosError) {
@@ -80,7 +79,7 @@ function Signup() {
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: 'dark',
+          theme: 'dark'
         });
       }
     } catch (error) {
@@ -91,7 +90,7 @@ function Signup() {
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
-        theme: "dark",
+        theme: 'dark'
       });
       setErrorMessage(error.message);
     }
@@ -186,51 +185,48 @@ function Signup() {
           </label>
         </div>
 
-        
         {/* Sign Up Button */}
         <div>
           <button
             type="submit"
-            className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
             Sign up
           </button>
         </div>
       </form>
 
       <div className="flex justify-center w-full">
-  <GoogleButton
-    className="transform scale-75" // Reduces size to 75% of original
-    onClick={async () => {
-      try {
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
+        <GoogleButton
+          className="transform scale-75" // Reduces size to 75% of original
+          onClick={async () => {
+            try {
+              const provider = new GoogleAuthProvider();
+              const result = await signInWithPopup(auth, provider);
+              const user = result.user;
 
-        if (user) {
-          const username = user.email.split('@')[0];
+              if (user) {
+                const username = user.email.split('@')[0];
 
-          await setDoc(doc(db, 'Users', user.uid), {
-            email: user.email,
-            username: username,
-          });
+                await setDoc(doc(db, 'Users', user.uid), {
+                  email: user.email,
+                  username: username
+                });
 
-          console.log('Google sign-in successful:', user);
-          window.location.href = "/app/profile";
-        }
-      } catch (error) {
-        console.error('Google Sign-In Error:', error);
-        toast.error('Google Sign-In failed. Please try again.', {
-          position: "top-right",
-          autoClose: 5000,
-          theme: "dark",
-        });
-      }
-    }}
-  />
-</div>
-
-
-
+                console.log('Google sign-in successful:', user);
+                window.location.href = '/app/profile';
+              }
+            } catch (error) {
+              console.error('Google Sign-In Error:', error);
+              toast.error('Google Sign-In failed. Please try again.', {
+                position: 'top-right',
+                autoClose: 5000,
+                theme: 'dark'
+              });
+            }
+          }}
+        />
+      </div>
 
       {/* Link to Log In */}
       <div className="mt-6 text-center">

@@ -81,7 +81,8 @@ const FeatureDescription = ({ children }) => {
         'text-sm md:text-base  max-w-4xl text-left mx-auto',
         'text-neutral-500 text-center font-normal dark:text-neutral-300',
         'text-left max-w-sm mx-0 md:text-sm my-2'
-      )}>
+      )}
+    >
       {children}
     </p>
   );
@@ -113,7 +114,8 @@ export const SkeletonThree = () => {
     <a
       href="https://www.youtube.com/watch?v=RPa3_AD1_Vs"
       target="__blank"
-      className="relative flex gap-10  h-full group/image">
+      className="relative flex gap-10  h-full group/image"
+    >
       <div className="w-full  mx-auto bg-transparent dark:bg-transparent group h-full">
         <div className="flex flex-1 w-full h-full flex-col space-y-2  relative">
           {/* TODO */}
@@ -164,7 +166,8 @@ export const SkeletonTwo = () => {
             }}
             whileHover="whileHover"
             whileTap="whileTap"
-            className="rounded-xl -mr-4 mt-4 p-1 bg-white dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 flex-shrink-0 overflow-hidden">
+            className="rounded-xl -mr-4 mt-4 p-1 bg-white dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 flex-shrink-0 overflow-hidden"
+          >
             <img
               src={image}
               alt="bali images"
@@ -185,7 +188,8 @@ export const SkeletonTwo = () => {
             variants={imageVariants}
             whileHover="whileHover"
             whileTap="whileTap"
-            className="rounded-xl -mr-4 mt-4 p-1 bg-white dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 flex-shrink-0 overflow-hidden">
+            className="rounded-xl -mr-4 mt-4 p-1 bg-white dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 flex-shrink-0 overflow-hidden"
+          >
             <img
               src={image}
               alt="bali images"

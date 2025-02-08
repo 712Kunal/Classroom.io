@@ -1,47 +1,41 @@
-import { z } from "zod"; // Import zod
-import { zodResolver } from "@hookform/resolvers/zod"; // Import zodResolver from the correct package
-import { useForm } from "react-hook-form"; 
-import { sendPasswordResetEmail, auth } from "@/Firebase/firebase"; // Your Firebase imports
-import { useState } from "react";
+import { z } from 'zod'; // Import zod
+import { zodResolver } from '@hookform/resolvers/zod'; // Import zodResolver from the correct package
+import { useForm } from 'react-hook-form';
+import { sendPasswordResetEmail, auth } from '@/Firebase/firebase'; // Your Firebase imports
+import { useState } from 'react';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+  FormMessage
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.string().email({ message: 'Invalid email address' })
 });
 
 export default function ForgetPasswordPreview() {
-  const [responseMessage, setResponseMessage] = useState(""); // To store success or error message
+  const [responseMessage, setResponseMessage] = useState(''); // To store success or error message
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-    },
+      email: ''
+    }
   });
 
   async function onSubmit(values) {
-    setResponseMessage(""); // Reset message before submitting
+    setResponseMessage(''); // Reset message before submitting
     try {
       await sendPasswordResetEmail(auth, values.email); // Send reset email
-      setResponseMessage("Password reset link sent successfully. Please check your inbox.");
+      setResponseMessage('Password reset link sent successfully. Please check your inbox.');
     } catch (error) {
-      console.error("Error sending password reset email", error);
-      setResponseMessage("Failed to send password reset email. Please try again.");
+      console.error('Error sending password reset email', error);
+      setResponseMessage('Failed to send password reset email. Please try again.');
     }
   }
 

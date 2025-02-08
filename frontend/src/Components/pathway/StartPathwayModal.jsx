@@ -7,16 +7,22 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.jsx";
-import { useAuthListener } from "@/hooks/use-auth";
-import axios from "axios";
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card.jsx';
+import { useAuthListener } from '@/hooks/use-auth';
+import axios from 'axios';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGlobal } from '../context/GlobalContext';
-import { awardBadge, checkIfBadgeIsPresent } from "@/Firebase/services/badge.service";
-import { BACKEND_URL } from "../core/Constants";
+import { awardBadge, checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
+import { BACKEND_URL } from '../core/Constants';
 
 const StartPathwayModal = ({ children }) => {
   const { user } = useAuthListener();
@@ -37,27 +43,25 @@ const StartPathwayModal = ({ children }) => {
       pathway.startPathway();
       await refetchPathways();
 
-
       await awardFirstPathwayBadge(user.uid);
 
-      const badgeType = "first_pathway";
+      const badgeType = 'first_pathway';
       const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
-      console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+      console.log('Is batch already awarded:', isBatchAlreadyAwarded);
       if (!isBatchAlreadyAwarded) {
-        console.log("Badge award called");
+        console.log('Badge award called');
         await awardBadge(userId, badgeType);
         await refetchBadges();
-        console.log("Badge awarded successfully");
+        console.log('Badge awarded successfully');
       }
 
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
 
       await axios.post(`${BACKEND_URL}/user/${user.uid}/pathwayActivate/${pathwayId}`);
-
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <AlertDialog>
@@ -79,7 +83,8 @@ const StartPathwayModal = ({ children }) => {
         </AlertDialogHeader>
         <div className="content">
           <Card
-            className={`flex flex-col justify-between w-full max-h-96 p-2 rounded-xl border border-[rgba(255,255,255,0.10)] dark:bg-[rgba(40,40,40,0.70)] bg-gray-100 shadow-[2px_4px_16px_0px_rgba(248,248,248,0.06)_inset]`}>
+            className={`flex flex-col justify-between w-full max-h-96 p-2 rounded-xl border border-[rgba(255,255,255,0.10)] dark:bg-[rgba(40,40,40,0.70)] bg-gray-100 shadow-[2px_4px_16px_0px_rgba(248,248,248,0.06)_inset]`}
+          >
             <CardHeader>
               <CardTitle>{pathway.data.topic}</CardTitle>
               <CardDescription>{pathway.data.description}</CardDescription>

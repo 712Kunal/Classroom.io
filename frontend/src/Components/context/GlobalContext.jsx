@@ -9,7 +9,7 @@ const GlobalContext = createContext(null);
 
 export const GlobalProvider = ({ children }) => {
   const { user, loading: authLoading } = useAuthListener();
-  
+
   const [userDetails, setUserDetails] = useState(null);
   const [pathwaysList, setPathwaysList] = useState([]);
   const [badges, setBadges] = useState([]);
@@ -19,7 +19,7 @@ export const GlobalProvider = ({ children }) => {
   // Fetch user details
   const fetchUserDetails = useCallback(async () => {
     if (!user?.uid) return;
-    
+
     try {
       setIsLoading(true);
       const data = await getUserProfileByUserId(user.uid);
@@ -46,11 +46,11 @@ export const GlobalProvider = ({ children }) => {
       setIsLoading(false);
     }
   }, [user?.uid]);
-  
+
   // Fetch pathways
   const fetchPathways = useCallback(async () => {
     if (!user?.uid) return;
-    
+
     try {
       setIsLoading(true);
       const data = await getAllPathwaysOfUser(user.uid);
@@ -94,14 +94,10 @@ export const GlobalProvider = ({ children }) => {
     refetchUserDetails,
     refetchPathways,
     refetchBadges,
-    activePathwayId,
+    activePathwayId
   };
 
-  return (
-    <GlobalContext.Provider value={contextValue}>
-      {children}
-    </GlobalContext.Provider>
-  );
+  return <GlobalContext.Provider value={contextValue}>{children}</GlobalContext.Provider>;
 };
 
 export const useGlobal = () => {

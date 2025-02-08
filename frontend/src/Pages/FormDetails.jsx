@@ -36,15 +36,15 @@ function FormDetails() {
   const [interest, setinterest] = useState([]);
 
   const awardRegisteredUserBadge = async (userId) => {
-    const badgeType = "verified";
+    const badgeType = 'verified';
     const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
-    console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+    console.log('Is batch already awarded:', isBatchAlreadyAwarded);
     if (!isBatchAlreadyAwarded) {
-      console.log("Badge award called");
+      console.log('Badge award called');
       await awardBadge(userId, badgeType);
-      console.log("Badge awarded successfully");
+      console.log('Badge awarded successfully');
     }
-  }
+  };
 
   // Add state for the email notification toggle
   const [emailNotification, setEmailNotification] = useState(false);
@@ -87,14 +87,11 @@ function FormDetails() {
         });
 
         // 🔹 Send request to Spring Boot API for 2FA verification
-        const response = await fetch(
-          `${BACKEND_URL}/user/${userId}/codeVerification`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: user.email })
-          }
-        );
+        const response = await fetch(`${BACKEND_URL}/user/${userId}/codeVerification`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: user.email })
+        });
 
         if (response.ok) {
           await awardRegisteredUserBadge(userId);
@@ -194,7 +191,8 @@ function FormDetails() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: 'easeInOut' }}
-            className="outer-container w-full flex flex-wrap">
+            className="outer-container w-full flex flex-wrap"
+          >
             {/* left Section */}
             <div className="w-full lg:w-1/2 rounded-md  flex flex-col gap-4 ">
               <div className="Personal-details rounded-md p-4 flex flex-col gap-4 border">
@@ -231,7 +229,8 @@ function FormDetails() {
                     placeholder="Eg: I am a student"
                     cols="80"
                     rows="10"
-                    className="w-full text-white bg-gray-50 dark:bg-zinc-800 p-2 rounded-md mt-1"></textarea>
+                    className="w-full text-white bg-gray-50 dark:bg-zinc-800 p-2 rounded-md mt-1"
+                  ></textarea>
                 </div>
                 <div>
                   <Label htmlFor="dob">Enter your date of birth: </Label>
@@ -248,7 +247,8 @@ function FormDetails() {
                     name="gender"
                     id="gender"
                     required
-                    className="w-full dark:bg-zinc-800 p-2 rounded-md border-none">
+                    className="w-full dark:bg-zinc-800 p-2 rounded-md border-none"
+                  >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -264,11 +264,7 @@ function FormDetails() {
                 <div className="flex flex-wrap gap-2 justify-center items-center">
                   <div className="flex items-center gap-1">
                     <Instagram className="text-red-400" />
-                    <Input
-                      name="insta"
-                      placeholder="https://www.instagram.com/"
-                      type="url"
-                    />
+                    <Input name="insta" placeholder="https://www.instagram.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <Github className="text-slate-400" />
@@ -276,11 +272,7 @@ function FormDetails() {
                   </div>
                   <div className="flex items-center gap-1">
                     <Linkedin className="text-blue-400" />
-                    <Input
-                      name="linkedin"
-                      placeholder="https://linkedin.com/"
-                      type="url"
-                    />
+                    <Input name="linkedin" placeholder="https://linkedin.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <Twitter className="text-orange-400" />
@@ -288,11 +280,7 @@ function FormDetails() {
                   </div>
                   <div className="flex items-center gap-1">
                     <BriefcaseBusiness className="text-cyan-200" />
-                    <Input
-                      name="portfolio"
-                      placeholder="https://portfolio.com/"
-                      type="url"
-                    />
+                    <Input name="portfolio" placeholder="https://portfolio.com/" type="url" />
                   </div>
                 </div>
               </div>
@@ -387,18 +375,21 @@ function FormDetails() {
                 />
                 <Label
                   htmlFor="emailNotification"
-                  className="text-sm font-medium text-gray-800 dark:text-gray-300">
+                  className="text-sm font-medium text-gray-800 dark:text-gray-300"
+                >
                   Email Notification
                 </Label>
               </div>
               <button
                 className="relative group/btn hover:shadow-md hover:shadow-blue-500 bg-primary w-full flex justify-center items-center gap-2 text-primary-foreground rounded-md h-10 font-medium"
-                type="submit">
+                type="submit"
+              >
                 Submit Details{' '}
                 <motion.span
                   initial={{ rotate: 0 }}
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 2, ease: 'easeIn', repeat: Infinity }}>
+                  transition={{ duration: 2, ease: 'easeIn', repeat: Infinity }}
+                >
                   <ShipWheel />
                 </motion.span>
               </button>

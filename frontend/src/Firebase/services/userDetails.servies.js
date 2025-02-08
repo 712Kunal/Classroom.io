@@ -1,5 +1,14 @@
 import { db } from '../firebase';
-import { doc, setDoc, collection, getDoc, updateDoc, query, where, serverTimestamp } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  collection,
+  getDoc,
+  updateDoc,
+  query,
+  where,
+  serverTimestamp
+} from 'firebase/firestore';
 import { auth } from '../firebase';
 
 const addProfile = async (userDetails, userId) => {
@@ -9,7 +18,7 @@ const addProfile = async (userDetails, userId) => {
     if (!user) {
       throw new Error('No user found');
     }
-    const userProfileRef = doc(db, 'UserProfiles', userId); 
+    const userProfileRef = doc(db, 'UserProfiles', userId);
 
     await setDoc(userProfileRef, {
       userId: userId,
@@ -56,17 +65,14 @@ const updateUserProfile = async (userId, updates) => {
     }
 
     const userDetailsCollectionRef = collection(db, 'UserProfiles');
-    const q = query(userDetailsCollectionRef, where("userId", "==", userId));
+    const q = query(userDetailsCollectionRef, where('userId', '==', userId));
     const userDetails = await getDoc(q);
     if (userDetails) {
       const docRef = doc(userDetailsCollectionRef, userDetails.id);
-      const updatedUserDetails = await updateDoc(
-        docRef,
-        {
-          updates,
-          modifiedAt: serverTimestamp()
-        }
-      );
+      const updatedUserDetails = await updateDoc(docRef, {
+        updates,
+        modifiedAt: serverTimestamp()
+      });
 
       return {
         id: updatedUserDetails.id,

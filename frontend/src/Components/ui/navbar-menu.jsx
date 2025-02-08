@@ -17,25 +17,29 @@ export const MenuItem = ({ setActive, active, item, children }) => {
     <div onMouseEnter={() => setActive(item)} className="relative ">
       <motion.p
         transition={{ duration: 0.3 }}
-        className="cursor-pointer text-black hover:text-blue-500 dark:text-white dark:hover:text-blue-400 font-medium">
+        className="cursor-pointer text-black hover:text-blue-500 dark:text-white dark:hover:text-blue-400 font-medium"
+      >
         {item}
       </motion.p>
       {active !== null && (
         <motion.div
           initial={{ opacity: 0, scale: 0.85, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={transition}>
+          transition={transition}
+        >
           {active === item && (
             <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 transform -translate-x-1/2 pt-4">
               <motion.div
                 transition={transition}
                 // layoutId ensures smooth animation
                 layoutId="active"
-                className="bg-white dark:bg-[#0300145e] backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl">
+                className="bg-white dark:bg-[#0300145e] backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl"
+              >
                 <motion.div
                   // layout ensures smooth animation
                   layout
-                  className="w-max h-full p-4">
+                  className="w-max h-full p-4"
+                >
                   {children}
                 </motion.div>
               </motion.div>
@@ -52,7 +56,8 @@ export const Menu = ({ setActive, children }) => {
     <nav
       // resets the state
       onMouseLeave={() => setActive(null)}
-      className="relative border border-[#7042f861] bg-[#0300145e] shadow-input flex justify-center space-x-16 px-[20px] py-[10px] rounded-full text-gray-200">
+      className="relative border border-[#7042f861] bg-[#0300145e] shadow-input flex justify-center space-x-16 px-[20px] py-[10px] rounded-full text-gray-200"
+    >
       {children}
     </nav>
   );

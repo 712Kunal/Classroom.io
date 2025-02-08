@@ -33,7 +33,11 @@ export default [
       ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      "import/extensions": ["warn", "ignorePackages", { "js": "always", "jsx": "always", "ts": "never", "tsx": "never" }]
+      'import/extensions': [
+        'warn',
+        'ignorePackages',
+        { js: 'always', jsx: 'always', ts: 'never', tsx: 'never' }
+      ]
     }
   }
 ];

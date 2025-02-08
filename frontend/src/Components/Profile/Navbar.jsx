@@ -19,7 +19,7 @@ export default function Navbar({ user }) {
     { name: 'Dashboard', href: '#', current: false },
     { name: 'History', href: '#', current: false },
     { name: 'Mindspace', href: '#', current: false },
-    { name: 'Settings', href: '#', current: false }, 
+    { name: 'Settings', href: '#', current: false }
   ];
 
   function classNames(...classes) {
@@ -84,7 +84,9 @@ export default function Navbar({ user }) {
                 }}
                 aria-current={activeTab === item.name ? 'page' : undefined}
                 className={classNames(
-                  activeTab === item.name ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  activeTab === item.name
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'block rounded-md px-3 py-2 text-base font-medium'
                 )}
               >
@@ -109,7 +111,8 @@ export default function Navbar({ user }) {
           {activeTab === 'Dashboard' && <Dashboard user={user} />}
           {activeTab === 'History' && <History />}
           {activeTab === 'Mindspace' && <Mindspace user={user} />}
-          {activeTab === 'Settings' && <Usersetting user={user}/>}  {/* This is the 'Settings' tab now */}
+          {activeTab === 'Settings' && <Usersetting user={user} />}{' '}
+          {/* This is the 'Settings' tab now */}
         </div>
       </main>
     </div>
