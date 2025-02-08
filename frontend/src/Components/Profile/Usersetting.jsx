@@ -391,7 +391,7 @@ const Usersetting = ({user}) => {
           className="flex rounded-lg mt-4 justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-400 dark:border-gray-400 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-pink-500/50 dark:hover:ring-ornage-100/50 hover:ring-opacity-50"
           onClick={toggleAccordion}
         >
-          Reset Password
+          Change Password
           {isOpen ? (
             <FaChevronUp className="ml-2 transition-transform duration-300" />
           ) : (
