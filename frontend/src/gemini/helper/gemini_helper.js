@@ -47,6 +47,7 @@ const generationConfig = {
   topK: 40,
   maxOutputTokens: 8192,
   responseMimeType: "text/plain",
+  maxOutputTokens: 2000,
 };
 
 /* async function run() {

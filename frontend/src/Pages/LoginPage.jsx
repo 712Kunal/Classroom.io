@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Spline from '@splinetool/react-spline';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/Firebase/firebase';
@@ -27,9 +27,12 @@ export default function LoginPage() {
   
     if (!email || !password) {
       toast.error('Please fill in both email and password!', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 5000,
         theme: "dark",
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
       });
       return;
     }
@@ -43,13 +46,7 @@ export default function LoginPage() {
       const userDoc = await getDoc(userDocRef);
   
       if (userDoc.exists()) {
-        toast.success('Logged in Successfully!!!', {
-          position: "top-right",
-          autoClose: 5000,
-          theme: "dark",
-        });
-  
-        navigate('/app/profile'); // Redirect to profile page
+      navigate('/twofactorauth');
       } else {
         toast.error('User not found in the database!', {
           position: "top-right",
@@ -66,7 +63,7 @@ export default function LoginPage() {
         });
       } else if (error.code === 'auth/wrong-password') {
         toast.error('Incorrect password. Please try again.', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           theme: "dark",
         });
@@ -111,7 +108,6 @@ export default function LoginPage() {
                 id="email"
                 name="email"
                 type="email"
-                
                 autoComplete="email"
                 placeholder="Ex-abc@mail.com"
                 value={email}
@@ -129,7 +125,6 @@ export default function LoginPage() {
                 name="password"
                 type={passwordVisible ? 'text' : 'password'}
                 placeholder="******AB"
-                
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -154,7 +149,7 @@ export default function LoginPage() {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <a
-                  href="/forgot-password" 
+                  href="/forgot-password"
                   className="font-medium text-purple-600 hover:text-indigo-500">
                   Forgot your password?
                 </a>
