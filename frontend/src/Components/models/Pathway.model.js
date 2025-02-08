@@ -3,6 +3,7 @@ import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 import axios from 'axios';
 import { checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
+import { BACKEND_URL } from '../core/Constants';
 
 // Zod Schemas
 const ResourceSchema = z.object({
@@ -124,7 +125,7 @@ const checkProgressAndSendNotifs = async (pathway) => {
 
     console.log("User ID:", userId, "Pathway ID:", pathwayId, "Progress:", progressPercentage);
 
-    const url = `http://localhost:8080/api/user/${userId}/pathway/${pathwayId}`;
+    const url = `${BACKEND_URL}/user/${userId}/pathway/${pathwayId}`;
 
     await axios.post(url, null, {
       params: { progress: progressPercentage },
