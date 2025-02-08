@@ -38,6 +38,7 @@ export const GlobalProvider = ({ children }) => {
     try {
       setIsLoading(true);
       const data = await getAllBadgesOfUser(user.uid);
+      console.log(data);
       setBadges(data);
     } catch (err) {
       setError(err);
@@ -45,11 +46,11 @@ export const GlobalProvider = ({ children }) => {
       setIsLoading(false);
     }
   }, [user?.uid]);
-
+  
   // Fetch pathways
   const fetchPathways = useCallback(async () => {
     if (!user?.uid) return;
-
+    
     try {
       setIsLoading(true);
       const data = await getAllPathwaysOfUser(user.uid);
@@ -67,7 +68,8 @@ export const GlobalProvider = ({ children }) => {
 
     fetchUserDetails();
     fetchPathways();
-  }, [user?.uid, fetchUserDetails, fetchPathways]);
+    fetchBadges();
+  }, [user?.uid, fetchUserDetails, fetchPathways, fetchBadges]);
 
   const refetchUserDetails = () => fetchUserDetails();
   const refetchPathways = () => fetchPathways();

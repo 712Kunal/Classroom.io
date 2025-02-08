@@ -34,6 +34,17 @@ function FormDetails() {
   const [hobies, setHobies] = useState([]);
   const [interest, setinterest] = useState([]);
 
+  const awardRegisteredUserBadge = async (userId) => {
+    const badgeType = "verified";
+    const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
+    console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+    if (!isBatchAlreadyAwarded) {
+      console.log("Badge award called");
+      await awardBadge(userId, badgeType);
+      console.log("Badge awarded successfully");
+    }
+  }
+
   // Add state for the email notification toggle
   const [emailNotification, setEmailNotification] = useState(false);
 
@@ -76,7 +87,7 @@ function FormDetails() {
 
         // 🔹 Send request to Spring Boot API for 2FA verification
         const response = await fetch(
-          `http://localhost:8080/api/user/${user.uid}/codeVerification`,
+          `http://localhost:8080/api/user/${userId}/codeVerification`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -85,6 +96,7 @@ function FormDetails() {
         );
 
         if (response.ok) {
+          await awardRegisteredUserBadge(userId);
           navigate('/twofactorauth');
         } else {
           toast.error('Failed to send verification code!', {

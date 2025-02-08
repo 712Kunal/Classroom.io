@@ -1,8 +1,6 @@
 import { db } from '../firebase';
 import { setDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where, addDoc } from 'firebase/firestore';
 
-const badgesCollectionRef = collection(db, 'badges');
-
 const badgeTypeToBadge = {
   "learner": {
     "name": "Learner",
@@ -58,14 +56,15 @@ const badgeTypeToBadge = {
     "badgePNG": "/assets/images/badges/Punctual.png",
     "badgeType": "never_late"
   }
-}
+};
 
-/** adds pathway to db (pathwayData Obj) */
+/** adds badge to db (badgeType string, userId string) */
 export const awardBadge = async (userId, badgeType) => {
   try {
     const badge = badgeTypeToBadge[badgeType];
-    console.log(badgeType)
-    await addDoc(doc(badgesCollectionRef), {
+    console.log(badgeType);
+    // Fixed: Use collection() instead of doc() when adding a new document
+    await addDoc(collection(db, 'badges'), {
       ...badge,
       userId: userId,
       createdAt: serverTimestamp()
@@ -76,10 +75,10 @@ export const awardBadge = async (userId, badgeType) => {
   }
 };
 
-/** get all pathways of specified User from DB (userId) */
+/** get all badges of specified User from DB (userId string) */
 export const getAllBadgesOfUser = async (userId) => {
   try {
-    const q = query(badgesCollectionRef, where("userId", "==", userId));
+    const q = query(collection(db, 'badges'), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
@@ -88,10 +87,10 @@ export const getAllBadgesOfUser = async (userId) => {
   }
 };
 
-/** check if badge of specified type is present for user */
+/** check if badge of specified type is present for user (userId string, badgeType string) */
 export const checkIfBadgeIsPresent = async (userId, badgeType) => {
   try {
-    const q = query(badgesCollectionRef, where("userId", "==", userId));
+    const q = query(collection(db, 'badges'), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.some((doc) => doc.data().badgeType === badgeType);
   } catch (error) {
