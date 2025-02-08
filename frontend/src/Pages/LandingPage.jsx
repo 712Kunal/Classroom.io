@@ -15,7 +15,7 @@ function LandingPage() {
       <Lamp />
       <Services />
       {/* <Colorfultext /> */}
-      <Features />
+      {/* <Features /> */}
     </div>
   );
 }
