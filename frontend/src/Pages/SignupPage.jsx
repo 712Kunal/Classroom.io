@@ -7,6 +7,11 @@ import { setDoc, doc } from 'firebase/firestore';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import GoogleButton from 'react-google-button';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+
+import { FaAdjust } from 'react-icons/fa';
+import { AlignCenter, AlignCenterVertical } from 'lucide-react';
 
 function Signup() {
   const navigate = useNavigate();
@@ -175,6 +180,7 @@ function Signup() {
           </label>
         </div>
 
+        
         {/* Sign Up Button */}
         <div>
           <button
@@ -184,6 +190,42 @@ function Signup() {
           </button>
         </div>
       </form>
+
+      <div className="flex justify-center w-full">
+  <GoogleButton
+    onClick={async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        if (user) {
+          const username = user.email.split('@')[0]; // Extract username from email
+
+          await setDoc(doc(db, 'Users', user.uid), {
+            email: user.email,
+            username: username,
+          });
+
+          console.log('Google sign-in successful:', user);
+          window.location.href = "/app/profile"; // Redirect to app after login
+        }
+      } catch (error) {
+        console.error('Google Sign-In Error:', error);
+        toast.error('Google Sign-In failed. Please try again.', {
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+        });
+      }
+    }}
+  />
+</div>
+
+
 
       {/* Link to Log In */}
       <div className="mt-6 text-center">
