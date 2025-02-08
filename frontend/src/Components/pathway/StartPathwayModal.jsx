@@ -16,6 +16,7 @@ import axios from "axios";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGlobal } from '../context/GlobalContext';
 import { awardBadge, checkIfBadgeIsPresent } from "@/Firebase/services/badge.service";
+import { BACKEND_URL } from "../core/Constants";
 
 const StartPathwayModal = ({ children }) => {
   const { user } = useAuthListener();
@@ -51,7 +52,7 @@ const StartPathwayModal = ({ children }) => {
 
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
 
-      await axios.post(`http://localhost:8080/api/user/${user.uid}/pathwayActivate/${pathwayId}`);
+      await axios.post(`${BACKEND_URL}/user/${user.uid}/pathwayActivate/${pathwayId}`);
 
     } catch (error) {
       console.error(error);
