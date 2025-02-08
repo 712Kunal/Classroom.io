@@ -42,14 +42,14 @@ function FormDetails() {
       if (user) {
         console.log('user', user);
       } else {
-        toast.success('User Not found ',{
-          position: "top-right",
+        toast.success('User Not found ', {
+          position: 'top-right',
           autoClose: 5000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: "dark",
-          });
+          theme: 'dark'
+        });
         navigate('/signup');
         console.log('no user');
       }
@@ -65,26 +65,26 @@ function FormDetails() {
       console.log(adduserData);
       if (adduserData.success === true) {
         console.log('User added successfully');
-        toast.success('User registered successfully',{
-          position: "top-right",
+        toast.success('User registered successfully', {
+          position: 'top-right',
           autoClose: 5000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: "dark",
-          });
+          theme: 'dark'
+        });
         navigate('/app/profile');
       }
     } catch (error) {
       console.error('Error adding user details:', error);
-      toast.success('Error User not Added',{
-        position: "top-right",
+      toast.success('Error User not Added', {
+        position: 'top-right',
         autoClose: 5000,
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
-        theme: "dark",
-        });
+        theme: 'dark'
+      });
     }
   };
 
@@ -172,7 +172,7 @@ function FormDetails() {
                 </h2>
                 <div>
                   <Label htmlFor="fullname">Enter your full name: </Label>
-                  <Input name="name" placeholder="Eg: John Doe" type="text" />
+                  <Input name="name" placeholder="Eg: John Doe" type="text" required />
                 </div>
                 <div>
                   <Label htmlFor="contact">Enter your contact number: </Label>
@@ -181,11 +181,12 @@ function FormDetails() {
                     placeholder="Eg: +91-1234567890"
                     type="number"
                     maxLength="12"
+                    required
                   />
                 </div>
                 <div>
                   <Label htmlFor="location">Enter your location: </Label>
-                  <Input name="location" placeholder="Eg: Pune" type="text" />
+                  <Input name="location" placeholder="Eg: Pune" type="text" required />
                 </div>
                 <div>
                   <Label htmlFor="bio" className="block">
@@ -194,6 +195,7 @@ function FormDetails() {
                   <textarea
                     name="bio"
                     id="bio"
+                    required
                     placeholder="Eg: I am a student"
                     cols="80"
                     rows="10"
@@ -204,6 +206,7 @@ function FormDetails() {
                   <input
                     type="date"
                     name="dob"
+                    required
                     className="w-full dark:bg-zinc-800 p-2 rounded-md border-none focus:border-none"
                   />
                 </div>
@@ -212,6 +215,7 @@ function FormDetails() {
                   <select
                     name="gender"
                     id="gender"
+                    required
                     className="w-full dark:bg-zinc-800 p-2 rounded-md border-none">
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -228,23 +232,38 @@ function FormDetails() {
                 <div className="flex flex-wrap gap-2 justify-center items-center">
                   <div className="flex items-center gap-1">
                     <Instagram className="text-red-400" />
-                    <Input name="insta" placeholder="https://www.instagram.com/" type="url" />
+                    <Input
+                      name="insta"
+                      placeholder="https://www.instagram.com/"
+                      type="url"
+                      required
+                    />
                   </div>
                   <div className="flex items-center gap-1">
                     <Github className="text-slate-400" />
-                    <Input name="git" placeholder="https://github.com/" type="url" />
+                    <Input name="git" placeholder="https://github.com/" type="url" required />
                   </div>
                   <div className="flex items-center gap-1">
                     <Linkedin className="text-blue-400" />
-                    <Input name="linkedin" placeholder="https://linkedin.com/" type="url" />
+                    <Input
+                      name="linkedin"
+                      placeholder="https://linkedin.com/"
+                      type="url"
+                      required
+                    />
                   </div>
                   <div className="flex items-center gap-1">
                     <Twitter className="text-orange-400" />
-                    <Input name="twitter" placeholder="https://twitter.com/" type="url" />
+                    <Input name="twitter" placeholder="https://twitter.com/" type="url" required />
                   </div>
                   <div className="flex items-center gap-1">
                     <BriefcaseBusiness className="text-cyan-200" />
-                    <Input name="portfolio" placeholder="https://portfolio.com/" type="url" />
+                    <Input
+                      name="portfolio"
+                      placeholder="https://portfolio.com/"
+                      type="url"
+                      required
+                    />
                   </div>
                 </div>
               </div>
@@ -257,19 +276,24 @@ function FormDetails() {
                 </h2>
                 <div>
                   <Label htmlFor="study">Field of study: </Label>
-                  <Input name="study" placeholder="Eg: Computer Science" type="text" />
+                  <Input name="study" placeholder="Eg: Computer Science" type="text" required />
                 </div>
                 <div>
                   <Label htmlFor="degree">Degree: </Label>
-                  <Input name="degree" placeholder="Eg: B.tech" type="text" />
+                  <Input name="degree" placeholder="Eg: B.tech" type="text" required />
                 </div>
                 <div>
                   <Label htmlFor="experience">Year's of experience: </Label>
-                  <Input name="experience" placeholder="Eg: 10" type="number" />
+                  <Input name="experience" placeholder="Eg: 10" type="number" required />
                 </div>
                 <div>
                   <Label htmlFor="occupation">Occupation: </Label>
-                  <Input name="occupation" placeholder="Eg: Software Developer" type="text" />
+                  <Input
+                    name="occupation"
+                    placeholder="Eg: Software Developer"
+                    type="text"
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="languages">Language's known: </Label>
@@ -277,7 +301,9 @@ function FormDetails() {
                     tags={languagesKnown}
                     setTags={setlanguagesKnown}
                     placeholder="Eg: Hindi, English, Marathi"
+                    required
                   />
+                  <p className="text-xs text-slate-400 ml-2">Hit enter to add more languages</p>
                 </div>
                 <div>
                   <Label htmlFor="learningStyes">Preffered learning Styles: </Label>
@@ -285,7 +311,11 @@ function FormDetails() {
                     tags={learningStyles}
                     setTags={setlearningStyles}
                     placeholder="Eg: Video Tutorials, Written Guides, Interactive Exercises"
+                    required
                   />
+                  <p className="text-xs text-slate-400 ml-2">
+                    Hit enter to add more learning styles
+                  </p>
                 </div>
                 <div>
                   <Label htmlFor="skills">Technical Skills: </Label>
@@ -293,15 +323,20 @@ function FormDetails() {
                     tags={skills}
                     setTags={setskills}
                     placeholder="Eg: React, JavaScript, Node.js"
+                    required
                   />
+                  <p className="text-xs text-slate-400 ml-2">Hit enter to add more skills</p>
                 </div>
+
                 <div>
                   <Label htmlFor="hobies">Hobbies: </Label>
                   <Languages
                     tags={hobies}
                     setTags={setHobies}
                     placeholder="Eg: Drawing, Gyming, Cooking"
+                    required
                   />
+                  <p className="text-xs text-slate-400 ml-2">Hit enter to add more hobbies</p>
                 </div>
                 <div>
                   <Label htmlFor="skills">Interest: </Label>
@@ -309,7 +344,9 @@ function FormDetails() {
                     tags={interest}
                     setTags={setinterest}
                     placeholder="Eg: Devops, Cloud computing, AI"
+                    required
                   />
+                  <p className="text-xs text-slate-400 ml-2">Hit enter to add more interests</p>
                 </div>
               </div>
               <div className="flex items-center justify-center border-gray-300 space-x-3">
@@ -321,8 +358,7 @@ function FormDetails() {
                 />
                 <Label
                   htmlFor="emailNotification"
-                  className="text-sm font-medium text-gray-800 dark:text-gray-300"
-                >
+                  className="text-sm font-medium text-gray-800 dark:text-gray-300">
                   Email Notification
                 </Label>
               </div>

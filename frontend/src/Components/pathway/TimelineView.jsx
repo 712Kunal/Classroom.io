@@ -46,8 +46,6 @@ const TimelineView = () => {
   const { topic, description, duration, startDate, endDate, isActive, haveBeenPaused } = pathway.data;
   const { pathway: intervals, intervalType } = pathway.data.response;
 
-  // console.log(pathway.data);
-
   const data = intervals.map((interval) => ({
     title: `${intervalType} ${interval.intervalNumber}: ${interval.summary}`,
     content: <Interval data={interval} pathway={pathway} />,
@@ -70,6 +68,7 @@ const TimelineView = () => {
       percentageComplete={getPercentageComplete()}
       isActivePathway={isActive}
       haveBeenPaused={haveBeenPaused}
+      pathwayId={pathwayId}
     />
   </div>;
 };
