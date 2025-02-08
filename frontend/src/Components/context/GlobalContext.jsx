@@ -86,6 +86,7 @@ export const GlobalProvider = ({ children }) => {
   const contextValue = {
     userDetails,
     pathwaysList,
+    badges,
     isLoading: authLoading || isLoading,
     error,
     refetchUserDetails,
