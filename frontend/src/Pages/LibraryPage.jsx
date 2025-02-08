@@ -62,7 +62,7 @@ function LibraryPage() {
       <div className="newButtonContainer p-8 absolute bottom-0 right-0">
         <Button
           type="button"
-          className="w-12 h-12 p-0 rounded-full"
+          className="w-12 h-12 p-0 rounded-full bg-neutral-700 shadow-inner shadow-violet-400"
           variant="outline"
           size="icon"
           onClick={handleNewPathwayOption}

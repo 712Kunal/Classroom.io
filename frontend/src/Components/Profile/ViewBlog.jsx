@@ -40,7 +40,7 @@ const ViewBlog = ({ userId }) => {
 
 
     if (loading) {
-        return <p><Loader1/></p>;
+        return <div className='text-xs text-center justify-center'><Loader1/></div>;
     }
 
 
@@ -73,13 +73,13 @@ const ViewBlog = ({ userId }) => {
     return (
         <div className="max-w-full sm:max-w-2xl mx-auto p-4">
             {blogs.length === 0 ? (
-                <p>No blogs available.</p>
+                <p className='text-sm text-center justify-center'>No blogs available.</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> 
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 "> 
                     {blogs.map((blog) => (
                         <div
                             key={blog.id}
-                            className="w-full h-72 p-6 rounded-lg shadow-md hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
+                            className="w-full h-42 p-6 rounded-lg shadow-md shadow-red-400 hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
                             onClick={() => handleBlogClick(blog)} 
                         >
                             <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 truncate"> {/* Truncate title if it's too long */}

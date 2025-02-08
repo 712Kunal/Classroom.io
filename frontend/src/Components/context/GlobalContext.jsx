@@ -3,6 +3,7 @@ import { useAuthListener } from '@/hooks/use-auth.jsx';
 import { getUserProfileByUserId } from '@/Firebase/services/userDetails.servies';
 import { getAllPathwaysOfUser } from '@/Firebase/services/pathway.service';
 import { Pathway } from '../models/Pathway.model';
+import { getAllBadgesOfUser } from '@/Firebase/services/badge.service';
 
 const GlobalContext = createContext(null);
 
@@ -11,6 +12,7 @@ export const GlobalProvider = ({ children }) => {
   
   const [userDetails, setUserDetails] = useState(null);
   const [pathwaysList, setPathwaysList] = useState([]);
+  const [badges, setBadges] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,6 +24,21 @@ export const GlobalProvider = ({ children }) => {
       setIsLoading(true);
       const data = await getUserProfileByUserId(user.uid);
       setUserDetails(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.uid]);
+
+  // Fetch pathways
+  const fetchBadges = useCallback(async () => {
+    if (!user?.uid) return;
+
+    try {
+      setIsLoading(true);
+      const data = await getAllBadgesOfUser(user.uid);
+      setBadges(data);
     } catch (err) {
       setError(err);
     } finally {
@@ -54,6 +71,7 @@ export const GlobalProvider = ({ children }) => {
 
   const refetchUserDetails = () => fetchUserDetails();
   const refetchPathways = () => fetchPathways();
+  const refetchBadges = () => fetchBadges();
 
   const [activePathwayId, setActivePathwayId] = useState(null);
   useEffect(() => {
@@ -68,10 +86,12 @@ export const GlobalProvider = ({ children }) => {
   const contextValue = {
     userDetails,
     pathwaysList,
+    badges,
     isLoading: authLoading || isLoading,
     error,
     refetchUserDetails,
     refetchPathways,
+    refetchBadges,
     activePathwayId,
   };
 
