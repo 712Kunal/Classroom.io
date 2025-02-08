@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Spline from '@splinetool/react-spline';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/Firebase/firebase';
@@ -24,56 +24,48 @@ export default function LoginPage() {
     if (!email || !password) {
       console.log('Please fill in both email and password');
       toast.error('Please fill in both email and password!', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 5000,
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
-        theme: "dark",
-        });
+        theme: 'dark'
+      });
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success('Login successful!', {
-        position: "top-right",
-        autoClose: 5000,
-        closeOnClick: false,
-        pauseOnHover: true,
-        theme: "dark",
-        });
-      navigate('/app/profile'); 
+      navigate('/twofactorauth');
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
         toast.error('User not found. Please check your email and try again.', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: "dark",
-          });
+          theme: 'dark'
+        });
       } else if (error.code === 'auth/wrong-password') {
         toast.error('Incorrect password. Please try again.', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: "dark",
-          });
-      }else if (error.code === 'auth/invalid-credential') {
+          theme: 'dark'
+        });
+      } else if (error.code === 'auth/invalid-credential') {
         toast.error('Incorrect password. Please try again.', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
-          theme: "dark",
-          });
-      }  
-      else {
+          theme: 'dark'
+        });
+      } else {
         console.log(error.message);
       }
     }
@@ -108,7 +100,6 @@ export default function LoginPage() {
                 id="email"
                 name="email"
                 type="email"
-                
                 autoComplete="email"
                 placeholder="Ex-abc@mail.com"
                 value={email}
@@ -126,7 +117,6 @@ export default function LoginPage() {
                 name="password"
                 type={passwordVisible ? 'text' : 'password'}
                 placeholder="******AB"
-                
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -151,7 +141,7 @@ export default function LoginPage() {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <a
-                  href="/forgot-password" 
+                  href="/forgot-password"
                   className="font-medium text-purple-600 hover:text-indigo-500">
                   Forgot your password?
                 </a>

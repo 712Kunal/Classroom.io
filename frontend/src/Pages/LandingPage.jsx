@@ -1,7 +1,7 @@
 import Hero from '../Components/LandingComponents/Hero.jsx';
 import LandingNavbar from '@/components/core/LandingNavbar.jsx';
 import { Lamp } from '@/Components/LandingComponents/Lamp.jsx';
-import Features from '../Components/LandingComponents/Features.jsx';
+import Services from '../Components/LandingComponents/Services.jsx';
 import Colorfultext from '../Components/LandingComponents/Colorfultext.jsx';
 
 function LandingPage() {
@@ -12,8 +12,8 @@ function LandingPage() {
         <Hero />
       </main>
       <Lamp />
-      <Features />
-      <Colorfultext />
+      <Services />
+      {/* <Colorfultext /> */}
     </div>
   );
 }
