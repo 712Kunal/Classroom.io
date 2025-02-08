@@ -63,7 +63,9 @@ function Hero() {
 
         <motion.div
           variants={slideinfromright(0.8)}
-          className="w-full h-full flex justify-center items-center border"></motion.div>
+          className="w-full h-full flex justify-center items-center ">
+            <img src='assets/brahma-fusion-peris-ai.gif'/>
+          </motion.div>
       </motion.div>
     </div>
   );
