@@ -28,6 +28,7 @@ const ResetPass = ({ user }) => {
                 await updatePassword(currentUser, newPassword);
                 setSuccess('Password updated successfully!');
                 setError('');
+                setNewPassword('');
             } catch (err) {
                 setError('Error updating password: ' + err.message);
                 setSuccess('');
