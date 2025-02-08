@@ -3,7 +3,7 @@ import LandingNavbar from '@/components/core/LandingNavbar.jsx';
 import { Lamp } from '@/Components/LandingComponents/Lamp.jsx';
 import Services from '../Components/LandingComponents/Services.jsx';
 import Colorfultext from '../Components/LandingComponents/Colorfultext.jsx';
-import Features from '../Components/LandingComponents/Features.jsx';
+// import Features from '../Components/LandingComponents/Features.jsx';
 
 function LandingPage() {
   return (
