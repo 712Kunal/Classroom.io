@@ -30,11 +30,9 @@ export default function LoginPage() {
         position: 'top-right',
         autoClose: 5000,
         theme: "dark",
-      });
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
-        theme: 'dark'
       });
       return;
     }
