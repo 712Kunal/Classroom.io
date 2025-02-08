@@ -92,7 +92,7 @@ const CreatePathway = () => {
 
     const additionalInfo = {
       skills: details.background.skills.map((obj) => obj.text).join(', ') || 'none',
-      hobbies: details.background.hobies.map((obj) => obj.text).join(', ') || 'none',
+      hobbies: details.background.hobbies.map((obj) => obj.text).join(', ') || 'none',
       interests: details.background.interest.map((obj) => obj.text).join(', ') || 'none'
     };
 
