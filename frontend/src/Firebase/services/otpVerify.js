@@ -25,7 +25,7 @@ const verifyOtp = async (userId, otp) => {
     const q = query(
       userOTPCollectionRef,
       where('userId', '==', userId),
-      where('otp', '==', verificationCode),
+      where('verificationCode', '==', otp),
       where('expiredAt', '>', serverTimestamp()),
       orderBy('createdAt', 'desc'),
       limit(1)
