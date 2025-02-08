@@ -71,14 +71,6 @@ function Signup() {
           username: username,
         });
         console.log('Notification and email request sent to backend.');
-        toast.success('Notification and email request sent successfully.', {
-          position: 'top-right',
-          autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          theme: 'dark',
-        });
       } catch (axiosError) {
         console.error('Error sending notification:', axiosError.message);
         toast.error('Failed to send notification.', {
