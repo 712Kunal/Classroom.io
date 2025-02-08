@@ -9,7 +9,7 @@ const getRandomColor = () => {
   }
   return color;
 };
-import UserActivityChart from "./UserActivityChart";
+import UserActivityChart from "./UserActivitychart.jsx";
 
 // UserCard Component
 export function UserCard({ user }) {

@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthListener } from '@/hooks/use-auth';
 import { getUserProfileByUserId } from '@/Firebase/services/userDetails.servies';
 import { Timestamp } from 'firebase/firestore';
+import { awardBadge, checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
 
 const calculateAge = (dob) => {
   if (dob instanceof Timestamp) {
