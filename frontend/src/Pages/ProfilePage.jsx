@@ -102,7 +102,7 @@ function ProfilePage() {
           <Navbar user={user} />
         </div>
       ) : (
-        <p className="text-center text-xl"><Loader1/></p>
+        <div className="text-center text-xl w-full h-full grid place-items-center"><Loader1/></div>
       )}
     </>
   );
