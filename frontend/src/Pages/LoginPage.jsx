@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '@/Firebase/firebase';
 import GoogleButton from 'react-google-button';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -19,32 +19,33 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!email || !password) {
-      toast.error('Please fill in both email and password!', { position: 'top-right', autoClose: 5000, theme: "dark" });
+      toast.error('Please fill in both email and password!', {
+        position: 'top-right',
+        autoClose: 5000,
+        theme: 'dark'
+      });
       return;
     }
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      const userDocRef = doc(db, "Users", user.uid);
+      const userDocRef = doc(db, 'Users', user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        // 🔹 Send request to Spring Boot API for 2FA verification
-        const response = await fetch(`http://localhost:8080/api/user/${user.uid}/codeVerification`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
+        toast.success('Logged in Successfully!!!', {
+          position: 'top-right',
+          autoClose: 5000,
+          theme: 'dark'
         });
-        
-
-        if (response.ok) {
-          navigate('/twofactorauth');
-        } else {
-          toast.error('Failed to send verification code!', { position: "top-right", autoClose: 5000, theme: "dark" });
-        }
+        navigate('/app/profile');
       } else {
-        toast.error('User not found in the database!', { position: "top-right", autoClose: 5000, theme: "dark" });
+        toast.error('User not found in the database!', {
+          position: 'top-right',
+          autoClose: 5000,
+          theme: 'dark'
+        });
       }
     } catch (error) {
       handleFirebaseAuthError(error);
@@ -55,9 +56,13 @@ export default function LoginPage() {
     const errorMessages = {
       'auth/user-not-found': 'User not found. Please check your email.',
       'auth/wrong-password': 'Incorrect password. Please try again.',
-      'auth/too-many-requests': 'Too many failed login attempts. Please try again later.',
+      'auth/too-many-requests': 'Too many failed login attempts. Please try again later.'
     };
-    toast.error(errorMessages[error.code] || 'Login failed. Please try again.', { position: "top-right", autoClose: 5000, theme: "dark" });
+    toast.error(errorMessages[error.code] || 'Login failed. Please try again.', {
+      position: 'top-right',
+      autoClose: 5000,
+      theme: 'dark'
+    });
   };
 
   const handleGoogleSignIn = async () => {
@@ -65,18 +70,30 @@ export default function LoginPage() {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      const userDocRef = doc(db, "Users", user.uid);
+      const userDocRef = doc(db, 'Users', user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        toast.success('Logged in Successfully!!!', { position: "top-right", autoClose: 5000, theme: "dark" });
+        toast.success('Logged in Successfully!!!', {
+          position: 'top-right',
+          autoClose: 5000,
+          theme: 'dark'
+        });
         navigate('/app/profile');
       } else {
-        toast.error('User not found in the database!', { position: "top-right", autoClose: 5000, theme: "dark" });
+        toast.error('User not found in the database!', {
+          position: 'top-right',
+          autoClose: 5000,
+          theme: 'dark'
+        });
       }
     } catch (error) {
       console.error('Google Sign-In Error:', error);
-      toast.error('Google Sign-In failed. Please try again.', { position: "top-right", autoClose: 5000, theme: "dark" });
+      toast.error('Google Sign-In failed. Please try again.', {
+        position: 'top-right',
+        autoClose: 5000,
+        theme: 'dark'
+      });
     }
   };
 
@@ -100,7 +117,9 @@ export default function LoginPage() {
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 id="email"
                 name="email"
@@ -113,7 +132,9 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <input
                 id="password"
                 name="password"
@@ -126,19 +147,33 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center space-x-2">
-              <input type="checkbox" id="showPassword" checked={passwordVisible} onChange={togglePasswordVisibility} className="rounded border-gray-300" />
-              <label htmlFor="showPassword" className="text-sm text-gray-500">Show Password</label>
+              <input
+                type="checkbox"
+                id="showPassword"
+                checked={passwordVisible}
+                onChange={togglePasswordVisibility}
+                className="rounded border-gray-300"
+              />
+              <label htmlFor="showPassword" className="text-sm text-gray-500">
+                Show Password
+              </label>
             </div>
 
             <div className="flex items-center justify-between">
-              <a href="/forgot-password" className="font-medium text-purple-600 hover:text-indigo-500">Forgot your password?</a>
+              <a
+                href="/forgot-password"
+                className="font-medium text-purple-600 hover:text-indigo-500">
+                Forgot your password?
+              </a>
             </div>
 
-            <button type="submit" className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <button
+              type="submit"
+              className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               Login
             </button>
 
-            <div className='flex justify-center'>
+            <div className="flex justify-center">
               <GoogleButton onClick={handleGoogleSignIn} />
             </div>
           </form>
