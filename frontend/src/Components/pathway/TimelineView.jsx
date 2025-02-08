@@ -84,7 +84,7 @@ const Interval = ({ data, pathway }) => {
       return;
     }
 
-    if (completedDate && completedDate < scheduledDate) {
+    if (completedDate && completedDate.getDate() < scheduledDate.getDate()) {
       throw new Error('Completed date cannot be before scheduled date');
     }
 
