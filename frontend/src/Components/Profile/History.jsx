@@ -105,7 +105,6 @@ export function Mycoursestaks() {
                       <Button
                         variant="outline"
                         onClick={() => handleProgressClick(pathway)} 
-
                       >
                         Progress
                       </Button>
@@ -130,7 +129,7 @@ export function Mycoursestaks() {
           onClick={handleCloseModal} 
         >
           <div
-            className="bg-gray-900 rounded-lg p-4 max-w-lg w-full"
+            className="bg-gray-900 rounded-lg p-4 max-w-4xl w-full"
             onClick={(e) => e.stopPropagation()} 
           >
             <Taskprogress pathway={selectedPathway} />
