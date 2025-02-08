@@ -1,0 +1,101 @@
+import { db } from '../firebase';
+import { setDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where, addDoc } from 'firebase/firestore';
+
+const badgesCollectionRef = collection(db, 'badges');
+
+const badgeTypeToBadge = {
+  "learner": {
+    "name": "Learner",
+    "description": "You have successfully started your journey with pathify.",
+    "badgePNG": "/assets/images/badges/learner.png",
+    "badgeType": "learner"
+  },
+  "verified": {
+    "name": "Verified",
+    "description": "You have successfully verified your email address.",
+    "badgePNG": "/assets/images/badges/verified.png",
+    "badgeType": "verified"
+  },
+  "first_pathway": {
+    "name": "Believer",
+    "description": "You have successfully created your first pathway.",
+    "badgePNG": "/assets/images/badges/believer.png",
+    "badgeType": "first_pathway"
+  },
+  "one_task": {
+    "name": "Newbie",
+    "description": "You have completed one task on our platform.",
+    "badgePNG": "/assets/images/badges/newbie.png",
+    "badgeType": "one_task"
+  },
+  "ten_tasks": {
+    "name": "Apprentice",
+    "description": "You have completed ten tasks on our platform.",
+    "badgePNG": "/assets/images/badges/apprentice.png",
+    "badgeType": "ten_tasks"
+  },
+  "fifteen_tasks": {
+    "name": "Master",
+    "description": "You have completed ten tasks on our platform.",
+    "badgePNG": "/assets/images/badges/Master.png",
+    "badgeType": "fifteen_tasks"
+  },
+  "one_pathway": {
+    "name": "Legend",
+    "description": "You have completed one pathway on our platform.",
+    "badgePNG": "/assets/images/badges/Legend.png",
+    "badgeType": "one_pathway"
+  },
+  "five_pathways": {
+    "name": "Supreme",
+    "description": "You have completed ten pathways on our platform.",
+    "badgePNG": "/assets/images/badges/Supreme.png",
+    "badgeType": "five_pathways"
+  },
+  "never_late": {
+    "name": "Never Late",
+    "description": "You have never missed a deadline on our platform till date.",
+    "badgePNG": "/assets/images/badges/Punctual.png",
+    "badgeType": "never_late"
+  }
+}
+
+/** adds pathway to db (pathwayData Obj) */
+export const awardBadge = async (userId, badgeType) => {
+  try {
+    const badge = badgeTypeToBadge[badgeType];
+    console.log(badgeType)
+    await addDoc(doc(badgesCollectionRef), {
+      ...badge,
+      userId: userId,
+      createdAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.error('Error awarding user badge:', error);
+    throw error;
+  }
+};
+
+/** get all pathways of specified User from DB (userId) */
+export const getAllBadgesOfUser = async (userId) => {
+  try {
+    const q = query(badgesCollectionRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error('Error getting user badges of User:', error);
+    throw error;
+  }
+};
+
+/** check if badge of specified type is present for user */
+export const checkIfBadgeIsPresent = async (userId, badgeType) => {
+  try {
+    const q = query(badgesCollectionRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.some((doc) => doc.data().badgeType === badgeType);
+  } catch (error) {
+    console.error('Error checking if badge is present:', error);
+    throw error;
+  }
+};

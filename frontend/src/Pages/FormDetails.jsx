@@ -65,7 +65,7 @@ function FormDetails() {
       console.log(adduserData);
       if (adduserData.success === true) {
         console.log('User added successfully');
-        toast.success('User registered successfully', {
+        toast.success('User profile created successfully', {
           position: 'top-right',
           autoClose: 5000,
           closeOnClick: false,
@@ -73,11 +73,30 @@ function FormDetails() {
           draggable: true,
           theme: 'dark'
         });
-        navigate('/app/profile');
+
+        // 🔹 Send request to Spring Boot API for 2FA verification
+        const response = await fetch(
+          `http://localhost:8080/api/user/${user.uid}/codeVerification`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: user.email })
+          }
+        );
+
+        if (response.ok) {
+          navigate('/twofactorauth');
+        } else {
+          toast.error('Failed to send verification code!', {
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'dark'
+          });
+        }
       }
     } catch (error) {
       console.error('Error adding user details:', error);
-      toast.success('Error User not Added', {
+      toast.success('Error User details not Added', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: false,
@@ -236,12 +255,11 @@ function FormDetails() {
                       name="insta"
                       placeholder="https://www.instagram.com/"
                       type="url"
-                      required
                     />
                   </div>
                   <div className="flex items-center gap-1">
                     <Github className="text-slate-400" />
-                    <Input name="git" placeholder="https://github.com/" type="url" required />
+                    <Input name="git" placeholder="https://github.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <Linkedin className="text-blue-400" />
@@ -249,12 +267,11 @@ function FormDetails() {
                       name="linkedin"
                       placeholder="https://linkedin.com/"
                       type="url"
-                      required
                     />
                   </div>
                   <div className="flex items-center gap-1">
                     <Twitter className="text-orange-400" />
-                    <Input name="twitter" placeholder="https://twitter.com/" type="url" required />
+                    <Input name="twitter" placeholder="https://twitter.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <BriefcaseBusiness className="text-cyan-200" />
@@ -262,7 +279,6 @@ function FormDetails() {
                       name="portfolio"
                       placeholder="https://portfolio.com/"
                       type="url"
-                      required
                     />
                   </div>
                 </div>
