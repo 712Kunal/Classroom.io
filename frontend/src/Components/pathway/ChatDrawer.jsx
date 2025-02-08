@@ -17,6 +17,7 @@ import { generateHelperResponse, initialiseChatSession } from "@/gemini/helper/g
 import { useGlobal } from "../context/GlobalContext"
 import { useParams } from "react-router-dom"
 import { Trash2 } from "lucide-react"
+import { useIsMobile } from "../../hooks/use-mobile"
 
 const ChatDrawer = ({ children }) => {
   const [chatSession, setChatSession] = useState(null)
@@ -69,57 +70,130 @@ const ChatDrawer = ({ children }) => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent side="right" className="w-full sm:w-[400px] sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle>Chat Assistant</SheetTitle>
-          <SheetDescription>Ask me anything about your pathway</SheetDescription>
-        </SheetHeader>
-        <div className="flex flex-col h-[calc(100vh-10rem)]">
-          <ScrollArea className="flex-grow pr-4">
-            {messages.map((message, index) => (
-              <div key={index} className={`mb-4 ${message.type === "user" ? "text-right" : "text-left"}`}>
-                <div
-                  className={`inline-block p-3 rounded-lg ${
-                    message.type === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : message.type === "error"
-                        ? "bg-destructive/10 text-destructive"
-                        : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {message.content}
+      <SheetContent side="right" className="flex sm:max-w-xl gap-0 items-center">
+        <div className="h-full w-full flex flex-col">
+          <SheetHeader>
+            <SheetTitle>Chat Assistant</SheetTitle>
+            <SheetDescription>Ask me anything about your pathway</SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-col flex-1">
+            <ScrollArea className="flex-grow p-4 text-sm text-black">
+              {messages.map((message, index) => (
+                <div key={index} className={`mb-4 ${message.type === 'user' ? 'text-right' : 'text-left'}`}>
+                  <div className={`inline-block p-3 rounded-lg ${message.type === 'user'
+                    ? 'bg-blue-500 text-black'
+                    : 'bg-white text-black'
+                    }`}>
+                    {message.type === 'assistant'
+                      ? formatGeminiResponse(message.content)
+                      : message.content}
+                  </div>
                 </div>
+              ))}
+            </ScrollArea>
+            <SheetFooter className="flex flex-col sm:flex-col gap-2">
+              <div className="flex gap-2">
+                <Input
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                  placeholder="Type your message..."
+                  disabled={isLoading || !chatSession}
+                />
+                <Button onClick={handleSendMessage} disabled={isLoading || !chatSession}>
+                  {isLoading ? "Sending..." : "Send"}
+                </Button>
               </div>
-            ))}
-          </ScrollArea>
-          <SheetFooter className="flex flex-col gap-2">
-            <div className="flex gap-2">
-              <Input
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                placeholder="Type your message..."
-                disabled={isLoading || !chatSession}
-              />
-              <Button onClick={handleSendMessage} disabled={isLoading || !chatSession}>
-                {isLoading ? "Sending..." : "Send"}
-              </Button>
-            </div>
-            <div className="flex justify-between">
-              <Button variant="outline" size="sm" onClick={handleClearChat} className="w-full">
-                <Trash2 className="w-4 h-4 mr-2" />
-                Clear Chat
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => setIsOpen(false)} className="w-full ml-2">
-                Close Chat
-              </Button>
-            </div>
-          </SheetFooter>
+              <div className="flex justify-between">
+                <Button variant="outline" size="sm" onClick={handleClearChat} className="w-full">
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Clear Chat
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => setIsOpen(false)} className="w-full ml-2">
+                  Close Chat
+                </Button>
+              </div>
+            </SheetFooter>
+          </div>
         </div>
       </SheetContent>
-    </Sheet>
+    </Sheet >
   )
 }
 
 export default ChatDrawer
+
+const formatGeminiResponse = (text) => {
+  if (!text) return null;
+
+  // Split text into lines and process each line
+  const lines = text.split('\n').filter(Boolean);
+
+  const processLine = (line) => {
+    // Clean up the line
+    let cleanLine = line.trim();
+
+    // Remove leading bullet point if present
+    if (cleanLine.startsWith('*')) {
+      cleanLine = cleanLine.substring(1).trim();
+    }
+
+    // Handle bold text (double asterisk)
+    if (cleanLine.includes('**')) {
+      const parts = cleanLine.split('**').filter(Boolean);
+
+      // If line contains a colon, treat it as a header
+      if (cleanLine.includes(':')) {
+        const [header, ...rest] = cleanLine.split(':');
+        const content = rest.join(':').trim();
+        return (
+          <div className="mb-3">
+            <span className="font-bold text-gray-900">
+              {header.replace(/\*\*/g, '').trim()}:
+            </span>
+            {content && (
+              <span className="ml-2 text-gray-700">
+                {content.replace(/\*\*/g, '').trim()}
+              </span>
+            )}
+          </div>
+        );
+      }
+
+      // Regular bold text
+      return (
+        <div className="mb-2">
+          {parts.map((part, index) => (
+            <span
+              key={index}
+              className={index % 2 === 1 ? "font-bold text-gray-900" : "text-gray-700"}
+            >
+              {part}
+            </span>
+          ))}
+        </div>
+      );
+    }
+
+    // Regular text
+    return (
+      <div className="mb-2 text-gray-700">
+        {cleanLine}
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-1">
+      {lines.map((line, index) => (
+        <div
+          key={index}
+          className={`pl-4 ${line.trim().startsWith('*') ? 'border-l-2 border-gray-200' : ''}`}
+        >
+          {processLine(line)}
+        </div>
+      ))}
+    </div>
+  );
+};
 
