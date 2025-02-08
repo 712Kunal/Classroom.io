@@ -21,11 +21,11 @@ const verifyOtp = async (userId, otp) => {
       throw new Error('No user found');
     }
 
-    const userOTPCollectionRef = collection(db, 'userOTP');
+    const userOTPCollectionRef = collection(db, 'userEmailVerification');
     const q = query(
       userOTPCollectionRef,
       where('userId', '==', userId),
-      where('otp', '==', otp),
+      where('verificationCode', '==', otp),
       where('expiredAt', '>', serverTimestamp()),
       orderBy('createdAt', 'desc'),
       limit(1)
