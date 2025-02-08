@@ -1,4 +1,4 @@
-import { useGlobal } from "@/Components/context/GlobalContext";
+import { useGlobal } from "@/components/context/GlobalContext";
 import {
   Card,
   CardContent,

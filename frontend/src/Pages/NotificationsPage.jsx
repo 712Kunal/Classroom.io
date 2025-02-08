@@ -2,8 +2,8 @@ import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Route, LayoutList, Coins, Award } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card';
-import { Badge } from '@/Components/ui/badge';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   getNotifications,
   markNotificationAsRead

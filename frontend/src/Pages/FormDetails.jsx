@@ -18,9 +18,9 @@ import {
   GraduationCap,
   ShipWheel
 } from 'lucide-react';
-import { Input } from '../Components/ui/input2';
-import { Label } from '../Components/ui/label2';
-import Languages from '../Components/originUi/languages-known';
+import { Input } from '../components/ui/input2';
+import { Label } from '../components/ui/label2';
+import Languages from '../components/originUi/languages-known';
 import { toast } from 'react-toastify';
 import { BACKEND_URL } from '@/components/core/Constants';
 
