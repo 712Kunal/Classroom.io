@@ -12,13 +12,6 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { useAuthListener } from "@/hooks/use-auth";
 import axios from "axios";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGlobal } from '../context/GlobalContext';
 
