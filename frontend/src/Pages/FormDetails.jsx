@@ -26,7 +26,7 @@ import { toast } from 'react-toastify';
 function FormDetails() {
   const navigate = useNavigate();
 
-  const [userDetails, setUserDetails] = useState(null);
+  // const [userDetails, setUserDetails] = useState(null);
 
   const [languagesKnown, setlanguagesKnown] = useState([]);
   const [learningStyles, setlearningStyles] = useState([]);
