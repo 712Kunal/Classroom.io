@@ -106,7 +106,7 @@ export default function LoginPage() {
       </div>
 
       <div className="grid place-items-center p-4">
-        <div className="max-w-md space-y-8 bg-white p-8 rounded-lg shadow-md border-2 border-orange-100">
+        <div className="w-auto max-w-md space-y-8 Dark:bg-white p-8 rounded-lg shadow-md border-2 border-orange-100">
           <div className="flex items-center justify-center">
             <img src="brand/logo.png" alt="Your Company" className="w-32 h-auto" />
           </div>
