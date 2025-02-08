@@ -2,10 +2,14 @@ import { Link } from 'react-router-dom';
 import Spline from '@splinetool/react-spline';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/Firebase/firebase';
-
 import { useNavigate } from 'react-router-dom';
+import GoogleButton from 'react-google-button';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/Firebase/firebase"; 
+
+
 
 export default function LoginPage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -20,12 +24,13 @@ export default function LoginPage() {
 
   const handelSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
-      console.log('Please fill in both email and password');
       toast.error('Please fill in both email and password!', {
         position: 'top-right',
         autoClose: 5000,
+        theme: "dark",
+      });
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
@@ -33,43 +38,48 @@ export default function LoginPage() {
       });
       return;
     }
-
+  
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // 🔹 Check if the user exists in Firestore
+      const userDocRef = doc(db, "Users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
       navigate('/twofactorauth');
+      } else {
+        toast.error('User not found in the database!', {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark",
+        });
+      }
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
-        toast.error('User not found. Please check your email and try again.', {
-          position: 'top-right',
+        toast.error('User not found. Please check your email.', {
+          position: "top-right",
           autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          theme: 'dark'
+          theme: "dark",
         });
       } else if (error.code === 'auth/wrong-password') {
         toast.error('Incorrect password. Please try again.', {
           position: 'top-right',
           autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          theme: 'dark'
-        });
-      } else if (error.code === 'auth/invalid-credential') {
-        toast.error('Incorrect password. Please try again.', {
-          position: 'top-right',
-          autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          theme: 'dark'
+          theme: "dark",
         });
       } else {
-        console.log(error.message);
+        toast.error('Invalid Credentials!!', {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark",
+        });
       }
+      console.log(error.message);
     }
   };
+  
 
   return (
     <div className="w-[100dvw] h-[100dvh] grid grid-cols-1 lg:grid-cols-2">
@@ -154,6 +164,47 @@ export default function LoginPage() {
                 className="w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 Login
               </button>
+            </div>
+            {/* Google button */}
+            <div className='flex justify-center' >
+              
+            <GoogleButton
+  onClick={async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // 🔹 Check if the user exists in Firestore
+      const userDocRef = doc(db, "Users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        toast.success('Logged in Successfully!!!', {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark",
+        });
+
+        navigate('/app/profile'); // Redirect to profile page
+      } else {
+        toast.error('User not found in the database!', {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark",
+        });
+      }
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+      toast.error('Google Sign-In failed. Please try again.', {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "dark",
+      });
+    }
+  }}
+/>
+
             </div>
           </form>
 

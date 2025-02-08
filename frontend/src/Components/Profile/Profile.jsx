@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaInstagram, FaGithub, FaLinkedin, FaTwitter, FaGlobe, FaPhoneAlt, FaEnvelope, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import * as Accordion from '@radix-ui/react-accordion';
-// import { AccordionItem, AccordionContent } from "@/components/ui/Accordion";
 
-// Profile Image and Basic Info
 
 export function ProfileImageAndInfo({ user }) {
   return (
@@ -26,7 +24,6 @@ export function ProfileImageAndInfo({ user }) {
         </div>
       </div>
 
-      {/* Bio and Contact Information */}
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="flex flex-col justify-between">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Bio</h3>
@@ -36,13 +33,11 @@ export function ProfileImageAndInfo({ user }) {
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Contact</h3>
 
-          {/* Phone Contact with Gradient Effect on Hover */}
           <div className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/50 rounded-full hover:bg-gradient-to-r hover:from-blue-400 hover:via-purple-500 hover:to-pink-500 transition-all duration-300">
             <FaPhoneAlt className="w-5 h-5" />
             <span>{user.Contact_No}</span>
           </div>
 
-          {/* Email Contact with Gradient Effect on Hover */}
           <div className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/50 rounded-full hover:bg-gradient-to-r hover:from-teal-400 hover:via-green-500 hover:to-yellow-500 transition-all duration-300">
             <FaEnvelope className="w-5 h-5" />
             <span>{user.email}</span>
@@ -54,7 +49,6 @@ export function ProfileImageAndInfo({ user }) {
   );
 }
 export function SocialLinks({ user }) {
-  // Check if user.SocialLinks exists to avoid errors
   if (!user.SocialLinks) return null;
 
   return (
@@ -232,10 +226,7 @@ export function Achievements({ user }) {
   );
 }
 
-
-
-
-// Skills and 
+// Skills
 export function SkillsAndHobbies({ user }) {
   const [itemColors, setItemColors] = useState({
     skills: {},

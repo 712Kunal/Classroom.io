@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { browserLocalPersistence, getAuth, sendPasswordResetEmail, setPersistence, signOut } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFirestore, collection, doc, setDoc, updateDoc, getDocs, query, where, serverTimestamp } from "firebase/firestore";
+import { deleteUser } from "firebase/auth"; 
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,

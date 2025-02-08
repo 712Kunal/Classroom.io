@@ -1,6 +1,7 @@
 import { updatePathway } from '@/Firebase/services/pathway.service';
 import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
+import axios from 'axios';
 
 // Zod Schemas
 const ResourceSchema = z.object({
@@ -60,6 +61,7 @@ const RESOURCE_TYPE_MAP = {
   "interactive exercise": "Interactive Exercise"
 };
 
+
 const checkProgressAndSendNotifs = async (pathway) => {
   const { userId, id: pathwayId, isActive } = pathway.data;
 
@@ -69,35 +71,25 @@ const checkProgressAndSendNotifs = async (pathway) => {
   const completedTaskList = taskList.filter((task) => task.isDone);
   const progressPercentage = Math.round((completedTaskList.length / taskList.length) * 100);
 
-
   try {
     if (progressPercentage < 50) {
       return;
     }
 
-    let url = null;
-    let progress = null;
+    console.log("User ID:", userId, "Pathway ID:", pathwayId, "Progress:", progressPercentage);
 
-    if (progressPercentage >= 50 && progressPercentage < 75) {
-      progress = 50; 
-    } else if (progressPercentage >= 75 && progressPercentage < 100) {
-      progress = 75; 
-    } else if (progressPercentage === 100) {
-      url = `http://localhost:8080/api/user/${userId}/pathwayComplete/${pathwayId}`;
-    }
+    const url = `http://localhost:8080/api/user/${userId}/pathway/${pathwayId}`;
 
-    if (progress !== null) {
-      url = `http://localhost:8080/api/user/${userId}/pathway/${pathwayId}?progress=${progress}`;
-    }
+    await axios.post(url, null, {
+      params: { progress: progressPercentage },
+    });
 
-    if (url) {
-      await axios.post(url);
-    }
+    console.log("Progress notification sent successfully.");
   } catch (error) {
-    console.error("Error updating pathway progress:", error);
+    console.error("Error updating pathway progress:", error.message);
   }
-  
-}
+};
+
 
 /**
  * Calculates evenly distributed dates for tasks within an interval
@@ -266,6 +258,7 @@ class Pathway {
   pausePathway() {
     this.data.isActive = false;
     this.data.endDate = null;
+    this.data.haveBeenPaused = true;
 
     this.data.response.pathway = this.data.response.pathway.map(interval => ({
       ...interval,

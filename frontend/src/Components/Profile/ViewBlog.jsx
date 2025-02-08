@@ -40,7 +40,7 @@ const ViewBlog = ({ userId }) => {
 
 
     if (loading) {
-        return <p><Loader1/></p>;
+        return <div className='text-xs text-center justify-center'><Loader1/></div>;
     }
 
 

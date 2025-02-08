@@ -1,16 +1,20 @@
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { Link } from 'react-router-dom';
-import Spline from '@splinetool/react-spline';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { auth, db } from '@/Firebase/firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import GoogleButton from 'react-google-button';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+
+import { FaAdjust } from 'react-icons/fa';
+import { AlignCenter, AlignCenterVertical } from 'lucide-react';
+import Spline from '@splinetool/react-spline';
+
 
 function Signup() {
   const navigate = useNavigate();
-
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +22,6 @@ function Signup() {
   const [errorMessage, setErrorMessage] = useState('');
   const [errors, setErrors] = useState({});
 
-  // Form validation function
   const validateForm = () => {
     const errors = {};
     if (!username) errors.username = 'Username is required.';
@@ -52,27 +55,41 @@ function Signup() {
         draggable: true,
         theme: 'dark'
       });
+
       await setDoc(doc(db, 'Users', user.uid), {
         email: user.email,
-        username: username
+        username: username,
       });
 
-      console.log('Done');
+      console.log('User registration completed.');
+
       const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
 
-      await axios.post(backendUrl, {
-        email: user.email,
-        username: username
-      });
-      console.log('Notification and email request sent to backend.');
-      toast.error('Notification and email request sent to backend.', {
-        position: 'top-right',
-        autoClose: 5000,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        theme: 'dark'
-      });
+      try {
+        await axios.post(backendUrl, {
+          email: user.email,
+          username: username,
+        });
+        console.log('Notification and email request sent to backend.');
+        toast.success('Notification and email request sent successfully.', {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: 'dark',
+        });
+      } catch (axiosError) {
+        console.error('Error sending notification:', axiosError.message);
+        toast.error('Failed to send notification.', {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: 'dark',
+        });
+      }
     } catch (error) {
       console.error('Error during registration:', error.message);
       toast.error('Registration failed. Please try again later.', {
@@ -81,12 +98,11 @@ function Signup() {
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
-        theme: 'dark'
+        theme: "dark",
       });
       setErrorMessage(error.message);
     }
   };
-
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -177,6 +193,7 @@ function Signup() {
           </label>
         </div>
 
+        
         {/* Sign Up Button */}
         <div>
           <button
@@ -186,6 +203,42 @@ function Signup() {
           </button>
         </div>
       </form>
+
+      <div className="flex justify-center w-full">
+  <GoogleButton
+    onClick={async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        if (user) {
+          const username = user.email.split('@')[0]; // Extract username from email
+
+          await setDoc(doc(db, 'Users', user.uid), {
+            email: user.email,
+            username: username,
+          });
+
+          console.log('Google sign-in successful:', user);
+          window.location.href = "/app/profile"; // Redirect to app after login
+        }
+      } catch (error) {
+        console.error('Google Sign-In Error:', error);
+        toast.error('Google Sign-In failed. Please try again.', {
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+        });
+      }
+    }}
+  />
+</div>
+
+
 
       {/* Link to Log In */}
       <div className="mt-6 text-center">
