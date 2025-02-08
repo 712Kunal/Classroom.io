@@ -16,6 +16,7 @@ export default function Languages({ placeholder, tags = [], setTags = () => {} }
         tags={tags}
         setTags={setTags}
         placeholder={placeholder}
+        required
         styleClasses={{
           inlineTagsContainer:
             'border-input rounded-lg bg-zinc-800 shadow-none transition-shadow focus-within:border p-1 gap-1',

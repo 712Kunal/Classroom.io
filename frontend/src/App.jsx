@@ -27,7 +27,7 @@ import Loader1 from './Components/ui/Loader1';
 
 
 const suspenseComponent = (component) => (
-  <Suspense fallback={<div><Loader1/></div>}>{component}</Suspense>
+  <Suspense fallback={<div className='w-full h-full grid place-items-center'><Loader1/></div>}>{component}</Suspense>
 );
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
@@ -40,7 +40,7 @@ function App() {
   const { user, loading } = useAuthListener();
 
   if (loading) {
-    return <div><Loader/> Loading...</div>;
+    return <div className='w-screen h-screen grid place-items-center'><Loader1/></div>;
   }
 
   return (

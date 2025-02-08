@@ -1,6 +1,7 @@
 import { updatePathway } from '@/Firebase/services/pathway.service';
 import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
+import axios from 'axios';
 
 // Zod Schemas
 const ResourceSchema = z.object({
@@ -74,6 +75,8 @@ const checkProgressAndSendNotifs = async (pathway) => {
     if (progressPercentage < 50) {
       return;
     }
+
+    console.log(userId, pathwayId)
 
     let url = null;
     let progress = null;
@@ -266,6 +269,7 @@ class Pathway {
   pausePathway() {
     this.data.isActive = false;
     this.data.endDate = null;
+    this.data.haveBeenPaused = true;
 
     this.data.response.pathway = this.data.response.pathway.map(interval => ({
       ...interval,
