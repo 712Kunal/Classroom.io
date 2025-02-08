@@ -25,7 +25,6 @@ const StartPathwayModal = ({ children }) => {
     try {
       pathway.startPathway();
 
-      await axios.post(`http://localhost:8080/api/user/${userId}/pathwayActivate/${pathwayId}`);
 
       await refetchPathways();
 

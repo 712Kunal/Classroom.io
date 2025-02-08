@@ -58,32 +58,13 @@ function Signup() {
       });
 
       console.log('Done');
-      const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
 
-      await axios.post(backendUrl, {
-        email: user.email,
-        username: username
-      });
-      console.log('Notification and email request sent to backend.');
-      toast.error('Notification and email request sent to backend.', {
-        position: "top-right",
-        autoClose: 5000,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        theme: "dark",
-      });
+      
+      
 
     } catch (error) {
       console.error('Error during registration:', error.message);
-      toast.error('Registration failed. Please try again later.', {
-        position: "top-right",
-        autoClose: 5000,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        theme: "dark",
-      });
+    
       setErrorMessage(error.message);
     }
   };
