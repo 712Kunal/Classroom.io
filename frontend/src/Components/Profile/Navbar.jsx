@@ -1,5 +1,5 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
-import { FaBars, FaBell, FaCog, FaTimes } from 'react-icons/fa'; // Imported from react-icons
+import { FaBars, FaTimes } from 'react-icons/fa'; // Removed the FaCog icon
 import { useState } from 'react';
 import Profile from '@/Components/Profile/Profile.jsx';
 import Dashboard from '@/Components/Profile/Dashboard.jsx';
@@ -19,7 +19,7 @@ export default function Navbar({ user }) {
     { name: 'Dashboard', href: '#', current: false },
     { name: 'History', href: '#', current: false },
     { name: 'Mindspace', href: '#', current: false },
-    // { name: 'Settings', href: '#', current: false }, 
+    { name: 'Settings', href: '#', current: false }, 
   ];
 
   function classNames(...classes) {
@@ -58,19 +58,6 @@ export default function Navbar({ user }) {
                 </div>
               </div>
             </div>
-            <div className="hidden md:block">
-              <div className="ml-4 flex items-center md:ml-6">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-transparent p-1 text-black-400 hover:text-gray-500 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  onClick={() => handleTabChange('settings')}  // Handle the settings tab click
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">Settings</span>
-                  <FaCog aria-hidden="true" className="h-6 w-6" />
-                </button>
-              </div>
-            </div>
 
             <div className="-mr-2 flex md:hidden">
               {/* Mobile menu button */}
@@ -107,6 +94,7 @@ export default function Navbar({ user }) {
           </div>
         </DisclosurePanel>
       </Disclosure>
+
       <header className="shadow-sm">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -121,7 +109,7 @@ export default function Navbar({ user }) {
           {activeTab === 'Dashboard' && <Dashboard user={user} />}
           {activeTab === 'History' && <History />}
           {activeTab === 'Mindspace' && <Mindspace user={user} />}
-          {activeTab === 'settings' && <Usersetting user={user}/>}  
+          {activeTab === 'Settings' && <Usersetting user={user}/>}  {/* This is the 'Settings' tab now */}
         </div>
       </main>
     </div>
