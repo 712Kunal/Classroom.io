@@ -19,8 +19,13 @@ import { Label } from '@/Components/ui/label2';
 import Languages from '@/Components/originUi/languages-known';
 import { addProfile } from '@/Firebase/services/userDetails.servies';
 import { toast } from 'react-toastify';
+import * as Accordion from '@radix-ui/react-accordion';
+import DeleteUser from './DeleteUser';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import ResetPass from './ResetPass';
 
-function Usersetting({ user }) {
+
+export function UpdateuserInfo({ user }) {
   const navigate = useNavigate();
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
@@ -38,14 +43,14 @@ function Usersetting({ user }) {
         fetchUserDetails(authUser);
       } else {
         console.log('No user found, redirecting to signup...');
-        toast.error('No user found, redirecting to signup...',{
+        toast.error('No user found, redirecting to signup...', {
           position: "top-right",
           autoClose: 4000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
           theme: "dark",
-          });
+        });
         navigate('/signup');
       }
     });
@@ -68,7 +73,7 @@ function Usersetting({ user }) {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
-      
+
     }
   };
 
@@ -77,26 +82,26 @@ function Usersetting({ user }) {
       const userId = auth.currentUser.uid;
       const addUserData = await addProfile(userDetails, userId);
       if (addUserData.success === true) {
-        toast.success('User updated successfully',{
+        toast.success('User updated successfully', {
           position: "top-right",
           autoClose: 5000,
           closeOnClick: false,
           pauseOnHover: false,
           draggable: true,
           theme: "dark",
-          });
+        });
         navigate('/app');
       }
     } catch (error) {
       console.error('Error user updating user details:', error);
-      toast.error('Error user updating',{
+      toast.error('Error user updating', {
         position: "top-right",
         autoClose: 5000,
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
         theme: "dark",
-        });
+      });
     }
   };
 
@@ -356,4 +361,67 @@ function Usersetting({ user }) {
   );
 }
 
-export default Usersetting;
+const Usersetting = ({user}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+  return (
+    <Accordion.Root type="single" collapsible className="w-full shadow-lg transition-shadow duration-300 hover:shadow-xl">
+      <Accordion.Item value="update-user">
+        <Accordion.Trigger
+          className="flex rounded-lg justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-400 dark:border-gray-400 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-red-500/50 dark:hover:ring-yellow-100/50 hover:ring-opacity-50"
+          onClick={toggleAccordion}
+        >
+          Update User
+          {isOpen ? (
+            <FaChevronUp className="ml-2 transition-transform duration-300" />
+          ) : (
+            <FaChevronDown className="ml-2 transition-transform duration-300" />
+          )}
+        </Accordion.Trigger>
+        <Accordion.Content className="px-4 py-2">
+          <UpdateuserInfo user={user} />
+        </Accordion.Content>
+      </Accordion.Item>
+
+      <Accordion.Item value="reset-userpassword">
+        <Accordion.Trigger
+          className="flex rounded-lg mt-4 justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-400 dark:border-gray-400 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-pink-500/50 dark:hover:ring-ornage-100/50 hover:ring-opacity-50"
+          onClick={toggleAccordion}
+        >
+          Reset Password
+          {isOpen ? (
+            <FaChevronUp className="ml-2 transition-transform duration-300" />
+          ) : (
+            <FaChevronDown className="ml-2 transition-transform duration-300" />
+          )}
+        </Accordion.Trigger>
+        <Accordion.Content className="px-4 py-2">
+          <ResetPass user={user}/>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="delete-user">
+        <Accordion.Trigger
+          className="flex rounded-lg mt-4 justify-between items-center w-full text-lg font-semibold p-4 border-b border-gray-400 dark:border-gray-400 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-indigo-700/50 hover:ring-4 hover:ring-pink-500/50 dark:hover:ring-ornage-100/50 hover:ring-opacity-50"
+          onClick={toggleAccordion}
+        >
+          Delete User
+          {isOpen ? (
+            <FaChevronUp className="ml-2 transition-transform duration-300" />
+          ) : (
+            <FaChevronDown className="ml-2 transition-transform duration-300" />
+          )}
+        </Accordion.Trigger>
+        <Accordion.Content className="px-4 py-2">
+          <DeleteUser user={user}/>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion.Root>
+  );
+}
+
+export default Usersetting
+
+
