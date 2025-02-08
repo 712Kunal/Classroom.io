@@ -4,6 +4,7 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.SetOptions;
 import com.swapnil.Classroom.controller.PathwayController;
 import com.swapnil.Classroom.entity.Notification;
 import jakarta.mail.MessagingException;
@@ -85,32 +86,34 @@ public class UserService {
     }
 
 
-    public void sendCodeForVerification(String userId, String userEmail)
-            throws MessagingException, ExecutionException, InterruptedException {
-
+    public void sendCodeForVerification(String userId, String userEmail) throws MessagingException, ExecutionException, InterruptedException {
         SecureRandom random = new SecureRandom();
-        int code = 1000 + random.nextInt(9000);
+        int code = 1000 + random.nextInt(9000);  // 4-digit OTP
 
-        System.out.println("Code: " + code);
+        System.out.println("Generated Code: " + code);
 
         String hashedCode = BCrypt.hashpw(String.valueOf(code), BCrypt.gensalt());
+        Timestamp expirationTime = Timestamp.ofTimeSecondsAndNanos((System.currentTimeMillis() + (10 * 60 * 1000)) / 1000, 0);
 
-        long expirationInSeconds = (System.currentTimeMillis() / 1000) + (10 * 60);
-        Timestamp expirationTime = Timestamp.ofTimeSecondsAndNanos(expirationInSeconds, 0);
+        // 🔹 Create verificationData map
+        Map<String, Object> verificationData = new HashMap<>();
+        verificationData.put("verificationCode", hashedCode);
+        verificationData.put("expirationTime", expirationTime);
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("userId", userId);
-        data.put("verificationCode", hashedCode);
-        data.put("expirationTime", expirationTime);
-        data.put("attempts", 0);
+        DocumentReference userRef = firestore.collection("UserProfiles").document(userId);
 
-        DocumentReference userRef = firestore.collection("userEmailVerification").add(data).get();
+        // 🔹 Create a map for the update
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("verificationData", verificationData);
 
-        String subject = "Email Verification Code";
+        // 🔹 Use set() with merge to ensure it updates or creates
+        userRef.set(updates, SetOptions.merge()).get();
+
+        String subject = "Email verification code";
         String body = String.format(
-                "Your email verification code is: %d\n\n" +
+                "Your Email verification code is: %d\n\n" +
                         "This code will expire in 10 minutes.\n" +
-                        "If you did not request this verification, please ignore this email.",
+                        "If you did not request this reset, please ignore this email and secure your account.",
                 code
         );
 
@@ -120,5 +123,8 @@ public class UserService {
             throw e;
         }
     }
+
+
+
 
 }
