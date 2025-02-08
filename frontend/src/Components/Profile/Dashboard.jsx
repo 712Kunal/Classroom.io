@@ -9,7 +9,7 @@ const getRandomColor = () => {
   }
   return color;
 };
-import UserActivityChart from "./UserActivityChart";
+import UserActivityChart from "./UserActivitychart.jsx";
 
 // UserCard Component
 export function UserCard({ user }) {
@@ -106,76 +106,77 @@ export function UserCard({ user }) {
 }
 
 // weekly tasks
-export function WeekTask() {
-  const [daysData, setDaysData] = useState([
-    { day: "M", height: 4 },
-    { day: "T", height: 60 },
-    { day: "W", height: 24 },
-    { day: "T", height: 45 },
-    { day: "F", height: 20 },
-    { day: "S", height: 60 },
-    { day: "S", height: 55 },
-  ]);
 
-  const updateDayColors = () => {
-    setDaysData(prevData =>
-      prevData.map(day => ({
-        ...day,
-        color: getRandomColor(),
-      }))
-    );
-  };
+// export function WeekTask() {
+//   const [daysData, setDaysData] = useState([
+//     { day: "M", height: 4 },
+//     { day: "T", height: 60 },
+//     { day: "W", height: 24 },
+//     { day: "T", height: 45 },
+//     { day: "F", height: 20 },
+//     { day: "S", height: 60 },
+//     { day: "S", height: 55 },
+//   ]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      updateDayColors();
-    }, 3000);
+//   const updateDayColors = () => {
+//     setDaysData(prevData =>
+//       prevData.map(day => ({
+//         ...day,
+//         color: getRandomColor(),
+//       }))
+//     );
+//   };
 
-    return () => clearInterval(interval);
-  }, []);
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       updateDayColors();
+//     }, 3000);
 
-  return (
-    <div className="">
-      <div className="grid grid-cols-7 gap-2 flex-grow self-stretch">
-        {daysData.map((day, index) => (
-          <div key={index} className="flex flex-col justify-end items-center group relative">
-            <div
-              className="mx-auto rounded-full transition-all duration-300 ease-in-out"
-              style={{
-                width: "16px",
-                height: `${day.height}px`,
-                backgroundColor: day.color,
-              }}
-            ></div>
-            <div className="text-center text-xs text-gray-400 font-semibold mt-2">
-              {day.day} 
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   return (
+//     <div className="">
+//       <div className="grid grid-cols-7 gap-2 flex-grow self-stretch">
+//         {daysData.map((day, index) => (
+//           <div key={index} className="flex flex-col justify-end items-center group relative">
+//             <div
+//               className="mx-auto rounded-full transition-all duration-300 ease-in-out"
+//               style={{
+//                 width: "16px",
+//                 height: `${day.height}px`,
+//                 backgroundColor: day.color,
+//               }}
+//             ></div>
+//             <div className="text-center text-xs text-gray-400 font-semibold mt-2">
+//               {day.day} 
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
 // Recnet Tasks
-export function RecentTask() {
-  return (
-    <div className="w-full px-4 py-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="p-6 rounded-lg shadow-md shadow-gray-700 dark:shadow-gray-700 transition-all shadow-md  hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
-          <h2 className="text-center text-xl font-semibold text-gray-800 dark:text-gray-100">Task</h2>
-          <div className="flex-grow"></div>
-        </div>
+// export function RecentTask() {
+//   return (
+//     <div className="w-full px-4 py-6">
+//       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+//         <div className="p-6 rounded-lg shadow-md shadow-gray-700 dark:shadow-gray-700 transition-all shadow-md  hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
+//           <h2 className="text-center text-xl font-semibold text-gray-800 dark:text-gray-100">Task</h2>
+//           <div className="flex-grow"></div>
+//         </div>
 
-        {/* Column 2 */}
-        <div className=" p-6 rounded-lg shadow-md shadow-gray-700  dark:shadow-gray-700 transition-all shadow-md hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
-          <h2 className="text-xl text-center font-semibold text-gray-800 dark:text-gray-100">Weekly Report</h2>
-          <div className="pb-8 flex-grow"></div>
-          <WeekTask />
-        </div>
-      </div>
-    </div>
-  );
-}
+//         {/* Column 2 */}
+//         <div className=" p-6 rounded-lg shadow-md shadow-gray-700  dark:shadow-gray-700 transition-all shadow-md hover:shadow-[0_0_15px_4px] h-64 sm:h-80 flex flex-col">
+//           <h2 className="text-xl text-center font-semibold text-gray-800 dark:text-gray-100">Weekly Report</h2>
+//           <div className="pb-8 flex-grow"></div>
+//           <WeekTask />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
 // Dashboard Component
 export default function Dashboard({ user }) {
@@ -190,9 +191,9 @@ export default function Dashboard({ user }) {
       <div className="flex justify-center">
         <UserActivityChart />
       </div>
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         <RecentTask />
-      </div>
+      </div> */}
     </div>
   );
 }

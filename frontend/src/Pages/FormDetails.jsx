@@ -18,10 +18,11 @@ import {
   GraduationCap,
   ShipWheel
 } from 'lucide-react';
-import { Input } from '../Components/ui/input2';
-import { Label } from '../Components/ui/label2';
-import Languages from '../Components/originUi/languages-known';
+import { Input } from '../components/ui/input2';
+import { Label } from '../components/ui/label2';
+import Languages from '../components/originUi/languages-known';
 import { toast } from 'react-toastify';
+import { BACKEND_URL } from '@/components/core/Constants';
 
 function FormDetails() {
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ function FormDetails() {
 
         // 🔹 Send request to Spring Boot API for 2FA verification
         const response = await fetch(
-          `http://localhost:8080/api/user/${userId}/codeVerification`,
+          `${BACKEND_URL}/user/${userId}/codeVerification`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

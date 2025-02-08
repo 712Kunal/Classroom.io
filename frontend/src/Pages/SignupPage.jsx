@@ -11,6 +11,7 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { FaAdjust } from 'react-icons/fa';
 import { AlignCenter, AlignCenterVertical } from 'lucide-react';
 import Spline from '@splinetool/react-spline';
+import { BACKEND_URL } from '@/components/core/Constants';
 
 
 function Signup() {
@@ -63,7 +64,7 @@ function Signup() {
 
       console.log('User registration completed.');
 
-      const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
+      const backendUrl = `${BACKEND_URL}/user-signUp/${user.uid}`;
 
       try {
         await axios.post(backendUrl, {

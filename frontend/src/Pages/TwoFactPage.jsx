@@ -1,6 +1,6 @@
 import React from 'react';
 import Spline from '@splinetool/react-spline';
-import TwoFactorAuth from '@/Components/Profile/TwoFactorAuth.jsx';
+import TwoFactorAuth from '@/components/Profile/TwoFactorAuth.jsx';
 
 function TwoFactPage() {
   return (
