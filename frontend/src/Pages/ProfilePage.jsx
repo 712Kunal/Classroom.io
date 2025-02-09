@@ -83,11 +83,12 @@ function ProfilePage() {
           Interests: userDetails.background?.interest || ['AI', 'Blockchain', 'Web Development']
         },
         pointsAwarded: 1500, 
+        
         badgesAwarded: [
-          'https://picsum.photos/200', 
-          'https://picsum.photos/200',
-          'https://picsum.photos/200',
-          'https://picsum.photos/200',
+          'verified.png', 
+          'newbie.png',
+          'learner.png',
+          'Legend.png',
         ],
         badgesAwardedDates: ['2023-01-01', '2023-12-01'] 
       };

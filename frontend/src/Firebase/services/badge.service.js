@@ -5,55 +5,55 @@ const badgeTypeToBadge = {
   "learner": {
     "name": "Learner",
     "description": "You have successfully started your journey with pathify.",
-    "badgePNG": "/assets/images/badges/learner.png",
+    "badgePNG": "learner.png",
     "badgeType": "learner"
   },
   "verified": {
     "name": "Verified",
     "description": "You have successfully verified your email address.",
-    "badgePNG": "/assets/images/badges/verified.png",
+    "badgePNG": "verified.png",
     "badgeType": "verified"
   },
   "first_pathway": {
     "name": "Believer",
     "description": "You have successfully created your first pathway.",
-    "badgePNG": "/assets/images/badges/believer.png",
+    "badgePNG": "believer.png",
     "badgeType": "first_pathway"
   },
   "one_task": {
     "name": "Newbie",
     "description": "You have completed one task on our platform.",
-    "badgePNG": "/assets/images/badges/newbie.png",
+    "badgePNG": "newbie.png",
     "badgeType": "one_task"
   },
   "ten_tasks": {
     "name": "Apprentice",
     "description": "You have completed ten tasks on our platform.",
-    "badgePNG": "/assets/images/badges/apprentice.png",
+    "badgePNG": "apprentice.png",
     "badgeType": "ten_tasks"
   },
   "fifteen_tasks": {
     "name": "Master",
     "description": "You have completed ten tasks on our platform.",
-    "badgePNG": "/assets/images/badges/Master.png",
+    "badgePNG": "Master.png",
     "badgeType": "fifteen_tasks"
   },
   "one_pathway": {
     "name": "Legend",
     "description": "You have completed one pathway on our platform.",
-    "badgePNG": "/assets/images/badges/Legend.png",
+    "badgePNG": "Legend.png",
     "badgeType": "one_pathway"
   },
   "five_pathways": {
     "name": "Supreme",
     "description": "You have completed ten pathways on our platform.",
-    "badgePNG": "/assets/images/badges/Supreme.png",
+    "badgePNG": "Supreme.png",
     "badgeType": "five_pathways"
   },
   "never_late": {
     "name": "Never Late",
     "description": "You have never missed a deadline on our platform till date.",
-    "badgePNG": "/assets/images/badges/Punctual.png",
+    "badgePNG": "Punctual.png",
     "badgeType": "never_late"
   }
 };
@@ -62,8 +62,6 @@ const badgeTypeToBadge = {
 export const awardBadge = async (userId, badgeType) => {
   try {
     const badge = badgeTypeToBadge[badgeType];
-    console.log(badgeType);
-    // Fixed: Use collection() instead of doc() when adding a new document
     await addDoc(collection(db, 'badges'), {
       ...badge,
       userId: userId,

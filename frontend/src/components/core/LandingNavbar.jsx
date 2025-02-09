@@ -31,25 +31,25 @@ export default function LandingNavbar() {
                   <ProductItem
                     title="Pathway Builder Pro"
                     href="https://tailwindmasterkit.com"
-                    src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
+                    src="/assets/pathway.png"
                     description="AI-powered tool to create customized learning paths tailored to your goals"
                   />
                   <ProductItem
                     title="Gamify Toolkit"
                     href="https://gomoonbeam.com"
-                    src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.51.31%E2%80%AFPM.png"
+                    src="/assets/gamify.png"
                     description="Engage with gamified challenges, rewards, and progress tracking."
                   />
                   <ProductItem
                     title="Task Scheduler AI"
                     href="https://userogue.com"
-                    src="src/assets/scheduler.png"
+                    src="/assets/calender.png"
                     description="Smart task management with AI-suggested prioritization and reminders."
                   />
                   <ProductItem
                     title="Smart Notifications"
                     href="https://smartnotifications.com"
-                    src="src/assets/notif.png"
+                    src="/assets/notify.png"
                     description="Stay on track with timely reminders and motivational nudges"
                   />
                 </div>

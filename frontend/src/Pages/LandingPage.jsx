@@ -2,7 +2,7 @@ import Hero from '../components/LandingComponents/Hero.jsx';
 import LandingNavbar from '@/components/core/LandingNavbar.jsx';
 import { Lamp } from '@/components/LandingComponents/Lamp.jsx';
 import Services from '../components/LandingComponents/Services.jsx';
-import Colorfultext from '../components/LandingComponents/Colorfultext.jsx';
+// import Colorfultext from '../components/LandingComponents/Colorfultext.jsx';
 import Features from '../components/LandingComponents/Features.jsx';
 
 function LandingPage() {

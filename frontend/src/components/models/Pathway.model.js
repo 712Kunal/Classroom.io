@@ -2,7 +2,7 @@ import { updatePathway } from '@/Firebase/services/pathway.service';
 import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 import axios from 'axios';
-import { checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
+import { awardBadge, checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
 import { BACKEND_URL } from '../core/Constants';
 
 // Zod Schemas
@@ -103,7 +103,6 @@ const checkForPossibleBadgeAwards = async (pathway) => {
           break;
         }
       }
-      console.log("Badge awarded successfully");
     }
   }
 }

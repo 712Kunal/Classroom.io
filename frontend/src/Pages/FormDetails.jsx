@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { auth } from '../Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { checkIfBadgeIsPresent, awardBadge } from '@/Firebase/services/badge.service';
 
 import { addProfile } from '../Firebase/services/userDetails.servies.js';
 
@@ -72,6 +73,8 @@ function FormDetails() {
 
   const handleUseraddDetails = async (userDetails) => {
     try {
+      const userId = auth.currentUser.uid;
+      const email = auth.currentUser.email;
       const user = auth.currentUser;
   
       if (!user) {
@@ -82,8 +85,6 @@ function FormDetails() {
         });
         return;
       }
-  
-      const userId = user.uid;
   
       const adduserData = await addProfile(userDetails, userId);
       console.log(adduserData);
@@ -104,7 +105,8 @@ function FormDetails() {
           `${BACKEND_URL}/user/${userId}/codeVerification`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: user.email })
           }
         );
   
