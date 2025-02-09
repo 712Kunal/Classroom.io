@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { auth } from '../Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { checkIfBadgeIsPresent, awardBadge } from '@/Firebase/services/badge.service';
 
 import { addProfile } from '../Firebase/services/userDetails.servies.js';
 
@@ -74,8 +75,20 @@ function FormDetails() {
     try {
       const userId = auth.currentUser.uid;
       const email = auth.currentUser.email;
+      const user = auth.currentUser;
+  
+      if (!user) {
+        toast.error('User not authenticated!', {
+          position: 'top-right',
+          autoClose: 5000,
+          theme: 'dark'
+        });
+        return;
+      }
+  
       const adduserData = await addProfile(userDetails, userId);
       console.log(adduserData);
+  
       if (adduserData.success === true) {
         console.log('User added successfully');
         toast.success('User profile created successfully', {
@@ -86,17 +99,18 @@ function FormDetails() {
           draggable: true,
           theme: 'dark'
         });
-
-        // 🔹 Send request to Spring Boot API for 2FA verification
+  
+        console.log("Sending request to backend");
         const response = await fetch(
           `${BACKEND_URL}/user/${userId}/codeVerification`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email })
+            body: JSON.stringify({ email: user.email })
           }
         );
-
+  
+        console.log("Request send");
         if (response.ok) {
           await awardRegisteredUserBadge(userId);
           navigate('/twofactorauth');
@@ -110,7 +124,7 @@ function FormDetails() {
       }
     } catch (error) {
       console.error('Error adding user details:', error);
-      toast.success('Error User details not Added', {
+      toast.error('Error: User details not added', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: false,
@@ -120,6 +134,7 @@ function FormDetails() {
       });
     }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();

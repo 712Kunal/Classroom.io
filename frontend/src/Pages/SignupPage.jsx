@@ -63,8 +63,10 @@ function Signup() {
       });
 
       console.log('User registration completed.');
+      console.log(`Here: ${import.meta.env.VITE_BACKEND_URL}`);
 
       const backendUrl = `${BACKEND_URL}/user-signUp/${user.uid}`;
+      console.log("Url: ", backendUrl);
 
       try {
         await axios.post(backendUrl, {

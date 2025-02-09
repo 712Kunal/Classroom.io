@@ -72,7 +72,7 @@ const CreatePathway = () => {
   const { user } = useAuthListener();
 
   const awardBelieverBadge = async (userId) => {
-    const badgeType = "believer";
+    const badgeType = "first_pathway";
     const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
     console.log("Is batch already awarded:", isBatchAlreadyAwarded);
     if (!isBatchAlreadyAwarded) {

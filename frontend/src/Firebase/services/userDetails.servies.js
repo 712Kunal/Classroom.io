@@ -56,20 +56,20 @@ const updateUserProfile = async (userId, updates) => {
     }
 
     const userDetailsCollectionRef = collection(db, 'UserProfiles');
-    const q = query(userDetailsCollectionRef, where("userId", "==", userId));
-    const userDetails = await getDoc(q);
+    const docRef = doc(userDetailsCollectionRef, userId);
+    const userDetails = await getDoc(docRef);
     if (userDetails) {
-      const docRef = doc(userDetailsCollectionRef, userDetails.id);
+      const docRef = doc(userDetailsCollectionRef, userId);
       const updatedUserDetails = await updateDoc(
         docRef,
         {
-          updates,
+          ...updates,
           modifiedAt: serverTimestamp()
         }
       );
 
       return {
-        id: updatedUserDetails.id,
+        id: userId,
         ...updatedUserDetails.data()
       };
     } else {
