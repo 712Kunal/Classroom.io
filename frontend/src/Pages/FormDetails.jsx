@@ -60,9 +60,22 @@ function FormDetails() {
 
   const handleUseraddDetails = async (userDetails) => {
     try {
-      const userId = auth.currentUser.uid;
+      const user = auth.currentUser;
+  
+      if (!user) {
+        toast.error('User not authenticated!', {
+          position: 'top-right',
+          autoClose: 5000,
+          theme: 'dark'
+        });
+        return;
+      }
+  
+      const userId = user.uid;
+  
       const adduserData = await addProfile(userDetails, userId);
       console.log(adduserData);
+  
       if (adduserData.success === true) {
         console.log('User added successfully');
         toast.success('User profile created successfully', {
@@ -73,17 +86,15 @@ function FormDetails() {
           draggable: true,
           theme: 'dark'
         });
-
-        // 🔹 Send request to Spring Boot API for 2FA verification
+  
         const response = await fetch(
-          `http://localhost:8080/api/user/${user.uid}/codeVerification`,
+          `http://localhost:8080/api/user/${userId}/codeVerification`, // 🔹 Only userId in path
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: user.email })
+            headers: { 'Content-Type': 'application/json' }
           }
         );
-
+  
         if (response.ok) {
           navigate('/twofactorauth');
         } else {
@@ -96,7 +107,7 @@ function FormDetails() {
       }
     } catch (error) {
       console.error('Error adding user details:', error);
-      toast.success('Error User details not Added', {
+      toast.error('Error: User details not added', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: false,
@@ -106,6 +117,7 @@ function FormDetails() {
       });
     }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();

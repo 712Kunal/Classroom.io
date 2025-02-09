@@ -62,8 +62,9 @@ function Signup() {
       });
 
       console.log('User registration completed.');
+      console.log(`Here: ${import.meta.env.VITE_PATHIFY_APP_API_URL}`);
 
-      const backendUrl = `http://localhost:8080/api/user-signUp/${user.uid}`;
+      const backendUrl = `${import.meta.env.VITE_PATHIFY_APP_API_URL}/api/user-signUp/${user.uid}`;
 
       try {
         await axios.post(backendUrl, {
