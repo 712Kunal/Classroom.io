@@ -53,7 +53,7 @@ function TwoFactorAuth() {
     try {
       // send axios request to backend
       const result = await verifyOtp(userId, fullCode);
-      if (result.success === true) {
+      if (result) {
         navigate('/app/profile');
       }
     } catch (error) {
