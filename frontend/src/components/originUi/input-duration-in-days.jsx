@@ -3,11 +3,11 @@
 import { Minus, Plus } from "lucide-react";
 import { Button, Group, Input, NumberField } from "react-aria-components";
 
-export default function InputDurationInDays({value, setValue, max}) {
+export default function InputDurationInDays({value, setValue, max, min, defaultV}) {
   return (
     (<NumberField 
-      defaultValue={0} 
-      minValue={0} 
+      defaultValue={defaultV} 
+      minValue={min} 
       maxValue={max} 
       value={value} 
       onChange={setValue}

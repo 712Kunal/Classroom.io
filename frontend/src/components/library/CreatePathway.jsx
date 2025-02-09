@@ -57,6 +57,12 @@ const durationLimit = {
   month: 365
 };
 
+const minimumLimits = {
+  day: 1,
+  week: 7,
+  month: 30
+}
+
 const CreatePathway = () => {
   const [formData, setFormData] = useState({
     topic: '',
@@ -188,6 +194,8 @@ const CreatePathway = () => {
                   setFormData({ ...formData, duration: value });
                 }}
                 max={durationLimit[formData.intervalType]}
+                min={minimumLimits[formData.intervalType]}
+                defaultV={minimumLimits[formData.intervalType]}
               />
             </div>
             <div className="resourceTypePreferenceFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
