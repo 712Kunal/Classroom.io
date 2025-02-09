@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { auth } from '../Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
+import { checkIfBadgeIsPresent, awardBadge } from '@/Firebase/services/badge.service';
 
 import { addProfile } from '../Firebase/services/userDetails.servies.js';
 
