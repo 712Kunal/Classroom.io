@@ -1,9 +1,9 @@
-import Navbar from '@/Components/Profile/Navbar.jsx';
+import Navbar from '@/components/Profile/Navbar.jsx';
 import React, { useEffect, useState } from "react";
 import { auth, db } from "@/Firebase/firebase"; 
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import Loader1 from '@/Components/ui/Loader1';
+import Loader1 from '@/components/ui/Loader1';
 
 function ProfilePage() {
   const [userDetails, setUserDetails] = useState(null);

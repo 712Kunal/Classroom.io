@@ -23,7 +23,7 @@ const TasksView = lazy(() => import('./components/pathway/TasksView.jsx'));
 
 import AppWrapper from './components/core/AppWrapper.jsx';
 import { Loader } from './Pages/LibraryPage';
-import Loader1 from './Components/ui/Loader1';
+import Loader1 from './components/ui/Loader1';
 
 const suspenseComponent = (component) => (
   <Suspense

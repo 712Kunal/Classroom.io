@@ -2,6 +2,8 @@ import { updatePathway } from '@/Firebase/services/pathway.service';
 import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 import axios from 'axios';
+import { checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
+import { BACKEND_URL } from '../core/Constants';
 
 // Zod Schemas
 const ResourceSchema = z.object({
@@ -61,6 +63,51 @@ const RESOURCE_TYPE_MAP = {
   "interactive exercise": "Interactive Exercise"
 };
 
+const checkForPossibleBadgeAwards = async (pathway) => {
+  const { userId } = pathway.data;
+
+  const possibleBadges = [
+    "one_task",
+    "ten_tasks",
+    "fifteen_tasks",
+    "one_pathway",
+  ];
+
+  for (const badgeType of possibleBadges) {
+    const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
+    console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+    if (!isBatchAlreadyAwarded) {
+      switch(badgeType) {
+        case "one_task": {
+          if(pathway.toTaskList().findIndex((task) => task.isDone) !== -1) {
+            await awardBadge(userId, "one_task");
+          }
+          break;
+        }
+        case "ten_tasks": {
+          if(pathway.toTaskList().filter((task) => task.isDone).length >= 10) {
+            await awardBadge(userId, "ten_tasks");
+          }
+          break;
+        }
+        case "fifteen_tasks": {
+          if(pathway.toTaskList().filter((task) => task.isDone).length >= 15) {
+            await awardBadge(userId, "fifteen_tasks");
+          }
+          break;
+        }
+        case "one_pathway": {
+          if(pathway.toTaskList().every((task) => task.isDone)) {
+            await awardBadge(userId, "one_pathway");
+          }
+          break;
+        }
+      }
+      console.log("Badge awarded successfully");
+    }
+  }
+}
+
 
 const checkProgressAndSendNotifs = async (pathway) => {
   const { userId, id: pathwayId, isActive } = pathway.data;
@@ -78,7 +125,7 @@ const checkProgressAndSendNotifs = async (pathway) => {
 
     console.log("User ID:", userId, "Pathway ID:", pathwayId, "Progress:", progressPercentage);
 
-    const url = `http://localhost:8080/api/user/${userId}/pathway/${pathwayId}`;
+    const url = `${BACKEND_URL}/user/${userId}/pathway/${pathwayId}`;
 
     await axios.post(url, null, {
       params: { progress: progressPercentage },
@@ -355,6 +402,10 @@ class Pathway {
     checkProgressAndSendNotifs(this)
       .then(() => console.log('Notification sent'))
       .catch((error) => console.error('Error sending notification:', error));
+
+    checkForPossibleBadgeAwards(this)
+      .then(() => console.log('Badge awarded'))
+      .catch((error) => console.error('Error awarding badge:', error));
   }
 
   /**

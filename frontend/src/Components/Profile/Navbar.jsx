@@ -1,8 +1,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Removed the FaCog icon
 import { useState } from 'react';
-import Profile from '@/Components/Profile/Profile.jsx';
-import Dashboard from '@/Components/Profile/Dashboard.jsx';
+import Profile from '@/components/Profile/Profile.jsx';
+import Dashboard from '@/components/Profile/Dashboard.jsx';
 import History from './History';
 import Usersetting from './Usersetting';
 import Mindspace from './Mindspace';

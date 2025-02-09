@@ -18,10 +18,11 @@ import {
   GraduationCap,
   ShipWheel
 } from 'lucide-react';
-import { Input } from '../Components/ui/input2';
-import { Label } from '../Components/ui/label2';
-import Languages from '../Components/originUi/languages-known';
+import { Input } from '../components/ui/input2';
+import { Label } from '../components/ui/label2';
+import Languages from '../components/originUi/languages-known';
 import { toast } from 'react-toastify';
+import { BACKEND_URL } from '@/components/core/Constants';
 
 function FormDetails() {
   const navigate = useNavigate();
@@ -33,6 +34,17 @@ function FormDetails() {
   const [skills, setskills] = useState([]);
   const [hobies, setHobies] = useState([]);
   const [interest, setinterest] = useState([]);
+
+  const awardRegisteredUserBadge = async (userId) => {
+    const badgeType = "verified";
+    const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
+    console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+    if (!isBatchAlreadyAwarded) {
+      console.log("Badge award called");
+      await awardBadge(userId, badgeType);
+      console.log("Badge awarded successfully");
+    }
+  }
 
   // Add state for the email notification toggle
   const [emailNotification, setEmailNotification] = useState(false);
@@ -88,7 +100,11 @@ function FormDetails() {
         });
   
         const response = await fetch(
+<<<<<<< HEAD
           `http://localhost:8080/api/user/${userId}/codeVerification`, // 🔹 Only userId in path
+=======
+          `${BACKEND_URL}/user/${userId}/codeVerification`,
+>>>>>>> upstream/main
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
@@ -96,6 +112,7 @@ function FormDetails() {
         );
   
         if (response.ok) {
+          await awardRegisteredUserBadge(userId);
           navigate('/twofactorauth');
         } else {
           toast.error('Failed to send verification code!', {
@@ -267,12 +284,11 @@ function FormDetails() {
                       name="insta"
                       placeholder="https://www.instagram.com/"
                       type="url"
-                      required
                     />
                   </div>
                   <div className="flex items-center gap-1">
                     <Github className="text-slate-400" />
-                    <Input name="git" placeholder="https://github.com/" type="url" required />
+                    <Input name="git" placeholder="https://github.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <Linkedin className="text-blue-400" />
@@ -280,12 +296,11 @@ function FormDetails() {
                       name="linkedin"
                       placeholder="https://linkedin.com/"
                       type="url"
-                      required
                     />
                   </div>
                   <div className="flex items-center gap-1">
                     <Twitter className="text-orange-400" />
-                    <Input name="twitter" placeholder="https://twitter.com/" type="url" required />
+                    <Input name="twitter" placeholder="https://twitter.com/" type="url" />
                   </div>
                   <div className="flex items-center gap-1">
                     <BriefcaseBusiness className="text-cyan-200" />
@@ -293,7 +308,6 @@ function FormDetails() {
                       name="portfolio"
                       placeholder="https://portfolio.com/"
                       type="url"
-                      required
                     />
                   </div>
                 </div>

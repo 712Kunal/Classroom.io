@@ -11,6 +11,7 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { FaAdjust } from 'react-icons/fa';
 import { AlignCenter, AlignCenterVertical } from 'lucide-react';
 import Spline from '@splinetool/react-spline';
+import { BACKEND_URL } from '@/components/core/Constants';
 
 
 function Signup() {
@@ -64,7 +65,7 @@ function Signup() {
       console.log('User registration completed.');
       console.log(`Here: ${import.meta.env.VITE_PATHIFY_APP_API_URL}`);
 
-      const backendUrl = `${import.meta.env.VITE_PATHIFY_APP_API_URL}/api/user-signUp/${user.uid}`;
+      const backendUrl = `${BACKEND_URL}/user-signUp/${user.uid}`;
 
       try {
         await axios.post(backendUrl, {
@@ -72,14 +73,6 @@ function Signup() {
           username: username,
         });
         console.log('Notification and email request sent to backend.');
-        toast.success('Notification and email request sent successfully.', {
-          position: 'top-right',
-          autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          theme: 'dark',
-        });
       } catch (axiosError) {
         console.error('Error sending notification:', axiosError.message);
         toast.error('Failed to send notification.', {
@@ -207,6 +200,7 @@ function Signup() {
 
       <div className="flex justify-center w-full">
   <GoogleButton
+    className="transform scale-75" // Reduces size to 75% of original
     onClick={async () => {
       try {
         const provider = new GoogleAuthProvider();
@@ -214,7 +208,7 @@ function Signup() {
         const user = result.user;
 
         if (user) {
-          const username = user.email.split('@')[0]; // Extract username from email
+          const username = user.email.split('@')[0];
 
           await setDoc(doc(db, 'Users', user.uid), {
             email: user.email,
@@ -222,22 +216,20 @@ function Signup() {
           });
 
           console.log('Google sign-in successful:', user);
-          window.location.href = "/app/profile"; // Redirect to app after login
+          window.location.href = "/app/profile";
         }
       } catch (error) {
         console.error('Google Sign-In Error:', error);
         toast.error('Google Sign-In failed. Please try again.', {
           position: "top-right",
           autoClose: 5000,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
           theme: "dark",
         });
       }
     }}
   />
 </div>
+
 
 
 

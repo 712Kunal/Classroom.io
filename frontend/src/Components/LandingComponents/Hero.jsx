@@ -48,8 +48,8 @@ function Hero() {
           <motion.p
             variants={slideinfromleft(0.8)}
             className="text-lg text-slate-300 my-5 max-w-[600px] w-auto h-auto">
-            Experience the future of education with our AI-enhanced learning platform. Personalized
-            paths, adaptive content, and intelligent insights.
+            From AI-powered assistance to real-time analytics, automated workflows, and intuitive
+            designs
           </motion.p>
 
           <motion.a
@@ -63,7 +63,9 @@ function Hero() {
 
         <motion.div
           variants={slideinfromright(0.8)}
-          className="w-full h-full flex justify-center items-center border"></motion.div>
+          className="w-full h-full flex justify-center items-center ">
+          <img src="assets/brahma-fusion-peris-ai.gif" className="scale-150" />
+        </motion.div>
       </motion.div>
     </div>
   );

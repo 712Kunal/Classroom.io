@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthListener } from '@/hooks/use-auth';
 import { getUserProfileByUserId } from '@/Firebase/services/userDetails.servies';
 import { Timestamp } from 'firebase/firestore';
+import { awardBadge, checkIfBadgeIsPresent } from '@/Firebase/services/badge.service';
 
 const calculateAge = (dob) => {
   if (dob instanceof Timestamp) {
@@ -70,6 +71,17 @@ const CreatePathway = () => {
   const { refetchPathways } = useGlobal();
   const { user } = useAuthListener();
 
+  const awardBelieverBadge = async (userId) => {
+    const badgeType = "believer";
+    const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
+    console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+    if (!isBatchAlreadyAwarded) {
+      console.log("Badge award called");
+      await awardBadge(userId, badgeType);
+      console.log("Badge awarded successfully");
+    }
+  }
+
   const handleCreatePathway = async (e) => {
     e.preventDefault();
     setGenerating(true);
@@ -92,7 +104,7 @@ const CreatePathway = () => {
 
     const additionalInfo = {
       skills: details.background.skills.map((obj) => obj.text).join(', ') || 'none',
-      hobbies: details.background.hobies.map((obj) => obj.text).join(', ') || 'none',
+      hobbies: details.background.hobbies.map((obj) => obj.text).join(', ') || 'none',
       interests: details.background.interest.map((obj) => obj.text).join(', ') || 'none'
     };
 
@@ -115,6 +127,8 @@ const CreatePathway = () => {
       setCreatedPathwayId(pathwayId);
 
       await refetchPathways();
+
+      await awardBelieverBadge(userId);
 
       setPathwayReady(true);
     } catch (error) {

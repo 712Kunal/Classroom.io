@@ -18,9 +18,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from '@/Components/ui/card';
+} from '@/components/ui/card';
 
-import { Label } from '@/Components/ui/label';
+import { Label } from '@/components/ui/label';
 
 const ResourceTypeToIconMap = {
   Documentation: <BookOpenIcon size={24} className="text-blue-500" />,

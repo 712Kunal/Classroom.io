@@ -15,13 +15,14 @@ import axios from "axios";
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGlobal } from '../context/GlobalContext';
-import { awardBadge } from "@/Firebase/services/badge.service";
+import { awardBadge, checkIfBadgeIsPresent } from "@/Firebase/services/badge.service";
+import { BACKEND_URL } from "../core/Constants";
 
 const StartPathwayModal = ({ children }) => {
   const { user } = useAuthListener();
   const navigate = useNavigate();
   const { pathwayId } = useParams();
-  const { pathwaysList, refetchPathways, activePathwayId, badges } = useGlobal();
+  const { pathwaysList, refetchPathways, activePathwayId, badges, refetchBadges } = useGlobal();
   const pathway = pathwaysList.find((pathway) => pathway.data.id === pathwayId);
 
   const handleStartPathway = async () => {
@@ -35,14 +36,24 @@ const StartPathwayModal = ({ children }) => {
       oldActivePathway.pausePathway();
       pathway.startPathway();
       await refetchPathways();
+
+
+      await awardFirstPathwayBadge(user.uid);
+
+      const badgeType = "first_pathway";
+      const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
+      console.log("Is batch already awarded:", isBatchAlreadyAwarded);
+      if (!isBatchAlreadyAwarded) {
+        console.log("Badge award called");
+        await awardBadge(userId, badgeType);
+        await refetchBadges();
+        console.log("Badge awarded successfully");
+      }
+
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
 
-      await axios.post(`http://localhost:8080/api/user/${user.uid}/pathwayActivate/${pathwayId}`);
+      await axios.post(`${BACKEND_URL}/user/${user.uid}/pathwayActivate/${pathwayId}`);
 
-      if(Boolean(badges.some((badge) => badge.badgeType === "first_pathway"))) {
-        await awardBadge(user.uid, "first_pathway");
-        await refetchPathways();
-      }
     } catch (error) {
       console.error(error);
     }
