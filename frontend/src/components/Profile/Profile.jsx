@@ -243,16 +243,15 @@ export function Achievements({ user })
                   clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 }}
               >
-                {console.log(badge.badgePNG)}
+                {console.log(`assets/badges/${badge.badgePNG}`)}
               
                 <img
-                  src={`assets/badges/${badge.badgePNG}`}
+                  src={`/assets/badges/${badge.badgePNG}`}
                   alt={`badge-${index}`}
                   className="w-full h-full object-cover"
                   loading="lazy"
                   onError={(e) => e.target.src = 'assets/badges/verified.png'} 
                 />
-
                 <div className="absolute inset-0 bg-transparent transition-all duration-300 opacity-0 hover:opacity-100 hover:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] hover:shadow-indigo-500/50 dark:hover:shadow-[0_0_20px_5px_rgba(255,255,255,0.7)] dark:hover:shadow-purple-500/70">
                 </div>
               </div>
