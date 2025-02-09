@@ -49,7 +49,7 @@ public class UserController {
 
 
 
-            System.out.println("Sending email and in-app notifications");
+            logger.info("Sending email and in-app notifications for user: {}", userId);
 //          notification.setNotificationType(Notification.NotificationType.BOTH);
             sendEmailAndNotification(userId, userEmail);
             return ResponseEntity.ok("Email and Notification sent successfully");
