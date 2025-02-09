@@ -73,6 +73,7 @@ function FormDetails() {
   const handleUseraddDetails = async (userDetails) => {
     try {
       const userId = auth.currentUser.uid;
+      const email = auth.currentUser.email;
       const adduserData = await addProfile(userDetails, userId);
       console.log(adduserData);
       if (adduserData.success === true) {
@@ -92,7 +93,7 @@ function FormDetails() {
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: user.email })
+            body: JSON.stringify({ email: email })
           }
         );
 
