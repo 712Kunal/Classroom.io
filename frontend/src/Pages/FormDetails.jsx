@@ -32,7 +32,7 @@ function FormDetails() {
   const [languagesKnown, setlanguagesKnown] = useState([]);
   const [learningStyles, setlearningStyles] = useState([]);
   const [skills, setskills] = useState([]);
-  const [hobies, setHobies] = useState([]);
+  const [hobbies, sethobbies] = useState([]);
   const [interest, setinterest] = useState([]);
 
   const awardRegisteredUserBadge = async (userId) => {
@@ -180,7 +180,7 @@ function FormDetails() {
         languagesKnown,
         learningStyles,
         skills,
-        hobies,
+        hobbies,
         interest
       },
       preferences: {
@@ -374,10 +374,10 @@ function FormDetails() {
                 </div>
 
                 <div>
-                  <Label htmlFor="hobies">Hobbies: </Label>
+                  <Label htmlFor="hobbies">Hobbies: </Label>
                   <Languages
-                    tags={hobies}
-                    setTags={setHobies}
+                    tags={hobbies}
+                    setTags={sethobbies}
                     placeholder="Eg: Drawing, Gyming, Cooking"
                     required
                   />
