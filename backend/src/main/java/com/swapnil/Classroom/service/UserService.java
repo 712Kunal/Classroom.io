@@ -92,12 +92,12 @@ public class UserService {
 
         System.out.println("Generated Code: " + code);
 
-        String hashedCode = BCrypt.hashpw(String.valueOf(code), BCrypt.gensalt());
+//        String hashedCode = BCrypt.hashpw(String.valueOf(code), BCrypt.gensalt());
         Timestamp expirationTime = Timestamp.ofTimeSecondsAndNanos((System.currentTimeMillis() + (10 * 60 * 1000)) / 1000, 0);
 
         // 🔹 Create verificationData map
         Map<String, Object> verificationData = new HashMap<>();
-        verificationData.put("verificationCode", hashedCode);
+        verificationData.put("verificationCode", code);
         verificationData.put("expirationTime", expirationTime);
 
         DocumentReference userRef = firestore.collection("UserProfiles").document(userId);
