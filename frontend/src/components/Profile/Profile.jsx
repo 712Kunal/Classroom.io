@@ -226,9 +226,9 @@ export function Achievements({ user })
     <div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300 
     lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.3)] lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.7)]">
       <h3 className="text-xl font-semibold mb-6">Achievements</h3>
-      <div className="flex items-center space-x-4 mb-6">
-        <p className="text-lg text-gray-600"><strong>Points:🪙</strong> {user.pointsAwarded}</p>
-      </div>
+      {/* <div className="flex items-center space-x-4 mb-6"> */}
+        {/* <p className="text-lg text-gray-600"><strong>Points:🪙</strong> {user.pointsAwarded}</p> */}
+      {/* </div> */}
 
       <div className="mb-6">
         {badges.length === 0 ? (
