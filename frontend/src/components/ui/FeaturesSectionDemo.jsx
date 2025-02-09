@@ -155,8 +155,8 @@ export const SkeletonTwo = () => {
 
 export const SkeletonFour = () => {
   return (
-    <div className="h-60 md:h-60 relative bg-transparent dark:bg-transparent mt-10 scale-125">
-      <img src="/assets/gif/retrofuturistic-circuit-loop.gif" alt="gif" />
+    <div className="bg-transparent mt-10 grid place-items-center overflow-hidden">
+      <img src="/assets/notify.png" alt="gif" className="object-cover scale-150" />
     </div>
   );
 };

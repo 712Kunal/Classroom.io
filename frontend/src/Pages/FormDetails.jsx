@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { auth } from '../Firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { checkIfBadgeIsPresent, awardBadge } from '@/Firebase/services/badge.service';
 
 import { addProfile } from '../Firebase/services/userDetails.servies.js';
 
@@ -88,25 +89,25 @@ function FormDetails() {
         });
 
         // 🔹 Send request to Spring Boot API for 2FA verification
-        // const response = await fetch(
-        //   `${BACKEND_URL}/user/${userId}/codeVerification`,
-        //   {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ email: email })
-        //   }
-        // );
+        const response = await fetch(
+          `${BACKEND_URL}/user/${userId}/codeVerification`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+          }
+        );
 
-        // if (response.ok) {
-        //   await awardRegisteredUserBadge(userId);
-        //   navigate('/twofactorauth');
-        // } else {
-        //   toast.error('Failed to send verification code!', {
-        //     position: 'top-right',
-        //     autoClose: 5000,
-        //     theme: 'dark'
-        //   });
-        // }
+        if (response.ok) {
+          await awardRegisteredUserBadge(userId);
+          navigate('/twofactorauth');
+        } else {
+          toast.error('Failed to send verification code!', {
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'dark'
+          });
+        }
       }
     } catch (error) {
       console.error('Error adding user details:', error);
