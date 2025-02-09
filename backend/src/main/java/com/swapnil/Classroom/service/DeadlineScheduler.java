@@ -25,7 +25,7 @@ public class DeadlineScheduler {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 0 18 * * *")
+    @Scheduled(cron = "0 0 22 * * *")
     public void checkDeadlineAndSendEmail() {
         System.out.println("Scheduler started...");
 
