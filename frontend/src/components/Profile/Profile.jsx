@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { FaInstagram, FaGithub, FaLinkedin, FaTwitter, FaGlobe, FaPhoneAlt, FaEnvelope, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import * as Accordion from '@radix-ui/react-accordion';
+import { getAllBadgesOfUser } from '@/Firebase/services/badge.service'; // Adjust the import path as necessary
+import { auth } from "@/Firebase/firebase"; 
+
 
 
 export function ProfileImageAndInfo({ user }) {
@@ -188,8 +191,38 @@ function BackgroundEducation({ user }) {
 }
 // Achievements
 
-export function Achievements({ user }) {
+export function Achievements({ user }) 
+{
+  const [badges, setBadges] = useState([]);
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    // Set userId based on the user prop or the authenticated user
+    const currentUser = auth.currentUser;
+    if (user && user.id) {
+      setUserId(user.id);
+    } else if (currentUser && currentUser.uid) {
+      setUserId(currentUser.uid);
+    }
+  }, [user]); 
+
+  useEffect(() => {
+    if (userId) {
+      const fetchBadges = async () => {
+        try {
+          const userBadges = await getAllBadgesOfUser(userId);
+          setBadges(userBadges);
+        } catch (error) {
+          console.error('Error fetching badges:', error);
+        }
+      };
+
+      fetchBadges();
+    }
+  }, [userId]); 
+
   return (
+    
     <div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300 
     lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.3)] lg:hover:shadow-[10px_10px_20px_0px_rgba(0,0,0,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.5)] dark:lg:hover:shadow-[10px_10px_20px_0px_rgba(255,255,255,0.7)]">
       <h3 className="text-xl font-semibold mb-6">Achievements</h3>
@@ -198,11 +231,11 @@ export function Achievements({ user }) {
       </div>
 
       <div className="mb-6">
-        {user.badgesAwarded.length === 0 ? (
+        {badges.length === 0 ? (
           <p className="text-lg text-gray-600 text-center">No badges awarded yet. Keep up the good work!</p>
         ) : (
           <div className="flex justify-center space-x-6 flex-wrap">
-            {user.badgesAwarded.map((badge, index) => (
+            {badges.map((badge, index) => (
               <div
                 key={index}
                 className="w-16 h-16 sm:w-24 sm:h-24 md:w-21 md:h-21 lg:w-22 lg:h-22 xl:w-25 xl:h-25 relative overflow-hidden transform transition duration-300 ease-in-out hover:scale-110 hover:rotate-6 mb-4"
@@ -210,11 +243,14 @@ export function Achievements({ user }) {
                   clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 }}
               >
+                {console.log(badge.badgePNG)}
+              
                 <img
-                  src={`/assets/badges/${badge}`} 
+                  src={`assets/badges/${badge.badgePNG}`}
                   alt={`badge-${index}`}
                   className="w-full h-full object-cover"
                   loading="lazy"
+                  onError={(e) => e.target.src = 'assets/badges/verified.png'} 
                 />
 
                 <div className="absolute inset-0 bg-transparent transition-all duration-300 opacity-0 hover:opacity-100 hover:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] hover:shadow-indigo-500/50 dark:hover:shadow-[0_0_20px_5px_rgba(255,255,255,0.7)] dark:hover:shadow-purple-500/70">
@@ -422,3 +458,8 @@ export default function Profile({ user }) {
     </div>
   );
 }
+
+
+
+
+

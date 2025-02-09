@@ -83,6 +83,7 @@ function ProfilePage() {
           Interests: userDetails.background?.interest || ['AI', 'Blockchain', 'Web Development']
         },
         pointsAwarded: 1500, 
+        
         badgesAwarded: [
           'verified.png', 
           'newbie.png',
