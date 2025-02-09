@@ -41,11 +41,11 @@ const StartPathwayModal = ({ children }) => {
       await awardFirstPathwayBadge(user.uid);
 
       const badgeType = "first_pathway";
-      const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(userId, badgeType);
+      const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(user.uid, badgeType);
       console.log("Is batch already awarded:", isBatchAlreadyAwarded);
       if (!isBatchAlreadyAwarded) {
         console.log("Badge award called");
-        await awardBadge(userId, badgeType);
+        await awardBadge(user.uid, badgeType);
         await refetchBadges();
         console.log("Badge awarded successfully");
       }
