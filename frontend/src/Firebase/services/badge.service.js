@@ -62,8 +62,6 @@ const badgeTypeToBadge = {
 export const awardBadge = async (userId, badgeType) => {
   try {
     const badge = badgeTypeToBadge[badgeType];
-    console.log(badgeType);
-    // Fixed: Use collection() instead of doc() when adding a new document
     await addDoc(collection(db, 'badges'), {
       ...badge,
       userId: userId,

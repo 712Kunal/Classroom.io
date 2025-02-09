@@ -15,7 +15,6 @@ import axios from "axios";
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGlobal } from '../context/GlobalContext';
-import { awardBadge, checkIfBadgeIsPresent } from "@/Firebase/services/badge.service";
 import { BACKEND_URL } from "../core/Constants";
 
 const StartPathwayModal = ({ children }) => {
@@ -36,19 +35,6 @@ const StartPathwayModal = ({ children }) => {
       oldActivePathway.pausePathway();
       pathway.startPathway();
       await refetchPathways();
-
-
-      await awardFirstPathwayBadge(user.uid);
-
-      const badgeType = "first_pathway";
-      const isBatchAlreadyAwarded = await checkIfBadgeIsPresent(user.uid, badgeType);
-      console.log("Is batch already awarded:", isBatchAlreadyAwarded);
-      if (!isBatchAlreadyAwarded) {
-        console.log("Badge award called");
-        await awardBadge(user.uid, badgeType);
-        await refetchBadges();
-        console.log("Badge awarded successfully");
-      }
 
       navigate(`/app/library/pathways/${pathway.data.id}/timeline`);
 
