@@ -78,6 +78,8 @@ public class UserController {
     public ResponseEntity<String> sendCodeForEmailVerification(
             @PathVariable String userId
     ) throws ExecutionException, InterruptedException {
+
+        System.out.println("Sending code...");
         if(userId==null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Id not found with: "+userId);
         }

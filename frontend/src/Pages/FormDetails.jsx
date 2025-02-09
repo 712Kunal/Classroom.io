@@ -99,18 +99,16 @@ function FormDetails() {
           theme: 'dark'
         });
   
+        console.log("Sending request to backend");
         const response = await fetch(
-<<<<<<< HEAD
-          `http://localhost:8080/api/user/${userId}/codeVerification`, // 🔹 Only userId in path
-=======
           `${BACKEND_URL}/user/${userId}/codeVerification`,
->>>>>>> upstream/main
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
           }
         );
   
+        console.log("Request send");
         if (response.ok) {
           await awardRegisteredUserBadge(userId);
           navigate('/twofactorauth');
