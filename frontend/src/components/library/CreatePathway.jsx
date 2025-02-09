@@ -195,6 +195,7 @@ const CreatePathway = () => {
                 }}
                 max={durationLimit[formData.intervalType]}
                 min={minimumLimits[formData.intervalType]}
+                defaultV={minimumLimits[formData.intervalType]}
               />
             </div>
             <div className="resourceTypePreferenceFieldBox border-2 rounded-md p-4 flex flex-col gap-4">
