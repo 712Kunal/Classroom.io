@@ -52,8 +52,8 @@ function TwoFactorAuth() {
   const onVerify = async (fullCode) => {
     try {
       // send axios request to backend
-      await verifyOtp(userId, fullCode);
-      if (verifyOtp.success === true) {
+      const result = await verifyOtp(userId, fullCode);
+      if (result) {
         navigate('/app/profile');
       }
     } catch (error) {
