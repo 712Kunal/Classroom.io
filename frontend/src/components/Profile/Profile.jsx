@@ -187,6 +187,7 @@ function BackgroundEducation({ user }) {
   );
 }
 // Achievements
+
 export function Achievements({ user }) {
   return (
     <div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300 
@@ -203,18 +204,19 @@ export function Achievements({ user }) {
           <div className="flex justify-center space-x-6 flex-wrap">
             {user.badgesAwarded.map((badge, index) => (
               <div
-                key={badge}  
+                key={index}
                 className="w-16 h-16 sm:w-24 sm:h-24 md:w-21 md:h-21 lg:w-22 lg:h-22 xl:w-25 xl:h-25 relative overflow-hidden transform transition duration-300 ease-in-out hover:scale-110 hover:rotate-6 mb-4"
                 style={{
                   clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 }}
               >
                 <img
-                  src={badge}
+                  src={`/assets/badges/${badge}`} 
                   alt={`badge-${index}`}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
+
                 <div className="absolute inset-0 bg-transparent transition-all duration-300 opacity-0 hover:opacity-100 hover:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] hover:shadow-indigo-500/50 dark:hover:shadow-[0_0_20px_5px_rgba(255,255,255,0.7)] dark:hover:shadow-purple-500/70">
                 </div>
               </div>
@@ -327,7 +329,7 @@ export function SkillsAndHobbies({ user }) {
     <div className="sm:p-6 sm:rounded-lg sm:shadow-md sm:shadow-gray-300 sm:rounded-xl p-0 shadow-none lg:p-8 lg:rounded-2xl lg:shadow-xl lg:shadow-gray-500 transition-all duration-300 
     hover:shadow-none sm:hover:shadow-[0_4px_10px_0px_rgba(0,0,0,0.3)] sm:hover:shadow-[0_4px_10px_0px_rgba(0,0,0,0.5)]
     dark:sm:hover:shadow-[0_4px_10px_0px_rgba(255,255,255,0.5)] dark:sm:hover:shadow-[0_4px_10px_0px_rgba(255,255,255,0.7)]">
-      
+
       <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Skills & Hobbies</h3>
 
       <div className={`mb-6 p-4 rounded-lg ${randomGradient()}`}>
