@@ -40,12 +40,12 @@ const verifyOtp = async (userId, otp) => {
     } else {
       throw new Error('Verification code mismatch');
     }
-    await updateUserProfile(userId, {
-      verificationData: {
-        verificationCode: null,
-        expirationTime: null
-      }
-    });
+    // await updateUserProfile(userId, {
+    //   verificationData: {
+    //     verificationCode: null,
+    //     expirationTime: null
+    //   }
+    // });
 
     console.log('OTP verified successfully');
     return true;
