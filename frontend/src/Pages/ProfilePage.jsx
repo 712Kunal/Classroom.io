@@ -79,7 +79,7 @@ function ProfilePage() {
           LanguagesKnown: userDetails.background?.languagesKnown || ['English', 'Spanish'],
           preferredLearningStyle: userDetails.background?.learningStyles || ['Interactive Exercises', 'Video Tutorials'],
           Skills: userDetails.background?.skills || ['JavaScript', 'React', 'Node.js', 'Express.js', 'HTML', 'Java'],
-          Hobbies: userDetails.background?.hobies || ['Coding', 'Reading', 'Gaming'],
+          Hobbies: userDetails.background?.hobbies || ['Coding', 'Reading', 'Gaming'],
           Interests: userDetails.background?.interest || ['AI', 'Blockchain', 'Web Development']
         },
         pointsAwarded: 1500, 
