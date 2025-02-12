@@ -1,21 +1,19 @@
 import { Timestamp } from 'firebase/firestore';
 import { getUserProfileByUserId, updateUserProfile } from './userDetails.servies';
+import { toast } from 'react-hot-toast';  
 
 const verifyOtp = async (userId, otp) => {
   try {
-    // 🔹 Retrieve user profile
     const userProfile = await getUserProfileByUserId(userId);
     if (!userProfile) {
       throw new Error('User profile not found');
     }
 
-    // 🔹 Check if verificationData exists
     const verificationData = userProfile.verificationData;
     if (!verificationData) {
       throw new Error('No verification data found');
     }
 
-    // 🔹 Convert expirationTime properly
     let expiry;
     if (verificationData.expirationTime instanceof Timestamp) {
       expiry = verificationData.expirationTime.toDate();
@@ -23,25 +21,41 @@ const verifyOtp = async (userId, otp) => {
       expiry = new Date(verificationData.expirationTime);
     }
 
-    // 🔹 Ensure expirationTime is a Date object
     if (!(expiry instanceof Date)) {
       throw new Error('Expiration time is not a Date object');
     }
 
-    // 🔹 Check if the OTP has expired
     if (expiry.getTime() < Date.now()) {
+      await updateUserProfile(userId, {
+        verificationData: {
+          verificationCode: null,
+          expirationTime: null
+        }
+      });
+      
+      toast.error('Verification code expired'); 
       throw new Error('Verification code expired');
     }
 
     console.log('Verification code from db:', verificationData.verificationCode);
-    console.log('Code from frontend', otp);
-    if (otp == verificationData.verificationCode) {
+    console.log('Code from frontend:', otp);
+
+    if (otp.toString().trim() === verificationData.verificationCode.toString().trim()) {
+      await updateUserProfile(userId, {
+        verificationData: {
+          verificationCode: null,
+          expirationTime: null
+        }
+      });
+
+      toast.success('OTP verified successfully');  
       console.log('Verified');
+      return true;
     } else {
+      toast.error('Incorrect verification code');  
       throw new Error('Verification code mismatch');
     }
-    console.log('OTP verified successfully');
-    return true;
+
   } catch (error) {
     console.error('Error verifying OTP:', error);
     throw error;
