@@ -138,9 +138,8 @@ public class PathwayService {
             DocumentSnapshot document = future.get();
 
             if (document.exists()) {
-                System.out.println("Document data: "+document.getData());
-                // Return the document as a Map instead of a custom Pathway class
-                return document.getData(); // Get all fields in the document as a Map
+
+                return document.getData();
             } else {
                 System.out.println("No document found with pathwayId: " + pathwayId);
                 return null;
